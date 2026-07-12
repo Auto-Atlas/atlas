@@ -1,0 +1,31 @@
+{
+  "name": "eve-mentra-bridge",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Self-hosted MentraOS app bridging Mentra Live smart glasses to the EVE assistant hub (capture_frame -> photo -> vision frame POST, surface_visual -> lens display, /narrate -> speaker).",
+  "type": "module",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "start": "node dist/index.js",
+    "dev": "tsx src/index.ts"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@mentra/sdk": "2.1.29",
+    "express": "^4.18.2",
+    "ws": "^8.18.2"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^22.10.0",
+    "@types/ws": "^8.5.13",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  }
+}

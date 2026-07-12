@@ -1,0 +1,57 @@
+{
+  "approvals": [
+    {
+      "id": "9f3c1a2b",
+      "tool": "create_invoice",
+      "args": {
+        "customer": {
+          "name": "Jordan Lee"
+        },
+        "line_items": [
+          {
+            "description": "Spring cleanup",
+            "quantity": 3,
+            "rate": 45.0
+          },
+          {
+            "description": "Haul-away",
+            "quantity": 1,
+            "rate": 60.0
+          }
+        ]
+      },
+      "requester": "Jordan",
+      "requester_tier": "known",
+      "risk_level": "high",
+      "summary": "Create invoice for Jordan Lee",
+      "status": "pending",
+      "effective_status": "pending",
+      "created_at": 1751720000.0,
+      "ttl_s": 300,
+      "expires_at": 1751720300.0,
+      "seconds_left": 260.0,
+      "decided_at": null,
+      "result": null
+    },
+    {
+      "id": "7d0e5f19",
+      "tool": "send_to_channel",
+      "args": {
+        "channel": "#ops",
+        "message": "Heads up: truck 2 needs an oil change before Monday."
+      },
+      "requester": "Casey",
+      "requester_tier": "known",
+      "risk_level": "high",
+      "summary": "Message to #ops",
+      "status": "pending",
+      "effective_status": "pending",
+      "created_at": 1751720000.0,
+      "ttl_s": 300,
+      "expires_at": 1751720300.0,
+      "seconds_left": 50.0,
+      "decided_at": null,
+      "result": null
+    }
+  ]
+}

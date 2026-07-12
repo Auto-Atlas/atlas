@@ -1,0 +1,33 @@
+[Unit]
+# Atlas continuous-vision service — RTMP listener that samples the wearer's smart-glasses
+# point-of-view, describes each frame on the LOCAL VLM (:8093), and narrates a throttled
+# line into the wearer's ear via the bridge's narrate webhook (glasses_stream.py).
+# TEMPLATE ONLY: not installed or started by the build. `systemctl --user enable --now`
+# it once the glasses bridge is live. Needs ffmpeg (/usr/bin/ffmpeg) and a local VLM
+# reachable at EVE_VLM_URL.
+Description=Atlas glasses continuous-vision stream (RTMP -> VLM -> ear narration)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=%h/atlas
+# Master gate — glasses_stream.main() exits immediately unless this is truthy.
+Environment=EVE_GLASSES_ENABLED=1
+# RTMP listener the glasses bridge publishes to: rtmp://<host>:<port>/<app>
+Environment=EVE_GLASSES_RTMP_PORT=1935
+Environment=EVE_GLASSES_RTMP_APP=eve
+# Sampling + narration cadence (see glasses_link.py for every knob + default).
+Environment=EVE_GLASSES_SAMPLE_FPS=1.0
+Environment=EVE_GLASSES_NARRATE_MIN_S=8.0
+# Bridge webhook that plays text in the wearer's ear. Leave unset for log-only.
+# Environment=EVE_GLASSES_NARRATE_URL=http://127.0.0.1:8790/narrate
+# Local vision model (reused from on-demand vision).
+Environment=EVE_VLM_URL=http://127.0.0.1:8093
+Environment=EVE_VLM_MODEL=qwen3-vl
+ExecStart=%h/atlas/.venv/bin/python glasses_stream.py
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=default.target

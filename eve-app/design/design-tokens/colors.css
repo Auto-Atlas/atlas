@@ -1,0 +1,127 @@
+/* ============================================================
+   EVE — Color system
+   Dark is primary (the brand IS dark). Light theme = [data-theme="light"].
+   Anchored on the brand assets: canvas #0B0F14, teal #2DD4BF, indigo #6366F1.
+   Imported verbatim from the claude_design "EVE Design System" project
+   (f2654b07-6615-4451-a3a4-34fada5a5a01) — REFERENCE PROVENANCE ONLY, never shipped.
+   ============================================================ */
+
+:root {
+  /* ---- Base ramp (slate neutrals on a warm-cool near-black) ---- */
+  --eve-black:      #060A0E;
+  --eve-canvas:     #0B0F14;  /* brand canvas — app background */
+  --eve-slate-950:  #0E141B;
+  --eve-slate-900:  #11161D;
+  --eve-slate-850:  #161D26;
+  --eve-slate-800:  #1E2630;
+  --eve-slate-750:  #24303C;
+  --eve-slate-700:  #1E293B;  /* hairline / brand border */
+  --eve-slate-500:  #64748B;
+  --eve-slate-400:  #94A3B8;
+  --eve-slate-300:  #CBD5E1;
+  --eve-slate-50:   #F8FAFC;
+
+  /* ---- Brand accents ---- */
+  --eve-teal:        #2DD4BF;  /* primary accent — calm intelligence */
+  --eve-teal-strong: #14B8A6;
+  --eve-teal-bright: #5EEAD4;
+  --eve-indigo:      #6366F1;  /* secondary accent */
+  --eve-indigo-soft: #818CF8;
+
+  /* ---- Semantic hues ---- */
+  --eve-green:  #34D399;
+  --eve-amber:  #FBBF24;
+  --eve-red:    #F87171;
+  --eve-rose:   #FB7185;
+
+  /* ============================================================
+     SEMANTIC ALIASES — use these in components, not the raw ramp.
+     ============================================================ */
+
+  /* Surfaces — lift carries hierarchy on dark (canvas → raised → overlay) */
+  --surface-canvas:   var(--eve-canvas);
+  --surface-sunken:   var(--eve-black);
+  --surface-raised:   var(--eve-slate-900);
+  --surface-raised-2: var(--eve-slate-850);
+  --surface-overlay:  var(--eve-slate-800);
+  --surface-inset:    rgba(148, 163, 184, 0.05);
+
+  /* Borders */
+  --border-subtle:  rgba(148, 163, 184, 0.10);
+  --border-default: var(--eve-slate-700);
+  --border-strong:  var(--eve-slate-750);
+  --border-focus:   var(--eve-teal);
+
+  /* Text */
+  --text-primary:   var(--eve-slate-50);
+  --text-secondary: var(--eve-slate-400);
+  --text-tertiary:  var(--eve-slate-500);
+  --text-on-accent: #04201C;   /* deep teal-black, for text on teal fills */
+  --text-link:      var(--eve-teal-bright);
+
+  /* Accent roles */
+  --accent:         var(--eve-teal);
+  --accent-hover:   var(--eve-teal-bright);
+  --accent-pressed: var(--eve-teal-strong);
+  --accent-soft:    rgba(45, 212, 191, 0.12);
+  --accent-line:    rgba(45, 212, 191, 0.30);
+  --accent-2:       var(--eve-indigo);
+  --accent-2-soft:  rgba(99, 102, 241, 0.14);
+
+  /* Semantic roles */
+  --success:      var(--eve-green);
+  --success-soft: rgba(52, 211, 153, 0.13);
+  --warning:      var(--eve-amber);
+  --warning-soft: rgba(251, 191, 36, 0.14);
+  --danger:       var(--eve-red);
+  --danger-soft:  rgba(248, 113, 113, 0.13);
+
+  /* ---- Trust tiers (core product concept) ---- */
+  --tier-owner:        var(--eve-teal);
+  --tier-owner-soft:   rgba(45, 212, 191, 0.14);
+  --tier-known:        var(--eve-indigo-soft);   /* known / family */
+  --tier-known-soft:   rgba(129, 140, 248, 0.16);
+  --tier-kid:          var(--eve-amber);
+  --tier-kid-soft:     rgba(251, 191, 36, 0.15);
+  --tier-unknown:      var(--eve-rose);
+  --tier-unknown-soft: rgba(251, 113, 133, 0.14);
+}
+
+/* ============================================================
+   LIGHT THEME — clean daylight variant. Translatable to iOS.
+   ============================================================ */
+[data-theme="light"] {
+  --surface-canvas:   #EEF1F5;
+  --surface-sunken:   #E2E7EE;
+  --surface-raised:   #FFFFFF;
+  --surface-raised-2: #FFFFFF;
+  --surface-overlay:  #FFFFFF;
+  --surface-inset:    rgba(15, 23, 42, 0.04);
+
+  --border-subtle:  rgba(15, 23, 42, 0.08);
+  --border-default: rgba(15, 23, 42, 0.12);
+  --border-strong:  rgba(15, 23, 42, 0.18);
+
+  --text-primary:   #0B0F14;
+  --text-secondary: #475569;
+  --text-tertiary:  #64748B;
+  --text-on-accent: #04201C;
+  --text-link:      var(--eve-teal-strong);
+
+  --accent:         var(--eve-teal-strong);
+  --accent-hover:   var(--eve-teal);
+  --accent-pressed: #0F9488;
+  --accent-soft:    rgba(20, 184, 166, 0.12);
+  --accent-line:    rgba(20, 184, 166, 0.28);
+
+  --success-soft: rgba(16, 185, 129, 0.12);
+  --warning-soft: rgba(217, 119, 6, 0.14);
+  --danger-soft:  rgba(220, 38, 38, 0.10);
+  --danger:       #DC2626;
+  --warning:      #D97706;
+  --success:      #059669;
+
+  --tier-known:      var(--eve-indigo);
+  --tier-known-soft: rgba(99, 102, 241, 0.12);
+  --tier-unknown:    #E11D48;
+}

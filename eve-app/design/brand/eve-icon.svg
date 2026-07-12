@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" fill="none">
+  <defs>
+    <linearGradient id="eveAccentI" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2DD4BF"/>
+      <stop offset="1" stop-color="#6366F1"/>
+    </linearGradient>
+    <radialGradient id="orbGlowI" cx="0.5" cy="0.45" r="0.55">
+      <stop offset="0" stop-color="#2DD4BF" stop-opacity="0.35"/>
+      <stop offset="1" stop-color="#6366F1" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Tile -->
+  <rect width="160" height="160" rx="38" fill="#0B0F14"/>
+  <rect x="1" y="1" width="158" height="158" rx="37" stroke="#1E293B" stroke-width="1.5"/>
+
+  <!-- Orb glow + ring -->
+  <circle cx="80" cy="80" r="56" fill="url(#orbGlowI)"/>
+  <circle cx="80" cy="80" r="48" stroke="url(#eveAccentI)" stroke-width="5.5"/>
+
+  <!-- Voice waveform -->
+  <g stroke="url(#eveAccentI)" stroke-width="7" stroke-linecap="round">
+    <line x1="58"  y1="70" x2="58"  y2="90"/>
+    <line x1="69"  y1="61" x2="69"  y2="99"/>
+    <line x1="80"  y1="54" x2="80"  y2="106"/>
+    <line x1="91"  y1="61" x2="91"  y2="99"/>
+    <line x1="102" y1="70" x2="102" y2="90"/>
+  </g>
+</svg>

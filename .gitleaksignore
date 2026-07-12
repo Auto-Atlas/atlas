@@ -1,0 +1,25 @@
+# Known-neutral findings (fake fixtures in security tests, upstream demo anon keys,
+# a public voice-preset UUID). Verified one-by-one in the 2026-07-12 release audit.
+.env.example:generic-api-key:28
+app/docs/javascripts/leaderboard.js:jwt:6
+app/docs/user-guide/security.md:generic-api-key:201
+app/docs/user-guide/security.md:aws-access-token:112
+app/frontend/src/components/Desktop/SavingsDashboard.tsx:jwt:283
+app/frontend/src/lib/api.ts:jwt:8
+app/src/openjarvis/evals/datasets/research_mining.py:generic-api-key:211
+app/src/openjarvis/evals/datasets/security_scanner.py:generic-api-key:70
+app/tests/analytics/test_redaction.py:generic-api-key:137
+app/tests/analytics/test_redaction.py:jwt:68
+app/tests/security/test_log_sanitization.py:generic-api-key:72
+app/tests/security/test_guardrails.py:generic-api-key:239
+app/tests/security/test_guardrails.py:generic-api-key:256
+app/tests/security/test_guardrails.py:generic-api-key:274
+app/tests/security/test_boundary_guard.py:generic-api-key:73
+app/tests/security/test_boundary_guard.py:generic-api-key:86
+app/tests/security/test_boundary_guard.py:generic-api-key:94
+app/tests/security/test_scanner.py:aws-access-token:29
+app/tests/security/test_scanner.py:stripe-access-token:80
+app/tests/security/test_taint.py:generic-api-key:111
+app/tests/security/test_taint.py:generic-api-key:140
+app/tests/server/test_webhook_routes.py:generic-api-key:119
+app/tests/server/test_webhook_routes.py:generic-api-key:134

@@ -1,0 +1,32 @@
+# systemd unit TEMPLATE for the EVE <-> Mentra Live bridge.
+# NOT installed automatically. To use:
+#   1. Adjust User/WorkingDirectory/paths below to your deploy.
+#   2. Put real secrets in an env file (e.g. /etc/eve-mentra/eve-mentra.env),
+#      chmod 600, owned by the service user. Do NOT inline tokens here.
+#   3. sudo cp eve-mentra.service /etc/systemd/system/eve-mentra.service
+#   4. sudo systemctl daemon-reload && sudo systemctl enable --now eve-mentra
+#
+# [Unit]
+# Description=EVE <-> Mentra Live glasses bridge (MentraOS app)
+# After=network-online.target
+# Wants=network-online.target
+#
+# [Service]
+# Type=simple
+# User=youruser
+# WorkingDirectory=/home/youruser/atlas/glasses/mentra-eve
+# # Secrets + config live in an env file, never in this unit:
+# EnvironmentFile=/etc/eve-mentra/eve-mentra.env
+# # Build once (npm ci && npm run build) before enabling, then run the compiled JS:
+# ExecStart=/usr/bin/env node dist/index.js
+# Restart=on-failure
+# RestartSec=3
+# # Hardening
+# NoNewPrivileges=true
+# ProtectSystem=strict
+# ProtectHome=read-only
+# PrivateTmp=true
+# ReadWritePaths=/home/youruser/atlas/glasses/mentra-eve
+#
+# [Install]
+# WantedBy=multi-user.target

@@ -1,0 +1,23 @@
+# Lint config only — this repo is not pip-packaged (deps live in requirements.txt,
+# pytest config in pytest.ini). Ruff runs from the PostToolUse hook in
+# .claude/settings.json on every file Claude edits, and manually via
+# `.venv/bin/ruff check .`.
+[tool.ruff]
+line-length = 110
+# Vendored / foreign trees and non-Python surfaces stay out of scope.
+exclude = [
+    ".venv",
+    "app",          # OpenJarvis fork — its own style, served by jarvis-server
+    "openjarvis",
+    "glasses",      # TypeScript (mentra-eve has its own tsc/vitest gates)
+    "eve-app",
+    "_bmad",
+    "_bmad-output",
+    "transcripts",
+]
+
+[tool.ruff.lint]
+# Conservative on purpose: syntax errors + pyflakes (undefined names, unused
+# imports/vars). NO style/format rules yet — the existing tree was never
+# formatted and a bulk reformat would poison diffs. Widen deliberately.
+select = ["E9", "F"]

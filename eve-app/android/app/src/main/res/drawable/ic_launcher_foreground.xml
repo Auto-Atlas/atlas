@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  EVE launcher foreground — the listening orb (teal->indigo ring + 5-bar waveform),
+  ported from eve-app/design/brand/eve-icon.svg. Authored as a 108dp adaptive-icon
+  foreground: the brand artwork (160x160 viewport) is centred inside the 108x108 safe
+  zone, scaled and offset so the orb sits in the inner 66dp circle the launcher masks to.
+  The dark tile from the SVG is dropped here because the adaptive background layer
+  (@color/ic_launcher_background = #0B0F14) provides it.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- The brand art is 160x160; map it into the 108 viewport, centred:
+         scale = 0.45, translate so the 160-art centre (80,80) lands on (54,54). -->
+    <group
+        android:scaleX="0.45"
+        android:scaleY="0.45"
+        android:translateX="18"
+        android:translateY="18">
+
+        <!-- Orb glow -->
+        <path
+            android:pathData="M80,80 m-56,0 a56,56 0 1,0 112,0 a56,56 0 1,0 -112,0z">
+            <aapt:attr xmlns:aapt="http://schemas.android.com/aapt" name="android:fillColor">
+                <gradient
+                    android:type="radial"
+                    android:centerX="80"
+                    android:centerY="72"
+                    android:gradientRadius="62"
+                    android:startColor="#592DD4BF"
+                    android:endColor="#006366F1" />
+            </aapt:attr>
+        </path>
+
+        <!-- Accent ring -->
+        <path
+            android:pathData="M80,80 m-48,0 a48,48 0 1,0 96,0 a48,48 0 1,0 -96,0z"
+            android:strokeWidth="5.5"
+            android:fillColor="#00000000">
+            <aapt:attr xmlns:aapt="http://schemas.android.com/aapt" name="android:strokeColor">
+                <gradient
+                    android:type="linear"
+                    android:startX="32"
+                    android:startY="32"
+                    android:endX="128"
+                    android:endY="128"
+                    android:startColor="#2DD4BF"
+                    android:endColor="#6366F1" />
+            </aapt:attr>
+        </path>
+
+        <!-- Waveform bars -->
+        <path android:pathData="M58,70 L58,90" android:strokeColor="#2DD4BF" android:strokeWidth="7" android:strokeLineCap="round" />
+        <path android:pathData="M69,61 L69,99" android:strokeColor="#3FCBCE" android:strokeWidth="7" android:strokeLineCap="round" />
+        <path android:pathData="M80,54 L80,106" android:strokeColor="#49AEC8" android:strokeWidth="7" android:strokeLineCap="round" />
+        <path android:pathData="M91,61 L91,99" android:strokeColor="#5688D4" android:strokeWidth="7" android:strokeLineCap="round" />
+        <path android:pathData="M102,70 L102,90" android:strokeColor="#6366F1" android:strokeWidth="7" android:strokeLineCap="round" />
+    </group>
+</vector>

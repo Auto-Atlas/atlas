@@ -1,0 +1,29 @@
+# eve-app is self-contained — its toolchain artifacts must not pollute the Python repo root.
+
+# --- Android / Gradle ---
+android/.gradle/
+android/build/
+android/app/build/
+android/captures/
+android/.cxx/
+android/local.properties
+android/*.iml
+android/.idea/
+android/app/release/
+*.apk
+*.aab
+*.keystore
+*.jks
+
+# --- Kotlin/Java ---
+*.class
+.kotlin/
+
+# --- iOS (Phase 2) ---
+ios/build/
+ios/DerivedData/
+ios/*.xcuserstate
+ios/.swiftpm/
+
+# --- misc ---
+.DS_Store

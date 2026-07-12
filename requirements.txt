@@ -1,0 +1,55 @@
+# Jarvis sidecar deps. Pinned to the verified-working versions (a fresh
+# clone — Windows or Linux — must reproduce THIS stack, not whatever shipped
+# last week). Bump deliberately, re-run the voice-loop tiers + scripts tests.
+# The bracketed extras pull the right service backends:
+#   silero  -> Silero VAD (turn/voice activity)
+#   whisper -> faster-whisper local STT (uses your GPU)
+#   kokoro  -> Kokoro local TTS (kokoro-onnx)
+#   ollama  -> OpenAI-compatible LLM client (Ollama or vLLM endpoint)
+#   deepgram, openai, cartesia -> only used in JARVIS_MODE=showtime
+#   anthropic extra -> Anthropic-style voice brains (voice_llm profiles: zai / real Anthropic)
+pipecat-ai[silero,whisper,kokoro,ollama,deepgram,openai,cartesia,anthropic]==1.3.0
+python-dotenv==1.2.2
+websockets==16.0
+loguru==0.7.3
+
+# Test harness
+pytest>=8.0
+pytest-asyncio>=0.24.0
+PyYAML>=6.0
+
+# Phone voice app (WebRTC over the tailnet)
+aiortc==1.14.0
+pipecat-ai-small-webrtc-prebuilt==2.5.0
+opencv-python-headless==4.13.0.92
+pipecat-ai-prebuilt==1.0.2
+
+# Linux additions (Windows got these through other channels):
+# local mic/speaker transport — needs portaudio; built here against the
+# system libportaudio.so.2 with a fetched header (no sudo needed)
+pyaudio; sys_platform == "linux"
+# GPU faster-whisper: CTranslate2 dlopens these at runtime; run.sh puts
+# their venv lib dirs on LD_LIBRARY_PATH
+nvidia-cudnn-cu12; sys_platform == "linux"
+nvidia-cublas-cu12; sys_platform == "linux"
+resemblyzer
+qrcode[pil]>=8.0
+argon2-cffi>=23.1   # Phase 2A: per-device credential hashing (argon2id), Spec 6
+# Voice mass-scale (open-source LiveKit transport) is OPT-IN; install only when
+# JARVIS_VOICE_TRANSPORT=livekit: pip install "pipecat-ai[livekit]"
+a2a-sdk==1.1.0
+sse-starlette
+
+# Direct deps of the approval API and A2A fabric. These used to arrive only
+# transitively via pipecat-ai/a2a-sdk, so a pipecat bump could silently break
+# approval_api.py / a2a_fabric.py — pin what we import directly (versions from
+# the verified-working venv, 2026-07-07).
+fastapi==0.136.3
+uvicorn==0.49.0
+pydantic==2.13.4
+httpx==0.28.1
+aiohttp==3.14.1
+
+# resemblyzer imports pkg_resources at runtime; setuptools >= 81 removed it, so a
+# fresh venv broke voice enrollment (found in the 2026-07-12 e2e install test).
+setuptools<81

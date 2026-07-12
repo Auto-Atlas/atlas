@@ -1,0 +1,15 @@
+{
+    "venvPath": ".",
+    "venv": ".venv",
+    "exclude": [
+        ".venv",
+        "app",
+        "openjarvis",
+        "glasses/mentra-eve/node_modules",
+        "glasses/mentra-eve/dist",
+        "eve-app",
+        "_bmad",
+        "_bmad-output",
+        "transcripts"
+    ]
+}

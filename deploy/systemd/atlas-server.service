@@ -1,0 +1,18 @@
+[Unit]
+Description=Atlas API server — local agent brain for the sidecar (port 8000)
+After=network-online.target
+
+[Service]
+Type=simple
+# %h = your home dir; no usernames baked in. Running NEXT TO another
+# OpenJarvis/EVE install on the same box? Point this instance at its own state
+# dir and port:
+#   Environment=OPENJARVIS_HOME=%h/.atlas
+#   ... jarvis serve --port 9000 ...
+WorkingDirectory=%h/.openjarvis
+ExecStart=%h/.local/bin/jarvis serve --port 8000 --agent orchestrator
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=default.target

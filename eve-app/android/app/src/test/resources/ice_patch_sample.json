@@ -1,0 +1,14 @@
+{
+  "request": {
+    "pc_id": "SmallWebRTCConnection#0-dd06e1302faa44b1abce208eff033461",
+    "candidates": [
+      {
+        "candidate": "candidate:5e687286690d8aa26f9437f97cd83bcd 1 udp 2130706431 172.23.0.1 50100 typ host",
+        "sdp_mid": "0",
+        "sdp_mline_index": 0
+      }
+    ]
+  },
+  "status_code": 200,
+  "response_body": "{\"status\":\"success\"}"
+}

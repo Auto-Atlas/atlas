@@ -1,0 +1,47 @@
+name: Atlas
+options:
+  # Bundle identifiers (com.eveassistant.*) are protocol-level identifiers kept
+  # deliberately unchanged until a post-launch breaking change; do not rename them here.
+  bundleIdPrefix: com.eveassistant
+  deploymentTarget: { iOS: "17.0" }
+  developmentLanguage: en
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    SWIFT_STRICT_CONCURRENCY: complete
+    ITSAppUsesNonExemptEncryption: NO
+packages:
+  AtlasKit:
+    path: AtlasKit
+targets:
+  Atlas:
+    type: application
+    platform: iOS
+    deploymentTarget: "17.0"
+    sources: [Atlas]
+    dependencies:
+      - package: AtlasKit
+    settings:
+      base:
+        INFOPLIST_FILE: Atlas/Resources/Info.plist
+        TARGETED_DEVICE_FAMILY: "1,2"          # iPhone + iPad (universal)
+        GENERATE_INFOPLIST_FILE: NO
+        PRODUCT_BUNDLE_IDENTIFIER: com.eveassistant.eve
+        CODE_SIGN_STYLE: Automatic
+  AtlasTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources: [AtlasTests]
+    dependencies:
+      - target: Atlas          # app-hosted → XcodeGen sets TEST_HOST/BUNDLE_LOADER
+      - package: AtlasKit
+schemes:
+  Atlas:
+    build:
+      targets:
+        Atlas: all
+        AtlasTests: [test]
+    test:
+      targets: [AtlasTests]
+      gatherCoverageData: false
+# watchOS target (AtlasWatch + AtlasWatch Widgets) — Phase 3, do not add yet.

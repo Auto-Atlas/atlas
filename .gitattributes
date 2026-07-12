@@ -1,0 +1,55 @@
+# Cross-platform line-ending policy (a collaborator on Windows, the owner on Linux).
+# Repo blobs are normalized to LF; Windows checkouts may show CRLF locally,
+# but what lands in git is always LF so nothing breaks on the other side.
+* text=auto eol=lf
+
+# Scripts that MUST stay LF or they fail on Linux ("bad interpreter").
+# The repo is already LF throughout, so this just locks current behavior in
+# (no renormalization churn). .bat/.ps1 run fine with LF on Windows too.
+*.sh    text eol=lf
+*.bash  text eol=lf
+
+# Gradle's gradlew.bat was committed with literal CRLF. Freeze it byte-exact
+# (-text = no EOL conversion ever) so it never churns or shows as modified.
+eve-app/android/gradlew.bat -text
+
+# ---- public-release exclusions ------------------------------------------
+# Files that live in the private repo but must NEVER enter a public release
+# snapshot. Public releases are cut with `git archive`, which honors
+# export-ignore — so these stay private by construction, not by memory.
+TODO.md            export-ignore
+EVE-STATUS-AND-TESTS.md export-ignore
+docs/EVE-BUILD-PLAN.md export-ignore
+docs/EVE-JARVIS-MASTERPLAN.md export-ignore
+docs/EVE-MASTERPLAN.md export-ignore
+docs/brand         export-ignore
+docs/brand/**      export-ignore
+docs/research      export-ignore
+docs/research/**   export-ignore
+
+# Binary / non-text assets: never apply line-ending or diff munging.
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+*.gif   binary
+*.ico   binary
+*.webp  binary
+*.wav   binary
+*.mp3   binary
+*.flac  binary
+*.ogg   binary
+*.pt    binary
+*.bin   binary
+*.onnx  binary
+*.so    binary
+*.dll   binary
+*.dylib binary
+*.pyd   binary
+*.jar   binary
+*.zip   binary
+*.gz    binary
+*.woff  binary
+*.woff2 binary
+*.ttf   binary
+docs/prompts        export-ignore
+docs/prompts/**     export-ignore

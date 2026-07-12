@@ -1,0 +1,42 @@
+# OpenJarvis configuration EXAMPLE — copy to openjarvis-config.toml (gitignored)
+# and point [engine.vllm].host at your own inference box.
+# Full reference config: jarvis init --full
+
+# installed_at is stamped by the installer
+installer_version = "0.1.1"
+
+[engine]
+default = "vllm"
+
+[engine.ollama]
+# host = "http://localhost:11434"  # set to remote URL if engine runs elsewhere
+
+[engine.vllm]
+# Remote vLLM server reached over your tailnet/LAN. OpenAI-compatible API on
+# :8080; the engine appends /v1 itself. Set YOUR host here:
+# host = "http://your-vllm-host:8080"
+
+[intelligence]
+# default_model must match a model your engine actually serves
+default_model = "qwen3:8b"
+
+[agent]
+# orchestrator = full tool-using agent loop. Hygiene: the atlas-server.service
+# ExecStart already passes --agent orchestrator (which wins at runtime), so this
+# aligns the file to reality rather than changing behavior.
+default_agent = "orchestrator"
+
+[tools]
+# Added think (zero-dep reasoning scratchpad), file_write (was read-only),
+# http_request (fetch URLs), memory_manage (persist agent memory) so the local
+# orchestrator can finish more tasks before falling back to a metered cloud tier.
+enabled = ["code_interpreter", "web_search", "file_read", "shell_exec", "think", "file_write", "http_request", "memory_manage"]
+
+[analytics]
+# Self-contained instance: do not send anonymized usage telemetry to the
+# OpenJarvis team's servers. Everything stays on your own hardware/network.
+enabled = false
+
+[security]
+# Single-user personal box: bind the API to localhost and use safe defaults.
+profile = "personal"

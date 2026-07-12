@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- libwebrtc's NetworkMonitor enumerates interfaces (incl. the tailscale VPN tun) via
+         ConnectivityManager; without this it can't surface the 100.x tailnet ICE candidate. -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
+    <!-- The 5 AM wake plays EVE's voice locally from a foreground service (alarm-style), even from
+         deep Doze — this is the connection-free wake path. -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <!-- Morning ritual alarm: setAlarmClock() needs no SCHEDULE_EXACT_ALARM, but we re-arm after a
+         reboot, wake the screen via a full-screen intent, and keep the device up long enough to
+         launch EVE into the ritual. -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <!-- The morning ritual IS an alarm clock, so USE_EXACT_ALARM (auto-granted, alarm-app policy)
+         lets it fire to the minute. SCHEDULE_EXACT_ALARM covers API 31-32. Even so, arm() falls
+         back to an inexact alarm if the OS withholds exact scheduling — it must never crash. -->
+    <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <!-- Best-effort mirror of a reminder into the user's stock Clock app (foreground-only,
+         EXTRA_SKIP_UI) so it shows alongside their normal alarms. The in-app alarm is the reliable
+         path; if the clock intent fails we skip silently. -->
+    <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
+    <!-- "Scan to connect": the zxing scanner uses the camera to read EVE's pairing QR. -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
+
+    <!-- Meta glasses (Wearables Device Access Toolkit). BLUETOOTH_CONNECT is needed at runtime to
+         route EVE's voice out the glasses' Bluetooth speaker (AudioManager.setCommunicationDevice /
+         Bluetooth SCO); BLUETOOTH covers the legacy pre-S path. The DAT SDK itself (camera + Meta AI
+         app mediation) is a token-gated dev preview and NOT bundled yet — the glasses feature is
+         opt-in and inert until then, so these are declared not required. -->
+    <uses-permission android:name="android.permission.BLUETOOTH"
+        android:maxSdkVersion="30" />
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+    <uses-feature android:name="android.hardware.bluetooth" android:required="false" />
+
+    <!-- Health Connect (EVE Health v1): READ-ONLY access to the owner's watch vitals from the on-phone
+         Health Connect hub. Each permission must be declared HERE as well as requested at runtime
+         (connect-client 1.1.0 requires both) and must match HealthConnectManager.READ_PERMISSIONS. -->
+    <uses-permission android:name="android.permission.health.READ_HEART_RATE" />
+    <uses-permission android:name="android.permission.health.READ_SLEEP" />
+    <uses-permission android:name="android.permission.health.READ_STEPS" />
+    <uses-permission android:name="android.permission.health.READ_OXYGEN_SATURATION" />
+    <uses-permission android:name="android.permission.health.READ_BLOOD_PRESSURE" />
+    <uses-permission android:name="android.permission.health.READ_EXERCISE" />
+
+    <!-- Package visibility (Android 11+): the connect-client must see the Health Connect provider app
+         to report availability on API < 34 (on API 34+ Health Connect is in the platform). -->
+    <queries>
+        <package android:name="com.google.android.apps.healthdata" />
+    </queries>
+
+    <application
+        android:name=".EveApplication"
+        android:allowBackup="false"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:label="@string/app_name"
+        android:networkSecurityConfig="@xml/network_security_config"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.EVE">
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:theme="@style/Theme.EVE">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <!-- Deep link for the ntfy "Review" action: eve://approvals/{approval_id} opens the app
+                 straight to the primed approval card (see approval_push.py, EVE_APP_SCHEME). -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="eve" android:host="approvals" />
+            </intent-filter>
+        </activity>
+
+        <!-- Health Connect permission rationale. On Android 14+ Health Connect lives in the platform and
+             opens the rationale via VIEW_PERMISSION_USAGE; on API < 34 (Health Connect as a separate app)
+             it uses the legacy ACTION_SHOW_PERMISSIONS_RATIONALE. Both route to MainActivity, where
+             Status > Health explains exactly what EVE reads (heart-first vitals) and why — no separate
+             placeholder screen, no dead end. -->
+        <activity-alias
+            android:name="ViewPermissionUsageActivity"
+            android:exported="true"
+            android:targetActivity=".MainActivity"
+            android:permission="android.permission.START_VIEW_PERMISSION_USAGE">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW_PERMISSION_USAGE" />
+                <category android:name="android.intent.category.HEALTH_PERMISSIONS" />
+            </intent-filter>
+        </activity-alias>
+        <activity-alias
+            android:name="ShowPermissionsRationaleActivity"
+            android:exported="true"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="androidx.health.ACTION_SHOW_PERMISSIONS_RATIONALE" />
+            </intent-filter>
+        </activity-alias>
+
+        <!-- Holds the /v1/stream WebSocket only while the app is open. -->
+        <service
+            android:name=".push.StreamService"
+            android:exported="false"
+            android:foregroundServiceType="dataSync" />
+
+        <!-- Watch gateway: receives approve/deny/refresh messages from the Wear OS app over the
+             Data Layer. A WearableListenerService MUST be exported=true with a filtered
+             MESSAGE_RECEIVED intent-filter (the deprecated BIND_LISTENER form is not used) so Play
+             Services can bind it; the wear://*/eve path scoping keeps it to our namespace. -->
+        <service
+            android:name=".wearbridge.WearBridgeService"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.android.gms.wearable.MESSAGE_RECEIVED" />
+                <data android:scheme="wear" android:host="*" android:pathPrefix="/eve" />
+            </intent-filter>
+            <!-- v2 native voice turn: the watch OPENS a ChannelClient stream on /eve/voice/turn.
+                 onChannelOpened only fires when a CHANNEL_EVENT filter matches the path. -->
+            <intent-filter>
+                <action android:name="com.google.android.gms.wearable.CHANNEL_EVENT" />
+                <data android:scheme="wear" android:host="*" android:pathPrefix="/eve" />
+            </intent-filter>
+        </service>
+
+        <!-- The 5 AM wake: plays the cached wake WAV (EVE's voice) LOCALLY on the alarm stream,
+             started by the FCM morning_ritual push. Connection-free, works from Doze. -->
+        <service
+            android:name=".ritual.RitualPlaybackService"
+            android:exported="false"
+            android:foregroundServiceType="mediaPlayback" />
+
+        <!-- FCM push-wake: receives the server's high-priority morning_ritual data message and fires
+             the same ritual path the alarm uses, even if the app was killed. Inert until
+             google-services.json is present (no Firebase config -> no messages). -->
+        <service
+            android:name=".push.EveMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <!-- Handles the notification Deny action (safe direction may fire directly). -->
+        <receiver
+            android:name=".push.ApprovalActionReceiver"
+            android:exported="false" />
+
+        <!-- Morning ritual: AlarmManager fires this at the configured time (default 5 AM). -->
+        <receiver
+            android:name=".ritual.RitualAlarmReceiver"
+            android:exported="false" />
+
+        <!-- Reminder alarm: AlarmManager fires this when a reminder EVE set comes due; it rings the
+             phone like an alarm clock (server pushes set_alarm/cancel_alarm). -->
+        <receiver
+            android:name=".reminder.ReminderAlarmReceiver"
+            android:exported="false" />
+
+        <!-- Re-arms the ritual alarm after a reboot (alarms don't survive one). -->
+        <receiver
+            android:name=".ritual.BootReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
+    </application>
+
+</manifest>

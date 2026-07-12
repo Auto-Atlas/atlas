@@ -1,0 +1,38 @@
+{
+  "_comment": "TEMPLATE — EVE priorities (signal-vs-noise). Copy this to a gitignored personal file (e.g. priorities.local.json) and point EVE_PRIORITIES at it. Drives (1) email triage labels/filtering and (2) the morning strategist's ICP grounding. Add your real client/partner email domains to important_domains; fill 'icp' + 'high_intent_signals' only if you want the strategist to target a specific customer profile (leave blank to ground purely in your goals).",
+
+  "personal_emails": [],
+
+  "important_domains": [],
+
+  "operational_tools": [
+    "google", "meta", "facebook", "linkedin", "openai", "anthropic", "stripe", "github"
+  ],
+
+  "high_intent_keywords": [
+    "new lead", "leads", "follow up", "follow-up", "quote", "estimate", "proposal",
+    "contract", "ready to buy", "interested in", "book a call", "schedule a call",
+    "demo", "partnership", "purchase order"
+  ],
+
+  "ignore_keywords": [
+    "newsletter", "webinar", "unsubscribe", "% off", "percent off", "discount",
+    "coupon", "flash sale", "limited time", "act now", "seo", "backlink",
+    "guest post", "link building", "rank #1", "crypto", "bitcoin", "forex",
+    "investment opportunity", "we're hiring", "we are hiring", "job opening",
+    "recruiter", "your resume", "internship", "sponsorship opportunity"
+  ],
+
+  "billing_security_keywords": [
+    "invoice", "payment", "receipt", "billing", "subscription", "renew",
+    "expire", "expired", "past due", "card declined", "security alert",
+    "new sign-in", "sign-in attempt", "login", "password", "verify your",
+    "verification code", "suspended", "two-factor", "account update"
+  ],
+
+  "icp": "",
+
+  "high_intent_signals": "",
+
+  "labels": ["VIP", "Client", "Hot Prospect", "Lead", "Tool/Billing/Security", "Content/Opportunity", "Low Priority", "Ignore/Spam"]
+}

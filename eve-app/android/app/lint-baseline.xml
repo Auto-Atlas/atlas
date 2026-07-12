@@ -1,0 +1,362 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<issues format="6" by="lint 8.5.2" type="baseline" client="gradle" dependencies="false" name="AGP (8.5.2)" variant="all" version="8.5.2">
+
+    <issue
+        id="ObsoleteLintCustomCheck"
+        message="Library lint checks reference invalid APIs; these checks **will be skipped**!&#xA;&#xA;Lint found an issue registry (`androidx.navigation.common.lint.NavigationCommonIssueRegistry`)&#xA;which contains some references to invalid API:&#xA;com.android.tools.lint.checks.infrastructure.TestFiles: com.android.tools.lint.checks.infrastructure.TestFile bytecode(java.lang.String,com.android.tools.lint.checks.infrastructure.TestFile,long,java.lang.String[])&#xA;(Referenced from androidx/navigation/lint/common/LintUtilKt.class)&#xA;&#xA;Therefore, this lint check library is **not** included&#xA;in analysis. This affects the following lint checks:&#xA;`EmptyNavDeepLink`,`WrongStartDestinationType`&#xA;&#xA;To use this lint check, upgrade to a more recent version&#xA;of the library.">
+        <location
+            file="$GRADLE_USER_HOME/caches/8.10.2/transforms/82ec716f814d1198be6b55b76568b8e0/transformed/navigation-common-2.8.1/jars/lint.jar"/>
+    </issue>
+
+    <issue
+        id="ObsoleteLintCustomCheck"
+        message="Library lint checks reference invalid APIs; these checks **will be skipped**!&#xA;&#xA;Lint found an issue registry (`androidx.navigation.compose.lint.NavigationComposeIssueRegistry`)&#xA;which contains some references to invalid API:&#xA;com.android.tools.lint.checks.infrastructure.TestFiles: com.android.tools.lint.checks.infrastructure.TestFile bytecode(java.lang.String,com.android.tools.lint.checks.infrastructure.TestFile,long,java.lang.String[])&#xA;(Referenced from androidx/navigation/lint/common/LintUtilKt.class)&#xA;&#xA;Therefore, this lint check library is **not** included&#xA;in analysis. This affects the following lint checks:&#xA;`ComposableDestinationInComposeScope`,`ComposableNavGraphInComposeScope`,`UnrememberedGetBackStackEntry`,`WrongStartDestinationType`&#xA;&#xA;To use this lint check, upgrade to a more recent version&#xA;of the library.">
+        <location
+            file="$GRADLE_USER_HOME/caches/8.10.2/transforms/ef16108ebb9eb222ff98a62acbf5c1b0/transformed/navigation-compose-2.8.1/jars/lint.jar"/>
+    </issue>
+
+    <issue
+        id="ObsoleteLintCustomCheck"
+        message="Library lint checks reference invalid APIs; these checks **will be skipped**!&#xA;&#xA;Lint found an issue registry (`androidx.navigation.runtime.lint.NavigationRuntimeIssueRegistry`)&#xA;which contains some references to invalid API:&#xA;com.android.tools.lint.checks.infrastructure.TestFiles: com.android.tools.lint.checks.infrastructure.TestFile bytecode(java.lang.String,com.android.tools.lint.checks.infrastructure.TestFile,long,java.lang.String[])&#xA;(Referenced from androidx/navigation/lint/common/LintUtilKt.class)&#xA;&#xA;Therefore, this lint check library is **not** included&#xA;in analysis. This affects the following lint checks:&#xA;`DeepLinkInActivityDestination`,`WrongStartDestinationType`,`WrongNavigateRouteType`&#xA;&#xA;To use this lint check, upgrade to a more recent version&#xA;of the library.">
+        <location
+            file="$GRADLE_USER_HOME/caches/8.10.2/transforms/9a8264f9196dca1faba442fa06cb9c48/transformed/navigation-runtime-2.8.1/jars/lint.jar"/>
+    </issue>
+
+    <issue
+        id="OldTargetApi"
+        message="Not targeting the latest versions of Android; compatibility modes apply. Consider testing and updating this version. Consult the `android.os.Build.VERSION_CODES` javadoc for details."
+        errorLine1="        targetSdk = 35"
+        errorLine2="        ~~~~~~~~~~~~~~">
+        <location
+            file="build.gradle.kts"
+            line="15"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="AndroidGradlePluginVersion"
+        message="A newer version of com.android.application than 8.5.2 is available: 9.2.1"
+        errorLine1="agp = &quot;8.5.2&quot;"
+        errorLine2="      ~~~~~~~">
+        <location
+            file="$HOME/jarvis-sidecar/eve-app/android/gradle/libs.versions.toml"
+            line="2"
+            column="7"/>
+    </issue>
+
+    <issue
+        id="AndroidGradlePluginVersion"
+        message="A newer version of com.android.application than 8.5.2 is available: 9.2.1"
+        errorLine1="agp = &quot;8.5.2&quot;"
+        errorLine2="      ~~~~~~~">
+        <location
+            file="$HOME/jarvis-sidecar/eve-app/android/gradle/libs.versions.toml"
+            line="2"
+            column="7"/>
+    </issue>
+
+    <issue
+        id="AndroidGradlePluginVersion"
+        message="A newer version of com.android.application than 8.5.2 is available: 9.2.1"
+        errorLine1="agp = &quot;8.5.2&quot;"
+        errorLine2="      ~~~~~~~">
+        <location
+            file="$HOME/jarvis-sidecar/eve-app/android/gradle/libs.versions.toml"
+            line="2"
+            column="7"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of androidx.core:core-ktx than 1.13.1 is available: 1.19.0"
+        errorLine1="coreKtx = &quot;1.13.1&quot;"
+        errorLine2="          ~~~~~~~~">
+        <location
+            file="$HOME/jarvis-sidecar/eve-app/android/gradle/libs.versions.toml"
+            line="5"
+            column="11"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of androidx.core:core-ktx than 1.13.1 is available: 1.19.0"
+        errorLine1="coreKtx = &quot;1.13.1&quot;"
+        errorLine2="          ~~~~~~~~">
+        <location
+            file="$HOME/jarvis-sidecar/eve-app/android/gradle/libs.versions.toml"
+            line="5"
+            column="11"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of androidx.core:core-ktx than 1.13.1 is available: 1.19.0"
+        errorLine1="coreKtx = &quot;1.13.1&quot;"
+        errorLine2="          ~~~~~~~~">
+        <location
+            file="$HOME/jarvis-sidecar/eve-app/android/gradle/libs.versions.toml"
+            line="5"
+            column="11"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of androidx.lifecycle:lifecycle-runtime-compose than 2.8.6 is available: 2.11.0"
+        errorLine1="lifecycle = &quot;2.8.6&quot;"
+        errorLine2="            ~~~~~~~">
+        <location
+            file="$HOME/jarvis-sidecar/eve-app/android/gradle/libs.versions.toml"
+            line="6"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of androidx.lifecycle:lifecycle-runtime-compose than 2.8.6 is available: 2.11.0"
+        errorLine1="lifecycle = &quot;2.8.6&quot;"
+        errorLine2="            ~~~~~~~">
+        <location
+            file="$HOME/jarvis-sidecar/eve-app/android/gradle/libs.versions.toml"
+            line="6"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of androidx.lifecycle:lifecycle-runtime-compose than 2.8.6 is available: 2.11.0"
+        errorLine1="lifecycle = &quot;2.8.6&quot;"
+        errorLine2="            ~~~~~~~">
+        <location
+            file="$HOME/jarvis-sidecar/eve-app/android/gradle/libs.versions.toml"
+            line="6"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of androidx.lifecycle:lifecycle-runtime-ktx than 2.8.6 is available: 2.11.0"
+        errorLine1="lifecycle = &quot;2.8.6&quot;"
+        errorLine2="            ~~~~~~~">
+        <location
+            file="$HOME/jarvis-sidecar/eve-app/android/gradle/libs.versions.toml"
+            line="6"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of androidx.lifecycle:lifecycle-runtime-ktx than 2.8.6 is available: 2.11.0"
+        errorLine1="lifecycle = &quot;2.8.6&quot;"
+        errorLine2="            ~~~~~~~">
+        <location
+            file="$HOME/jarvis-sidecar/eve-app/android/gradle/libs.versions.toml"
+            line="6"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of androidx.lifecycle:lifecycle-runtime-ktx than 2.8.6 is available: 2.11.0"
+        errorLine1="lifecycle = &quot;2.8.6&quot;"
+        errorLine2="            ~~~~~~~">
+        <location
+            file="$HOME/jarvis-sidecar/eve-app/android/gradle/libs.versions.toml"
+            line="6"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of androidx.lifecycle:lifecycle-viewmodel-compose than 2.8.6 is available: 2.11.0"
+        errorLine1="lifecycle = &quot;2.8.6&quot;"
+        errorLine2="            ~~~~~~~">
+        <location
+            file="$HOME/jarvis-sidecar/eve-app/android/gradle/libs.versions.toml"
+            line="6"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of androidx.lifecycle:lifecycle-viewmodel-compose than 2.8.6 is available: 2.11.0"
+        errorLine1="lifecycle = &quot;2.8.6&quot;"
+        errorLine2="            ~~~~~~~">
+        <location
+            file="$HOME/jarvis-sidecar/eve-app/android/gradle/libs.versions.toml"
+            line="6"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of androidx.lifecycle:lifecycle-viewmodel-compose than 2.8.6 is available: 2.11.0"
+        errorLine1="lifecycle = &quot;2.8.6&quot;"
+        errorLine2="            ~~~~~~~">
+        <location
+            file="$HOME/jarvis-sidecar/eve-app/android/gradle/libs.versions.toml"
+            line="6"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of androidx.activity:activity-compose than 1.9.2 is available: 1.13.0"
+        errorLine1="activityCompose = &quot;1.9.2&quot;"
+        errorLine2="                  ~~~~~~~">
+        <location
+            file="$HOME/jarvis-sidecar/eve-app/android/gradle/libs.versions.toml"
+            line="7"
+            column="19"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of androidx.activity:activity-compose than 1.9.2 is available: 1.13.0"
+        errorLine1="activityCompose = &quot;1.9.2&quot;"
+        errorLine2="                  ~~~~~~~">
+        <location
+            file="$HOME/jarvis-sidecar/eve-app/android/gradle/libs.versions.toml"
+            line="7"
+            column="19"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of androidx.activity:activity-compose than 1.9.2 is available: 1.13.0"
+        errorLine1="activityCompose = &quot;1.9.2&quot;"
+        errorLine2="                  ~~~~~~~">
+        <location
+            file="$HOME/jarvis-sidecar/eve-app/android/gradle/libs.versions.toml"
+            line="7"
+            column="19"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of androidx.compose:compose-bom than 2024.09.03 is available: 2026.06.00"
+        errorLine1="composeBom = &quot;2024.09.03&quot;"
+        errorLine2="             ~~~~~~~~~~~~">
+        <location
+            file="$HOME/jarvis-sidecar/eve-app/android/gradle/libs.versions.toml"
+            line="8"
+            column="14"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of androidx.compose:compose-bom than 2024.09.03 is available: 2026.06.00"
+        errorLine1="composeBom = &quot;2024.09.03&quot;"
+        errorLine2="             ~~~~~~~~~~~~">
+        <location
+            file="$HOME/jarvis-sidecar/eve-app/android/gradle/libs.versions.toml"
+            line="8"
+            column="14"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of androidx.compose:compose-bom than 2024.09.03 is available: 2026.06.00"
+        errorLine1="composeBom = &quot;2024.09.03&quot;"
+        errorLine2="             ~~~~~~~~~~~~">
+        <location
+            file="$HOME/jarvis-sidecar/eve-app/android/gradle/libs.versions.toml"
+            line="8"
+            column="14"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of androidx.navigation:navigation-compose than 2.8.1 is available: 2.9.8"
+        errorLine1="navigationCompose = &quot;2.8.1&quot;"
+        errorLine2="                    ~~~~~~~">
+        <location
+            file="$HOME/jarvis-sidecar/eve-app/android/gradle/libs.versions.toml"
+            line="9"
+            column="21"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of androidx.navigation:navigation-compose than 2.8.1 is available: 2.9.8"
+        errorLine1="navigationCompose = &quot;2.8.1&quot;"
+        errorLine2="                    ~~~~~~~">
+        <location
+            file="$HOME/jarvis-sidecar/eve-app/android/gradle/libs.versions.toml"
+            line="9"
+            column="21"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of androidx.navigation:navigation-compose than 2.8.1 is available: 2.9.8"
+        errorLine1="navigationCompose = &quot;2.8.1&quot;"
+        errorLine2="                    ~~~~~~~">
+        <location
+            file="$HOME/jarvis-sidecar/eve-app/android/gradle/libs.versions.toml"
+            line="9"
+            column="21"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of androidx.datastore:datastore-preferences than 1.1.1 is available: 1.2.1"
+        errorLine1="datastore = &quot;1.1.1&quot;"
+        errorLine2="            ~~~~~~~">
+        <location
+            file="$HOME/jarvis-sidecar/eve-app/android/gradle/libs.versions.toml"
+            line="13"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of androidx.datastore:datastore-preferences than 1.1.1 is available: 1.2.1"
+        errorLine1="datastore = &quot;1.1.1&quot;"
+        errorLine2="            ~~~~~~~">
+        <location
+            file="$HOME/jarvis-sidecar/eve-app/android/gradle/libs.versions.toml"
+            line="13"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of androidx.datastore:datastore-preferences than 1.1.1 is available: 1.2.1"
+        errorLine1="datastore = &quot;1.1.1&quot;"
+        errorLine2="            ~~~~~~~">
+        <location
+            file="$HOME/jarvis-sidecar/eve-app/android/gradle/libs.versions.toml"
+            line="13"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="DataExtractionRules"
+        message="The attribute `android:allowBackup` is deprecated from Android 12 and higher and may be removed in future versions. Consider adding the attribute `android:dataExtractionRules` specifying an `@xml` resource which configures cloud backups and device transfers on Android 12 and higher."
+        errorLine1="        android:allowBackup=&quot;false&quot;"
+        errorLine2="                             ~~~~~">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="18"
+            column="30"/>
+    </issue>
+
+    <issue
+        id="ObsoleteSdkInt"
+        message="This folder configuration (`v26`) is unnecessary; `minSdkVersion` is 26. Merge all the resources in this folder into `mipmap-anydpi`.">
+        <location
+            file="src/main/res/mipmap-anydpi-v26"/>
+    </issue>
+
+    <issue
+        id="UseOfNonLambdaOffsetOverload"
+        message="State backed values should use the lambda overload of Modifier.offset"
+        errorLine1="                .offset(x = knobOffset)"
+        errorLine2="                 ~~~~~~">
+        <location
+            file="src/main/java/app/eve/ui/components/EveSwitch.kt"
+            line="50"
+            column="18"/>
+    </issue>
+
+</issues>

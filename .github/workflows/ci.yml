@@ -1,0 +1,64 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  python-suite:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Free runner disk (the pinned stack ships multi-GB CUDA wheels)
+        run: |
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL
+          df -h /
+      - name: System deps (portaudio for pyaudio)
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends portaudio19-dev
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install the pinned stack
+        run: pip install --no-cache-dir -r requirements.txt
+      - name: Run the suite
+        run: pytest tests/ -q
+
+  android-unit:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: eve-app/android
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Phone + wear + shared unit tests
+        run: ./gradlew testDebugUnitTest --console=plain
+
+  glasses-vitest:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: glasses/mentra-eve
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: glasses/mentra-eve/package-lock.json
+      - run: npm ci
+      - run: npm test
+
+  gitleaks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Scan working tree for secrets
+        run: |
+          curl -sL https://github.com/gitleaks/gitleaks/releases/download/v8.24.3/gitleaks_8.24.3_linux_x64.tar.gz | tar -xz gitleaks
+          ./gitleaks dir . --no-banner --gitleaks-ignore-path .gitleaksignore

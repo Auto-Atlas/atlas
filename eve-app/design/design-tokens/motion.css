@@ -1,0 +1,65 @@
+/* ============================================================
+   EVE — Motion  (verbatim from claude_design "EVE Design System")
+   Restrained and meaningful. A gentle pulse when EVE listens,
+   a weighty confirm on approve. Nothing flashy. REFERENCE ONLY.
+   ============================================================ */
+
+:root {
+  --dur-instant: 90ms;
+  --dur-fast:    140ms;
+  --dur-base:    220ms;
+  --dur-slow:    340ms;
+  /* approve/commit — deliberately unhurried */
+  --dur-deliberate: 520ms;
+
+  --ease-standard:   cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-emphasized: cubic-bezier(0.2, 0.9, 0.1, 1);
+  --ease-exit:       cubic-bezier(0.4, 0, 1, 1);
+  --ease-spring:     cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Gentle breathing pulse — EVE is listening */
+@keyframes eve-listen {
+  0%, 100% { transform: scale(1);    opacity: 1; }
+  50%      { transform: scale(1.04); opacity: 0.92; }
+}
+
+/* Expanding halo ring behind the orb */
+@keyframes eve-halo {
+  0%   { transform: scale(0.8);  opacity: 0.55; }
+  70%  { opacity: 0; }
+  100% { transform: scale(1.9);  opacity: 0; }
+}
+
+/* Thinking — slow shimmer */
+@keyframes eve-think {
+  0%, 100% { opacity: 0.4; }
+  50%      { opacity: 1; }
+}
+
+/* Waveform bars dance while speaking */
+@keyframes eve-wave {
+  0%, 100% { transform: scaleY(0.35); }
+  50%      { transform: scaleY(1); }
+}
+
+/* Satisfying approve pop */
+@keyframes eve-commit {
+  0%   { transform: scale(0.6); opacity: 0; }
+  55%  { transform: scale(1.08); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* Card settling into place */
+@keyframes eve-rise {
+  from { transform: translateY(10px); opacity: 0; }
+  to   { transform: translateY(0); opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}

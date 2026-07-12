@@ -1,0 +1,83 @@
+# Secrets and personal data — never commit these.
+.env
+webhook_token.txt
+transcripts/
+inbox_state.json
+.last_greeting
+.last_briefing
+
+# Voice biometric data + stranger transcripts — never commit.
+eve-voiceprints/
+profiles.json
+unknown-utterances.log
+# Raw enrollment/voice recordings (e.g. owner_30s.wav) — biometric, keep local.
+*.wav
+*.flac
+
+# Runtime logs
+sidecar.log
+sidecar.out.log
+sidecar.err.log
+phone_bot.err.log
+reminders.json
+reminders.json.lock
+# All per-service launcher logs (approval_api/bot_desktop/openjarvis/phone_gateway/…)
+*.out.log
+*.err.log
+# Ad-hoc UI screenshots dropped in the repo root
+eve_*.png
+nags.json
+nags.json.lock
+vision_frames/
+visuals/
+initiative_prefs.json
+initiative_prefs.json.lock
+embodiment_events.jsonl
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# Local tool state
+.claude/
+
+# Approval store (runtime artifact; never commit staged approvals + secrets)
+approvals.db
+approvals.db-wal
+approvals.db-shm
+approval_token.txt
+
+# EVE proactive strategist notes (personal)
+strategy/
+
+# Per-user personal config (life dashboard, priorities) — never commit
+*.local.json
+strategy/
+**/google-services.json
+.eve_fcm_project
+.eve_fcm_appid
+acp-talkback.mcp.json
+.playwright-mcp/
+app/frontend/tsconfig.tsbuildinfo
+
+# Owner-personal business pack for the sales coach (EVE_BUSINESS_CONTEXT) — never commit.
+business_context.md
+
+# Owner-defined LLM brain profiles (endpoints on YOUR network) — never commit.
+brains.local.json
+
+# Local tool scaffolding / research notes / prebuilt native libs — machine-local.
+_bmad/
+claudedocs/
+.build/
+
+# Android build outputs (gradle) — never tracked
+eve-app/android/build/
+eve-app/android/*/build/
+eve-app/android/.gradle/
+
+# Runtime service logs (may contain transcripts) — never tracked
+logs/
+voiceloop.smoke.log
+approval_api.e2e.log

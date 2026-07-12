@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Atlas</string>
+    <!-- Tile picker label + complication data-source label (shown in the watch's surface pickers). -->
+    <string name="tile_label">EVE Approvals</string>
+    <string name="complication_label">EVE Pending Approvals</string>
+</resources>

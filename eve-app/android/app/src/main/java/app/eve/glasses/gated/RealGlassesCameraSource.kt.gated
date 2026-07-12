@@ -1,0 +1,123 @@
+/*
+ * ============================================================================================
+ *  GATED SOURCE — NOT COMPILED.
+ *
+ *  This file ends in `.kt.gated` on purpose: the Kotlin/Android source set only compiles `*.kt`,
+ *  so this class is shipped code-complete but excluded from the build. It cannot compile today
+ *  because the Meta Wearables Device Access Toolkit (DAT) artifact is a token-gated developer
+ *  preview and is NOT bundled (see app/build.gradle.kts — the dependency lines are present but
+ *  commented with the exact coordinates + repo).
+ *
+ *  TO ENABLE (the day glasses + a DAT dev-preview enrollment arrive):
+ *    1. In app/build.gradle.kts, uncomment the `com.meta.wearable:mwdat-*` dependencies and add the
+ *       GitHub Packages repo block in settings.gradle.kts (token from local.properties `github_token`
+ *       or the GITHUB_TOKEN env var — read:packages scope). NEVER hardcode the token.
+ *    2. Add to AndroidManifest.xml: BLUETOOTH, BLUETOOTH_CONNECT, and the Meta AI app query/intent
+ *       filter the DAT setup doc specifies. minSdk stays 26 for the app, but DAT needs API 29+ at
+ *       runtime — this class guards on Build.VERSION.SDK_INT.
+ *    3. Rename this file to `RealGlassesCameraSource.kt`.
+ *    4. Set GlassesToolkit.IS_BUNDLED = true, and bind this impl instead of StubGlassesCameraSource
+ *       in AppContainer.
+ *    5. Enable Developer Mode in the Meta AI app and pair the glasses (Ray-Ban Meta Gen 1/2 or
+ *       Oakley Meta HSTN).
+ *
+ *  API shape below matches DAT 0.8.0 as documented at
+ *  https://wearables.developer.meta.com/docs/build-integration-android/ and the reference at
+ *  https://wearables.developer.meta.com/docs/reference/android/dat/0.8 . Class/method names
+ *  (Wearables.createSession, DeviceSession.addStream, StreamConfiguration, Stream.capturePhoto,
+ *  PhotoData, StreamState) are from those docs; verify against the resolved artifact when it lands.
+ * ============================================================================================
+ */
+package app.eve.glasses.gated
+
+import android.content.Context
+import android.graphics.BitmapFactory
+import android.os.Build
+import android.util.Base64
+import android.util.Log
+import app.eve.glasses.GlassesCameraSource
+import app.eve.glasses.GlassesCaptureResult
+import app.eve.vision.FrameCompressor
+import com.meta.wearable.dat.Wearables
+import com.meta.wearable.dat.camera.PhotoData
+import com.meta.wearable.dat.camera.Stream
+import com.meta.wearable.dat.camera.StreamConfiguration
+import com.meta.wearable.dat.camera.StreamResolution
+import com.meta.wearable.dat.session.DeviceSession
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
+
+/**
+ * DAT-backed [GlassesCameraSource]. Opens (or reuses) a device session, adds a photo-capable camera
+ * stream, snaps ONE still, downscales/compresses it with the SAME [FrameCompressor] the phone path
+ * uses (so EVE receives an identically-shaped frame regardless of which camera took it), and returns
+ * an upload-ready base64 JPEG. Never falls back to the phone — that's the router's job.
+ */
+class RealGlassesCameraSource(context: Context) : GlassesCameraSource {
+
+    private val appContext = context.applicationContext
+    private val sessionLock = Mutex()
+
+    @Volatile private var session: DeviceSession? = null
+
+    override val isToolkitAvailable: Boolean = true
+
+    override val isConnected: Boolean
+        get() = Build.VERSION.SDK_INT >= 29 && (session?.isConnected == true || Wearables.isDevicePaired(appContext))
+
+    override suspend fun capture(prompt: String): GlassesCaptureResult {
+        if (Build.VERSION.SDK_INT < 29) {
+            return GlassesCaptureResult.Err("Meta glasses require Android 10+ (API 29).")
+        }
+        return sessionLock.withLock {
+            runCatching {
+                val session = ensureSession()
+                    ?: return@runCatching GlassesCaptureResult.Err("No glasses session (pair in the Meta AI app).")
+
+                // A photo-capable stream: highest still resolution, low FPS (we take one frame).
+                val stream: Stream = session.addStream(
+                    StreamConfiguration.Builder()
+                        .setResolution(StreamResolution.HIGH)
+                        .setFrameRate(2)
+                        .build(),
+                )
+                try {
+                    val photo: PhotoData = stream.capturePhoto()
+                    val bytes = photo.jpegBytes
+                    // Re-encode through the shared compressor to honour the server's size cap and the
+                    // upright-rotation contract, then base64 (NO_WRAP) exactly like the phone path.
+                    val bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+                        ?: return@runCatching GlassesCaptureResult.Err("Glasses returned an undecodable frame.")
+                    val b64 = FrameCompressor.toJpegBase64(bmp, rotationDegrees = photo.rotationDegrees)
+                    GlassesCaptureResult.Ok(b64)
+                } finally {
+                    runCatching { stream.close() }
+                }
+            }.getOrElse { t ->
+                Log.w(TAG, "glasses capture failed", t)
+                GlassesCaptureResult.Err(t.message ?: "glasses capture failed")
+            }
+        }
+    }
+
+    /** Lazily open the DAT device session (mediated by the Meta AI app), reusing a live one. */
+    private suspend fun ensureSession(): DeviceSession? {
+        session?.let { if (it.isConnected) return it }
+        val fresh = Wearables.createSession(appContext)
+        session = fresh
+        return fresh
+    }
+
+    /** For symmetry with the phone path — release the session when the app no longer needs glasses. */
+    fun shutdown() {
+        runCatching { session?.close() }
+        session = null
+    }
+
+    private companion object {
+        const val TAG = "GlassesCamera"
+        // Kept for reference; the shared FrameCompressor already enforces the ≤1 MB / 1280px target.
+        @Suppress("unused")
+        fun encode(bytes: ByteArray): String = Base64.encodeToString(bytes, Base64.NO_WRAP)
+    }
+}

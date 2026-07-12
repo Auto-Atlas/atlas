@@ -1,0 +1,26 @@
+<!-- Tile PICKER preview (androidx.wear.tiles.PREVIEW). A real, minimal vector: EVE's dark rounded
+     square, the accent hexagon-dot mark, and three accent dots standing in for a pending count (3).
+     No raster placeholder — geometric only. Colors are EVE's surfaceCanvas (#0B0F14) + accent (#2DD4BF). -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="48dp"
+    android:height="48dp"
+    android:viewportWidth="48"
+    android:viewportHeight="48">
+    <!-- Dark rounded square background. -->
+    <path
+        android:fillColor="#FF0B0F14"
+        android:pathData="M12,2 L36,2 A10,10 0 0 1 46,12 L46,36 A10,10 0 0 1 36,46 L12,46 A10,10 0 0 1 2,36 L2,12 A10,10 0 0 1 12,2 Z" />
+    <!-- Accent hexagon ring (centered at 24,20, outer R=10 / inner r=6.5), evenOdd. -->
+    <path
+        android:fillColor="#FF2DD4BF"
+        android:fillType="evenOdd"
+        android:pathData="M34,20 L29,28.66 L19,28.66 L14,20 L19,11.34 L29,11.34 Z M30.5,20 L27.25,25.63 L20.75,25.63 L17.5,20 L20.75,14.37 L27.25,14.37 Z" />
+    <!-- Center dot. -->
+    <path
+        android:fillColor="#FF2DD4BF"
+        android:pathData="M24,17.8 a2.2,2.2 0 1 1 0,4.4 a2.2,2.2 0 1 1 0,-4.4 z" />
+    <!-- Three dots = a pending count of 3. -->
+    <path
+        android:fillColor="#FF2DD4BF"
+        android:pathData="M17,36 a2,2 0 1 1 0,4 a2,2 0 1 1 0,-4 z M24,36 a2,2 0 1 1 0,4 a2,2 0 1 1 0,-4 z M31,36 a2,2 0 1 1 0,4 a2,2 0 1 1 0,-4 z" />
+</vector>

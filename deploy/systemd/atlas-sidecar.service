@@ -1,0 +1,20 @@
+[Unit]
+Description=Atlas sidecar — always-listening voice loop (pipecat)
+After=network-online.target sound.target
+# If you run a local TTS unit (e.g. a Chatterbox/Kokoro server service), add it
+# to After=/Wants= so early speech doesn't hit a dead endpoint.
+
+[Service]
+Type=simple
+WorkingDirectory=%h/atlas
+# Desktop features (screenshots/UI) need your X/Wayland display; uncomment and
+# match your session if needed:
+# Environment=DISPLAY=:0
+ExecStart=%h/atlas/run.sh
+Restart=always
+RestartSec=5
+# bot.py's lock port (8764) makes double-starts exit code 111 — don't loop on it.
+RestartPreventExitStatus=111
+
+[Install]
+WantedBy=default.target

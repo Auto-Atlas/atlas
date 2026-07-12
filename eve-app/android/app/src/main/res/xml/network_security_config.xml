@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Production talks to the sidecar over `tailscale serve` (HTTPS with a valid *.ts.net cert),
+  so cleartext is OFF by default. The only exceptions are the loopback/dev hosts used when
+  running against a sidecar on the same machine — the Android emulator reaches the host's
+  127.0.0.1 via the special alias 10.0.2.2. These are non-routable local addresses, so this
+  is not a production cleartext exposure.
+-->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="false" />
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="false">10.0.2.2</domain>     <!-- emulator -> host loopback -->
+        <domain includeSubdomains="false">127.0.0.1</domain>
+        <domain includeSubdomains="false">localhost</domain>
+    </domain-config>
+</network-security-config>

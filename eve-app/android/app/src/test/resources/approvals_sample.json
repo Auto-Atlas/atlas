@@ -1,0 +1,47 @@
+{
+  "approvals": [
+    {
+      "id": "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6",
+      "tool": "create_invoice",
+      "args": {
+        "customer": { "name": "The Browns" },
+        "line_items": [
+          { "description": "Deep clean", "quantity": 2, "rate": 480 },
+          { "description": "Window service", "quantity": 1, "rate": 240 }
+        ]
+      },
+      "requester": "Jamie",
+      "requester_tier": "known",
+      "risk_level": "high",
+      "summary": "Jamie -> invoice The Browns, $1200",
+      "status": "pending",
+      "effective_status": "pending",
+      "created_at": 1750000000.0,
+      "ttl_s": 14400,
+      "expires_at": 1750014400.0,
+      "seconds_left": 14123.5,
+      "decided_at": null,
+      "result": null
+    },
+    {
+      "id": "f0e1d2c3b4a5968778695a4b3c2d1e0f",
+      "tool": "send_to_channel",
+      "args": {
+        "channel": "telegram",
+        "message": "Reminder: the Browns invoice is ready for review whenever you get a sec."
+      },
+      "requester": "Jamie",
+      "requester_tier": "known",
+      "risk_level": "high",
+      "summary": "Jamie -> message to telegram",
+      "status": "pending",
+      "effective_status": "pending",
+      "created_at": 1750000100.0,
+      "ttl_s": 14400,
+      "expires_at": 1750014500.0,
+      "seconds_left": 14223.5,
+      "decided_at": null,
+      "result": null
+    }
+  ]
+}

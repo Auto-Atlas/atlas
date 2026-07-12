@@ -1,0 +1,66 @@
+{
+  "active": [
+    {
+      "id": "abc123def456abc123def456abc123de",
+      "agent": "hermes",
+      "task": "audit the shop site and report broken links",
+      "summary": "audit the shop site and report broken links",
+      "status": "pending",
+      "effective_status": "pending",
+      "delivery": "push",
+      "requester": "Owner",
+      "created_at": 1783200000.0,
+      "ttl_s": 14400,
+      "seconds_left": 14000.0,
+      "resolved_at": null,
+      "delivered_at": null,
+      "result": null,
+      "question": null,
+      "answer": null,
+      "capabilities": {"cancel": true, "redirect": true, "redirect_reason": null},
+      "redirect_pending": false
+    },
+    {
+      "id": "ffff23def456abc123def456abc123de",
+      "agent": "hermes",
+      "task": "book the venue",
+      "summary": "book the venue",
+      "status": "awaiting_user",
+      "effective_status": "awaiting_user",
+      "delivery": "push",
+      "requester": "Owner",
+      "created_at": 1783200100.0,
+      "ttl_s": 14400,
+      "seconds_left": 13000.0,
+      "resolved_at": null,
+      "delivered_at": null,
+      "result": null,
+      "question": {"qid": "q1", "question": "which date works?", "approval_id": "ap1", "asked_at": 1783200200.0},
+      "answer": null,
+      "capabilities": {"cancel": true, "redirect": true, "redirect_reason": null},
+      "redirect_pending": false
+    }
+  ],
+  "recent": [
+    {
+      "id": "0000000000000000000000000000dead",
+      "agent": "hermes",
+      "task": "yesterday's job",
+      "summary": "yesterday's job",
+      "status": "resolved",
+      "effective_status": "resolved",
+      "delivery": "push",
+      "requester": "Owner",
+      "created_at": 1783100000.0,
+      "ttl_s": 14400,
+      "seconds_left": 0.0,
+      "resolved_at": 1783103600.0,
+      "delivered_at": 1783103700.0,
+      "result": {"ok": true, "text": "all done"},
+      "question": null,
+      "answer": null,
+      "capabilities": {"cancel": false, "redirect": false, "redirect_reason": "task already finished"},
+      "redirect_pending": false
+    }
+  ]
+}

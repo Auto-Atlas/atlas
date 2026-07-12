@@ -1,0 +1,17 @@
+[Unit]
+Description=Atlas approval API — remote-control + approval surface for the phone app (port 8799)
+After=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=%h/atlas
+# approval_api loads .env itself. The app token is read from approval_token.txt
+# in WorkingDirectory (gitignored). DB persists in the repo dir (gitignored).
+Environment=EVE_APPROVAL_DB=%h/atlas/approvals.db
+Environment=EVE_REMOTE_APPROVAL=enabled
+ExecStart=%h/atlas/.venv/bin/python -m approval_api
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=default.target

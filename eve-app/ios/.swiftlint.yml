@@ -1,0 +1,10 @@
+disabled_rules:
+  - trailing_whitespace
+  - todo
+  - line_length
+  - identifier_name   # snake_case DTO fields (request_id, jpeg_b64) are intentional for Codable
+opt_in_rules:
+  - empty_count
+excluded:
+  - .build
+  - AtlasKit/.build

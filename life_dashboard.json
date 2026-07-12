@@ -1,0 +1,13 @@
+{
+  "_comment": "TEMPLATE — EVE's life dashboard. Copy this to a gitignored personal file (e.g. life_dashboard.local.json) and point EVE_LIFE_DASHBOARD at it. EVE recites this in the 5 AM ritual and on 'run my morning brief': 'whys' are spoken close to verbatim (why you get up), 'goals' are named by domain to keep them front of mind. Optional 'business' grounds the strategist (leave empty to ground purely in your goals). 'morning_nudge_domains' picks which goal areas get the closing nudge.",
+  "user": "",
+  "business": "",
+  "whys": [],
+  "goals": {
+    "health": [],
+    "wealth": [],
+    "business": [],
+    "family": []
+  },
+  "morning_nudge_domains": ["fitness", "eating"]
+}

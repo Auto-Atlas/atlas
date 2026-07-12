@@ -1,0 +1,47 @@
+/* ============================================================
+   EVE — Spacing, radii, sizing  (verbatim from claude_design)
+   4px base grid (Material sensibility). Generous by default. REFERENCE ONLY.
+   ============================================================ */
+
+:root {
+  --space-0:  0;
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  20px;
+  --space-6:  24px;
+  --space-7:  32px;
+  --space-8:  40px;
+  --space-9:  48px;
+  --space-10: 56px;
+  --space-11: 64px;
+  --space-12: 80px;
+
+  /* Semantic spacing */
+  --gutter-screen: 20px;   /* left/right screen padding */
+  --gap-card:      14px;   /* between stacked cards */
+  --pad-card:      18px;   /* card interior */
+  --pad-card-lg:   22px;
+
+  /* Border radius */
+  --radius-xs:   6px;
+  --radius-sm:   10px;
+  --radius-md:   14px;   /* default control radius */
+  --radius-lg:   18px;   /* cards */
+  --radius-xl:   24px;   /* sheets, large panels */
+  --radius-2xl:  30px;
+  --radius-pill: 999px;
+  --radius-full: 9999px;
+
+  /* Control sizing — min 44px touch targets */
+  --control-sm: 36px;
+  --control-md: 44px;
+  --control-lg: 52px;
+
+  /* Layout */
+  --screen-max: 440px;     /* phone canvas width */
+  --tabbar-height: 64px;
+  --header-height: 56px;
+  --border-hairline: 1px;
+}

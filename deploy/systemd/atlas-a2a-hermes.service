@@ -1,0 +1,12 @@
+[Unit]
+Description=Atlas Hermes A2A adapter (a2a_fabric.build_fabric_app on loopback :8790)
+After=network.target
+
+[Service]
+WorkingDirectory=%h/atlas
+ExecStart=%h/atlas/.venv/bin/python scripts/run_a2a_adapter.py
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=default.target

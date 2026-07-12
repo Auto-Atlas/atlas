@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<!--
+  EVE X-Ray — live view of the voice loop. Open this file in any browser ON
+  THIS PC (the bridge binds localhost only):  file:///path/to/atlas/xray.html
+  It connects to the sidecar's metrics WebSocket (ws://127.0.0.1:8765) — the
+  same feed the openjarvis Tauri app consumes — and renders transcripts, tool
+  calls, audio levels, and per-turn latency. Read-only; auto-reconnects.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>EVE X-Ray</title>
+<style>
+  :root { --bg:#0b0e14; --panel:#11151f; --line:#1d2435; --txt:#c8d3e8; --dim:#5d6b85;
+          --user:#4cc2ff; --bot:#b48cff; --ok:#3ddc97; --bad:#ff5d73; --warn:#ffc857; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--txt);
+         font:14px/1.45 ui-monospace,'Cascadia Code',Menlo,monospace; }
+  header { display:flex; align-items:center; gap:14px; padding:10px 16px;
+           border-bottom:1px solid var(--line); position:sticky; top:0; background:var(--bg); }
+  header h1 { font-size:15px; margin:0; letter-spacing:2px; color:var(--bot); }
+  .pill { padding:2px 10px; border-radius:99px; border:1px solid var(--line);
+          font-size:12px; color:var(--dim); }
+  .pill.on { color:var(--ok); border-color:var(--ok); }
+  .pill.act { color:var(--warn); border-color:var(--warn); }
+  #levels { margin-left:auto; display:flex; gap:10px; align-items:center; font-size:11px; color:var(--dim); }
+  .bar { width:90px; height:8px; background:var(--panel); border-radius:4px; overflow:hidden; }
+  .bar i { display:block; height:100%; width:0%; transition:width 80ms linear; }
+  #micbar i { background:var(--user); } #botbar i { background:var(--bot); }
+  main { display:grid; grid-template-columns: 1fr 380px; gap:12px; padding:12px 16px; }
+  section { background:var(--panel); border:1px solid var(--line); border-radius:10px;
+            padding:10px 12px; overflow-y:auto; height:calc(100vh - 120px); }
+  h2 { font-size:11px; letter-spacing:2px; color:var(--dim); margin:2px 0 10px; }
+  .msg { margin:6px 0; white-space:pre-wrap; word-break:break-word; }
+  .msg .who { font-weight:bold; }
+  .msg.user .who { color:var(--user); } .msg.bot .who { color:var(--bot); }
+  .msg .t { color:var(--dim); font-size:11px; margin-right:8px; }
+  #interim { color:var(--dim); font-style:italic; min-height:1.4em; }
+  .tool { margin:6px 0; padding:6px 8px; border-left:3px solid var(--warn);
+          background:#0e1220; border-radius:0 6px 6px 0; font-size:12px; }
+  .tool.ok { border-color:var(--ok); } .tool.bad { border-color:var(--bad); }
+  .tool .nm { font-weight:bold; }
+  .tool .detail { color:var(--dim); }
+  #stats { font-size:12px; color:var(--dim); margin-top:8px; }
+  #stats b { color:var(--txt); }
+</style>
+</head>
+<body>
+<header>
+  <h1>EVE · X-RAY</h1>
+  <span class="pill" id="conn">connecting…</span>
+  <span class="pill" id="listen">idle</span>
+  <span class="pill" id="think">quiet</span>
+  <span class="pill" id="speak">silent</span>
+  <div id="levels">
+    mic <span class="bar" id="micbar"><i></i></span>
+    eve <span class="bar" id="botbar"><i></i></span>
+  </div>
+</header>
+<main>
+  <section>
+    <h2>CONVERSATION</h2>
+    <div id="feed"></div>
+    <div id="interim"></div>
+  </section>
+  <section>
+    <h2>TOOLS &amp; TURNS</h2>
+    <div id="tools"></div>
+    <div id="stats">ttfb <b id="ttfb">–</b> · last turn tokens <b id="tok">–</b></div>
+  </section>
+</main>
+<script>
+const $ = id => document.getElementById(id);
+const feed = $('feed'), tools = $('tools');
+let lastUsage = null;
+
+function add(parent, html, cls) {
+  const d = document.createElement('div');
+  d.className = cls; d.innerHTML = html;
+  parent.appendChild(d);
+  while (parent.children.length > 400) parent.removeChild(parent.firstChild);
+  parent.parentElement.scrollTop = parent.parentElement.scrollHeight;
+}
+const ts = () => new Date().toLocaleTimeString([], {hour12:false});
+const esc = s => (s||'').replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+function pill(id, on, onTxt, offTxt, cls) {
+  const el = $(id); el.textContent = on ? onTxt : offTxt;
+  el.className = 'pill' + (on ? ' ' + cls : '');
+}
+
+function handle(m) {
+  switch (m.type) {
+    case 'status': $('conn').textContent = 'connected · ' + m.mode; $('conn').className = 'pill on'; break;
+    case 'user_speaking': pill('listen', m.speaking, 'LISTENING', 'idle', 'on'); break;
+    case 'thinking': pill('think', m.active, 'THINKING', 'quiet', 'act'); break;
+    case 'bot_speaking': pill('speak', m.speaking, 'SPEAKING', 'silent', 'act');
+      if (!m.speaking) $('botbar').firstElementChild.style.width = '0%'; break;
+    case 'interim_transcript': $('interim').textContent = '… ' + m.text; break;
+    case 'user_transcript':
+      $('interim').textContent = '';
+      add(feed, `<span class="t">${ts()}</span><span class="who">you ›</span> ${esc(m.text)}`, 'msg user'); break;
+    case 'bot_transcript':
+      add(feed, `<span class="t">${ts()}</span><span class="who">eve ›</span> ${esc(m.text)}`, 'msg bot'); break;
+    case 'sms_received':
+      add(feed, `<span class="t">${ts()}</span><span class="who">sms ›</span> from ${esc(m.from)}: ${esc(m.text)}`, 'msg user'); break;
+    case 'mic_level': $('micbar').firstElementChild.style.width = (m.value*100) + '%'; break;
+    case 'bot_level': $('botbar').firstElementChild.style.width = (m.value*100) + '%'; break;
+    case 'tool_call':
+      add(tools, `<span class="t">${ts()}</span> <span class="nm">${esc(m.tool)}</span> ⟳ <span class="detail">${esc(m.args)}</span>`, 'tool'); break;
+    case 'tool_result':
+      add(tools, `<span class="t">${ts()}</span> <span class="nm">${esc(m.tool)}</span> ${m.ok ? '✓' : '✗'} <span class="detail">${esc(m.detail)}</span>`, 'tool ' + (m.ok ? 'ok' : 'bad')); break;
+    case 'metric':
+      if (m.name === 'TTFBMetricsData' && /llm/i.test(m.processor||'') && m.value > 0)
+        $('ttfb').textContent = (m.value*1000).toFixed(0) + 'ms';
+      break;
+    case 'usage':
+      if (m.prompt_tokens != null)
+        $('tok').textContent = `${m.prompt_tokens}→${m.completion_tokens||0}`;
+      break;
+  }
+}
+
+function connect() {
+  const ws = new WebSocket('ws://127.0.0.1:8765');
+  ws.onmessage = e => { try { handle(JSON.parse(e.data)); } catch(_){} };
+  ws.onclose = () => {
+    $('conn').textContent = 'reconnecting…'; $('conn').className = 'pill';
+    setTimeout(connect, 1500);
+  };
+}
+connect();
+</script>
+</body>
+</html>

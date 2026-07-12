@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Data-Layer capability the phone advertises so the Wear OS app can find THIS node as the "eve
+  gateway" (CapabilityClient). The phone is the only node that talks HTTP to approval_api; the
+  watch resolves this capability to the phone node, then sends approve/deny/refresh messages to it.
+  The string MUST equal WearLink.CAPABILITY_EVE_GATEWAY.
+
+  tools:keep pins the array through resource shrinking (release has isShrinkResources=true): the
+  array is only referenced by Play Services at runtime, so the shrinker would otherwise strip it and
+  silently break capability discovery.
+-->
+<resources xmlns:tools="http://schemas.android.com/tools" tools:keep="@array/android_wear_capabilities">
+    <string-array name="android_wear_capabilities">
+        <item>eve_gateway</item>
+    </string-array>
+</resources>

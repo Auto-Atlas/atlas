@@ -1,0 +1,28 @@
+Atlas
+Copyright 2026 Business Builders and the Atlas contributors
+
+Licensed under the Apache License, Version 2.0 (see LICENSE).
+
+This repository contains, under app/, a fork of OpenJarvis
+(https://github.com/open-jarvis/OpenJarvis), Copyright the OpenJarvis
+authors, licensed under the Apache License, Version 2.0. The upstream
+license text is preserved at app/LICENSE.
+
+What the Atlas fork adds on top of OpenJarvis:
+
+  - A full-duplex local voice loop (barge-in, wake word, speaker
+    identification with owner/family/guest trust tiers) built on Pipecat,
+    with local STT/LLM/TTS by default (faster-whisper, Ollama, Kokoro) —
+    no API keys and no per-minute cost required.
+  - A tool layer the voice loop drives directly: calendar (native Google
+    OAuth), email triage, reminders with nag/acknowledge loops, SMS,
+    invoices, notes, news, weather, knowledge/wiki memory, vision.
+  - An agent hub: work is delegated to registered specialist agents over
+    an A2A fabric with mid-task talk-back, blocking questions, and a
+    human approval gate for sensitive actions.
+  - Remote surfaces: a phone voice loop (WebRTC), a Wear OS watch client
+    (the atlas-watch repository), an approvals API with per-device
+    credentials, and a smart-glasses bridge (MentraOS).
+  - A proactive initiative engine: scheduled and event-driven surfacing
+    (morning brief, calendar lead-ins, follow-ups) with quiet hours and
+    silence mode.

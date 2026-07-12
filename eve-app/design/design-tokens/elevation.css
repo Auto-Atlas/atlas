@@ -1,0 +1,32 @@
+/* ============================================================
+   EVE — Elevation & focus  (verbatim from claude_design)
+   Soft depth on dark. No heavy skeuomorphism. Accent glow is reserved
+   for live/active states (EVE listening, a primary commit). REFERENCE ONLY.
+   ============================================================ */
+
+:root {
+  --elev-0: none;
+  --elev-1: 0 1px 2px rgba(0, 0, 0, 0.40);
+  --elev-2: 0 4px 16px rgba(0, 0, 0, 0.45), 0 0 0 1px var(--border-subtle);
+  --elev-3: 0 14px 38px rgba(0, 0, 0, 0.55), 0 0 0 1px var(--border-subtle);
+  --elev-sheet: 0 -10px 40px rgba(0, 0, 0, 0.5);
+
+  /* Light-edge top highlight for floating cards */
+  --edge-top: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+
+  /* Accent glow — listening / live / committed-success */
+  --glow-accent: 0 0 0 1px var(--accent-line), 0 8px 30px rgba(45, 212, 191, 0.16);
+  --glow-accent-strong: 0 0 0 1px var(--accent-line), 0 0 44px rgba(45, 212, 191, 0.30);
+  --glow-indigo: 0 0 36px rgba(99, 102, 241, 0.28);
+
+  /* Focus ring */
+  --ring-focus: 0 0 0 3px rgba(45, 212, 191, 0.35);
+  --ring-danger: 0 0 0 3px rgba(248, 113, 113, 0.30);
+}
+
+[data-theme="light"] {
+  --elev-1: 0 1px 2px rgba(15, 23, 42, 0.08);
+  --elev-2: 0 4px 16px rgba(15, 23, 42, 0.08), 0 0 0 1px var(--border-subtle);
+  --elev-3: 0 14px 38px rgba(15, 23, 42, 0.12), 0 0 0 1px var(--border-subtle);
+  --edge-top: inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}

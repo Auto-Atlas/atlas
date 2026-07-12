@@ -1,0 +1,15 @@
+[Unit]
+Description=Atlas watch voice — live wrist call loop (watch_bot.py, WS /v1/watch/voice)
+After=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=%h/atlas
+# Port and behavior knobs come from %h/atlas/.env (EVE_WATCH_VOICE_PORT default
+# 8791, EVE_WATCH_PRELOAD, EVE_WATCH_HALF_DUPLEX — ATLAS_* names also accepted).
+ExecStart=%h/atlas/.venv/bin/python %h/atlas/watch_bot.py
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=default.target

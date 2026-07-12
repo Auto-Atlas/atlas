@@ -1,0 +1,80 @@
+/* ============================================================
+   EVE — Typography  (verbatim from claude_design "EVE Design System")
+   Manrope for all UI + display. JetBrains Mono for figures/codes.
+   Mobile-first scale; sizes never drop below 11px. REFERENCE ONLY.
+   ============================================================ */
+
+:root {
+  --font-sans: 'Manrope', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+
+  /* Weights */
+  --weight-light:    300;
+  --weight-regular:  400;
+  --weight-medium:   500;
+  --weight-semibold: 600;
+  --weight-bold:     700;
+  --weight-extra:    800;
+
+  /* ---- Type scale: size / line-height / tracking ---- */
+  /* Display — big amounts, hero numbers, confirmation moments */
+  --text-display-size:   34px;
+  --text-display-line:   40px;
+  --text-display-weight: 800;
+  --text-display-track:  -0.02em;
+
+  /* Title XL — screen amounts / standout */
+  --text-title-xl-size:   28px;
+  --text-title-xl-line:   34px;
+  --text-title-xl-weight: 800;
+  --text-title-xl-track:  -0.018em;
+
+  /* Title — screen headers */
+  --text-title-size:   22px;
+  --text-title-line:   28px;
+  --text-title-weight: 700;
+  --text-title-track:  -0.015em;
+
+  /* Headline — card titles, section heads */
+  --text-headline-size:   17px;
+  --text-headline-line:   24px;
+  --text-headline-weight: 700;
+  --text-headline-track:  -0.011em;
+
+  /* Body large */
+  --text-body-lg-size: 16px;
+  --text-body-lg-line: 24px;
+
+  /* Body — default */
+  --text-body-size: 15px;
+  --text-body-line: 22px;
+
+  /* Body small — dense meta, list rows */
+  --text-body-sm-size: 14px;
+  --text-body-sm-line: 20px;
+
+  /* Label — buttons, chips */
+  --text-label-size:   13px;
+  --text-label-line:   16px;
+  --text-label-weight: 600;
+  --text-label-track:  0em;
+
+  /* Caption */
+  --text-caption-size: 12px;
+  --text-caption-line: 16px;
+
+  /* Micro — eyebrows, uppercase meta */
+  --text-micro-size:   11px;
+  --text-micro-line:   14px;
+  --text-micro-weight: 700;
+  --text-micro-track:  0.08em;
+}
+
+/* ---- Optional helper classes (components mostly inline via tokens) ---- */
+.eve-display  { font: var(--weight-extra) var(--text-display-size)/var(--text-display-line) var(--font-sans); letter-spacing: var(--text-display-track); }
+.eve-title    { font: var(--weight-bold) var(--text-title-size)/var(--text-title-line) var(--font-sans); letter-spacing: var(--text-title-track); }
+.eve-headline { font: var(--weight-bold) var(--text-headline-size)/var(--text-headline-line) var(--font-sans); letter-spacing: var(--text-headline-track); }
+.eve-body     { font: var(--weight-regular) var(--text-body-size)/var(--text-body-line) var(--font-sans); }
+.eve-label    { font: var(--weight-semibold) var(--text-label-size)/var(--text-label-line) var(--font-sans); }
+.eve-micro    { font: var(--weight-bold) var(--text-micro-size)/var(--text-micro-line) var(--font-sans); letter-spacing: var(--text-micro-track); text-transform: uppercase; }
+.eve-mono     { font-family: var(--font-mono); font-feature-settings: "tnum" 1; }

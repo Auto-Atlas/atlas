@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- This APK is a watch app. -->
+    <uses-feature
+        android:name="android.hardware.type.watch"
+        android:required="true" />
+
+    <!-- targetSdk 35 -> runtime permission for the watch-local approval notifications. -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <!-- v2 native voice turn: the wrist mic records raw PCM (AudioRecord) that we stream to the phone
+         and into EVE's own speech stack — no Google in the path. Runtime-requested in MainActivity. -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+
+    <!-- v3 LIVE voice: the wrist opens ONE secure WebSocket (TLS) to the owner's public voice door and
+         streams PCM both ways — ordinary encrypted TCP that works out in the world (Bluetooth-behind-
+         phone, watch Wi-Fi, future LTE). INTERNET for the socket; ACCESS_NETWORK_STATE so the client
+         can name an offline/no-network failure honestly instead of hanging on a dead socket. -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <!-- Health v2: passive heart-rate stream for "if my heart rate jumps she can warn me".
+         Dual-manifest permission pattern: the legacy BODY_SENSORS pair is capped at API 35;
+         API 36+ uses the granular health permissions that replace them. Runtime request is
+         TWO-step (foreground first, background separately) — requesting both at once makes
+         the system silently deny both. -->
+    <uses-permission android:name="android.permission.BODY_SENSORS"
+        android:maxSdkVersion="35" />
+    <uses-permission android:name="android.permission.BODY_SENSORS_BACKGROUND"
+        android:maxSdkVersion="35" />
+    <uses-permission android:name="android.permission.health.READ_HEART_RATE" />
+    <uses-permission android:name="android.permission.health.READ_HEALTH_DATA_IN_BACKGROUND" />
+
+    <!-- Passive registrations do not survive a reboot — HrBootReceiver re-registers. -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
+    <!-- Push-to-talk FALLBACK STT (Google): the recognizer app owns the mic on this path. API-30+
+         package visibility means we must declare the RECOGNIZE_SPEECH intent to launch it / query
+         SpeechRecognizer.isRecognitionAvailable — without this the launch silently fails. -->
+    <queries>
+        <intent>
+            <action android:name="android.speech.action.RECOGNIZE_SPEECH" />
+        </intent>
+    </queries>
+
+    <!-- allowBackup=false matches the phone app: approval data must never land in cloud backups.
+         dataExtractionRules (API 31+) + fullBackupContent (<=30) make that exclusion explicit for
+         both cloud backup and device-to-device transfer. -->
+    <application
+        android:name=".WearApplication"
+        android:allowBackup="false"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@android:style/Theme.DeviceDefault">
+
+        <!-- Wearable shared library — present on every Wear device; required=false keeps installs safe. -->
+        <uses-library
+            android:name="com.google.android.wearable"
+            android:required="false" />
+
+        <!-- Companion-dependent: the phone is the gateway, so the watch app is NOT standalone. -->
+        <meta-data
+            android:name="com.google.android.wearable.standalone"
+            android:value="false" />
+
+        <!-- taskAffinity="" keeps this single Wear activity in its own task so it renders correctly
+             in the watch's recents/task switcher (WearRecents lint). -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:launchMode="singleTop"
+            android:taskAffinity=""
+            android:theme="@android:style/Theme.DeviceDefault">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- Wrist approval notification's Deny action (safe direction may fire directly). Not
+             exported: only our own PendingIntent (explicit component) triggers it. -->
+        <receiver
+            android:name=".notify.WearDenyReceiver"
+            android:exported="false" />
+
+        <!-- Status TILE. Must be exported with the BIND_TILE_PROVIDER permission + intent-filter so
+             the Tiles framework can bind it; PREVIEW meta-data gives the tile picker a real thumbnail. -->
+        <service
+            android:name=".tile.EveTileService"
+            android:exported="true"
+            android:icon="@drawable/ic_eve_mark"
+            android:label="@string/tile_label"
+            android:permission="com.google.android.wearable.permission.BIND_TILE_PROVIDER">
+            <intent-filter>
+                <action android:name="androidx.wear.tiles.action.BIND_TILE_PROVIDER" />
+            </intent-filter>
+            <meta-data
+                android:name="androidx.wear.tiles.PREVIEW"
+                android:resource="@drawable/tile_preview_eve" />
+        </service>
+
+        <!-- Pending-approvals COMPLICATION. SUPPORTED_TYPES limits the picker to SHORT_TEXT +
+             RANGED_VALUE; UPDATE_PERIOD_SECONDS=0 means push-driven only (no polling) — the watch
+             listener below requests updates when the phone writes a snapshot. -->
+        <service
+            android:name=".complication.PendingApprovalsComplicationService"
+            android:exported="true"
+            android:icon="@drawable/ic_eve_mark"
+            android:label="@string/complication_label"
+            android:permission="com.google.android.wearable.permission.BIND_COMPLICATION_PROVIDER">
+            <intent-filter>
+                <action android:name="android.support.wearable.complications.ACTION_COMPLICATION_UPDATE_REQUEST" />
+            </intent-filter>
+            <meta-data
+                android:name="android.support.wearable.complications.SUPPORTED_TYPES"
+                android:value="SHORT_TEXT,RANGED_VALUE" />
+            <meta-data
+                android:name="android.support.wearable.complications.UPDATE_PERIOD_SECONDS"
+                android:value="0" />
+        </service>
+
+        <!-- WATCH-side Data-Layer listener: makes the Tile + complication event-driven. Same pattern
+             as the phone's WearBridgeService — exported=true, DATA_CHANGED filter scoped to wear://*/eve. -->
+        <service
+            android:name=".data.EveDataListenerService"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.android.gms.wearable.DATA_CHANGED" />
+                <data android:scheme="wear" android:host="*" android:pathPrefix="/eve" />
+            </intent-filter>
+        </service>
+
+        <!-- Health v2: Health Services binds this to deliver batched passive HEART_RATE_BPM.
+             The binding permission restricts callers to Health Services itself. -->
+        <service
+            android:name=".health.HrAlertService"
+            android:exported="true"
+            android:permission="com.google.android.wearable.healthservices.permission.PASSIVE_DATA_BINDING" />
+
+        <!-- Health v2: re-register the passive HR stream after reboot (only when the owner had
+             alerts ON). Exported=true is required for BOOT_COMPLETED delivery. -->
+        <receiver
+            android:name=".health.HrBootReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+    </application>
+
+</manifest>

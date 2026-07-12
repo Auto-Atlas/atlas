@@ -1,0 +1,10 @@
+{
+  "pending": [
+    {
+      "tool": "create_invoice",
+      "mode": "next",
+      "status": "pending",
+      "seconds_left": 86234.5
+    }
+  ]
+}
