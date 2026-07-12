@@ -1,7 +1,9 @@
 package app.eve.visual
 
+import app.eve.ASSISTANT_NAME
+
 /**
- * A validated `surface_visual` card from the WS stream — EVE choosing to SHOW something instead of
+ * A validated `surface_visual` card from the WS stream — Atlas choosing to SHOW something instead of
  * only saying it. The server sends
  * `{"type":"surface_visual","kind":"desktop_screen"|"image"|"note","title":"…",
  *   "visual_id":"<16 lowercase hex, empty for notes>","url":"/v1/visual/<id>","text":"<note text>"}`
@@ -50,7 +52,7 @@ data class SurfaceVisual(
                 Kind.NOTE -> {
                     val body = text?.trim().orEmpty()
                     if (body.isEmpty()) return null
-                    SurfaceVisual(k, cleanTitle.ifBlank { "From EVE" }, null, body.take(MAX_TEXT))
+                    SurfaceVisual(k, cleanTitle.ifBlank { "From $ASSISTANT_NAME" }, null, body.take(MAX_TEXT))
                 }
                 else -> {
                     val id = visualId?.trim().orEmpty()
@@ -63,7 +65,7 @@ data class SurfaceVisual(
         private fun defaultTitle(k: Kind): String = when (k) {
             Kind.DESKTOP_SCREEN -> "Your desktop"
             Kind.IMAGE -> "Image"
-            Kind.NOTE -> "From EVE"
+            Kind.NOTE -> "From $ASSISTANT_NAME"
         }
     }
 }

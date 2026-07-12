@@ -10,7 +10,7 @@ import kotlin.test.assertNull
 /**
  * Pure-JVM guard on the `capture_frame` payload contract (no Android runtime). The id must be plain
  * lowercase hex 8-32 chars (mirrors the server's vision_frames.valid_id) — anything else is dropped
- * BEFORE the camera runs, and a missing/blank prompt is fine (EVE may just want "a look").
+ * BEFORE the camera runs, and a missing/blank prompt is fine (Atlas may just want "a look").
  */
 class CaptureRequestTest {
 

@@ -1,5 +1,6 @@
 package app.eve.wear.complication
 
+import app.eve.ASSISTANT_NAME
 import app.eve.wear.tile.TileState
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -8,7 +9,7 @@ import kotlin.test.assertEquals
 class ComplicationCopyTest {
 
     private fun live(count: Int) = TileState.Live(pendingCount = count, desktopOnline = true, ageMs = 0L)
-    private val down = TileState.ServerDown(detail = "cannot reach EVE", pendingCountFromStale = null, ageMs = 0L)
+    private val down = TileState.ServerDown(detail = "cannot reach $ASSISTANT_NAME", pendingCountFromStale = null, ageMs = 0L)
     private val never = TileState.NeverSynced
 
     @Test
@@ -21,16 +22,16 @@ class ComplicationCopyTest {
 
     @Test
     fun title_is_eve() {
-        assertEquals("EVE", ComplicationCopy.TITLE)
+        assertEquals("$ASSISTANT_NAME", ComplicationCopy.TITLE)
     }
 
     @Test
     fun content_description_explains_each_state_honestly() {
-        assertEquals("EVE: no pending approvals", ComplicationCopy.contentDescription(live(0)))
-        assertEquals("EVE: 1 pending approval", ComplicationCopy.contentDescription(live(1)))
-        assertEquals("EVE: 3 pending approvals", ComplicationCopy.contentDescription(live(3)))
-        assertEquals("EVE: waiting for phone", ComplicationCopy.contentDescription(never))
-        assertEquals("EVE: server unreachable", ComplicationCopy.contentDescription(down))
+        assertEquals("$ASSISTANT_NAME: no pending approvals", ComplicationCopy.contentDescription(live(0)))
+        assertEquals("$ASSISTANT_NAME: 1 pending approval", ComplicationCopy.contentDescription(live(1)))
+        assertEquals("$ASSISTANT_NAME: 3 pending approvals", ComplicationCopy.contentDescription(live(3)))
+        assertEquals("$ASSISTANT_NAME: waiting for phone", ComplicationCopy.contentDescription(never))
+        assertEquals("$ASSISTANT_NAME: server unreachable", ComplicationCopy.contentDescription(down))
     }
 
     @Test

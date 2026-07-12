@@ -1,5 +1,6 @@
 package app.eve.wear.notify
 
+import app.eve.ASSISTANT_NAME
 import app.eve.data.wear.Outcome
 import app.eve.data.wear.WearAction
 import app.eve.data.wear.WearActionResult
@@ -23,7 +24,7 @@ data class DenyUpdate(val message: String, val autoDismiss: Boolean) {
         val DataLayerDown = DenyUpdate(WearActionCopy.DATA_LAYER_DOWN, autoDismiss = false)
 
         /** Sent, but no correlated reply inside the window — honest, never a fake "denied". */
-        val NoReply = DenyUpdate("No reply from phone — check the EVE app", autoDismiss = false)
+        val NoReply = DenyUpdate("No reply from phone — check the $ASSISTANT_NAME app", autoDismiss = false)
 
         /** Map a real phone result to wrist copy via the single-source [WearActionCopy]. */
         fun fromResult(result: WearActionResult): DenyUpdate {

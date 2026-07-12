@@ -1,5 +1,6 @@
 package app.eve.wearbridge
 
+import app.eve.ASSISTANT_NAME
 import android.util.Log
 import app.eve.data.ApiError
 import app.eve.data.ApiResult
@@ -39,7 +40,7 @@ interface ResultSender {
     suspend fun sendResult(nodeId: String, bytes: ByteArray)
 
     /**
-     * Sends EVE's talk reply back on its OWN path ([WearLink.PATH_TALK_REPLY]) — deliberately NOT
+     * Sends Atlas's talk reply back on its OWN path ([WearLink.PATH_TALK_REPLY]) — deliberately NOT
      * [sendResult] / [WearLink.PATH_ACTION_RESULT], so the watch's approvals listener never sees
      * [TalkReply] bytes and the talk listener never sees a [WearActionResult].
      */
@@ -66,7 +67,7 @@ class WearBridge(
     private val fetchStatus: suspend () -> ApiResult<SystemStatus>,
     private val snapshotWriter: SnapshotWriter,
     private val resultSender: ResultSender,
-    // The watch push-to-talk leg: runs one transcribed utterance through EVE's full brain (usually
+    // The watch push-to-talk leg: runs one transcribed utterance through Atlas's full brain (usually
     // TalkRepository.ask). A lambda for the same reason as fetchPending/fetchStatus — the bridge core
     // stays pure and testable with a fake, no ApiClient in the unit tests.
     private val askEve: suspend (String) -> ApiResult<String>,
@@ -128,7 +129,7 @@ class WearBridge(
     }
 
     /**
-     * The watch push-to-talk leg. Decode the [TalkRequest], run the text through EVE's brain via
+     * The watch push-to-talk leg. Decode the [TalkRequest], run the text through Atlas's brain via
      * [askEve], and send an honest [TalkReply] to the SOURCE node on [WearLink.PATH_TALK_REPLY].
      *
      * Same malformed-payload recovery as approve/deny: a garbage payload never leaves the watch
@@ -178,12 +179,12 @@ class WearBridge(
             return
         }
         when (result) {
-            is ApiResult.Ok -> Log.i(TAG, "HealthAlert ${alert.requestId} (${alert.type} ${alert.bpm ?: "?"} bpm) delivered to EVE")
+            is ApiResult.Ok -> Log.i(TAG, "HealthAlert ${alert.requestId} (${alert.type} ${alert.bpm ?: "?"} bpm) delivered to $ASSISTANT_NAME")
             is ApiResult.Err -> Log.e(TAG, "HealthAlert ${alert.requestId} POST failed: ${describe(result.error)} — alert NOT delivered")
         }
     }
 
-    /** Run one utterance through EVE and map the result to an honest [TalkReply] (never a fake OK). */
+    /** Run one utterance through Atlas and map the result to an honest [TalkReply] (never a fake OK). */
     private suspend fun askToReply(request: TalkRequest): TalkReply {
         val result = try {
             askEve(request.text)
@@ -206,10 +207,10 @@ class WearBridge(
     /** Maps a transport/HTTP [ApiError] to its honest, named-leg talk [Outcome] — mirrors [apiErrorToResult]. */
     private fun apiErrorToTalkReply(request: TalkRequest, error: ApiError): TalkReply = when (error) {
         is ApiError.Offline -> talkReply(request, Outcome.SERVER_UNREACHABLE, error.cause)
-        ApiError.NotConfigured -> talkReply(request, Outcome.SERVER_UNREACHABLE, "phone not connected to EVE")
+        ApiError.NotConfigured -> talkReply(request, Outcome.SERVER_UNREACHABLE, "phone not connected to $ASSISTANT_NAME")
         ApiError.Unauthorized -> talkReply(request, Outcome.UNAUTHORIZED, "unauthorized (401) — reconnect the phone")
-        ApiError.NotFound -> talkReply(request, Outcome.ERROR, "EVE has no /v1/ask endpoint (404)")
-        ApiError.AlreadyResolved -> talkReply(request, Outcome.ERROR, "unexpected 409 from EVE")
+        ApiError.NotFound -> talkReply(request, Outcome.ERROR, "$ASSISTANT_NAME has no /v1/ask endpoint (404)")
+        ApiError.AlreadyResolved -> talkReply(request, Outcome.ERROR, "unexpected 409 from $ASSISTANT_NAME")
         is ApiError.Http -> talkReply(request, Outcome.ERROR, "HTTP ${error.status}: ${error.detail}")
         is ApiError.Decode -> talkReply(request, Outcome.ERROR, "decode error: ${error.message}")
         is ApiError.Unknown -> talkReply(request, Outcome.ERROR, error.message)
@@ -295,7 +296,7 @@ class WearBridge(
         // Network/IO failure — the phone<->server leg is down. Surface the real detail.
         is ApiError.Offline -> result(action, Outcome.SERVER_UNREACHABLE, error.cause)
         // No base URL/token yet — the phone can't reach the server at all. Same honest signal.
-        ApiError.NotConfigured -> result(action, Outcome.SERVER_UNREACHABLE, "phone not connected to EVE")
+        ApiError.NotConfigured -> result(action, Outcome.SERVER_UNREACHABLE, "phone not connected to $ASSISTANT_NAME")
         ApiError.Unauthorized -> result(action, Outcome.UNAUTHORIZED, "unauthorized (401) — reconnect the phone")
         ApiError.NotFound -> result(action, Outcome.NOT_FOUND, "approval no longer exists (404)")
         ApiError.AlreadyResolved -> result(action, Outcome.ALREADY_RESOLVED, "already handled (409)")
@@ -316,8 +317,8 @@ class WearBridge(
 
     /** Human, honest one-liner for a fetch failure — the "which leg" detail the watch shows. */
     private fun describe(error: ApiError): String = when (error) {
-        ApiError.NotConfigured -> "phone not connected to EVE"
-        is ApiError.Offline -> "cannot reach EVE: ${error.cause}"
+        ApiError.NotConfigured -> "phone not connected to $ASSISTANT_NAME"
+        is ApiError.Offline -> "cannot reach $ASSISTANT_NAME: ${error.cause}"
         ApiError.Unauthorized -> "unauthorized (401) — reconnect the phone"
         ApiError.NotFound -> "not found (404)"
         ApiError.AlreadyResolved -> "already handled (409)"

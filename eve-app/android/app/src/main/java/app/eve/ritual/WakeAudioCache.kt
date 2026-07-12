@@ -7,7 +7,7 @@ import app.eve.data.WakeAudioResult
 import java.io.File
 
 /**
- * On-device cache of the 5 AM wake WAV (EVE's real voice). The phone plays this file LOCALLY at wake
+ * On-device cache of the 5 AM wake WAV (Atlas's real voice). The phone plays this file LOCALLY at wake
  * time — no WebRTC, no mic, works from deep Doze (exactly how an alarm app plays a sound). The file
  * is downloaded ahead of 5 AM (app start + after push-token registration) so it is already present
  * when the wake fires.

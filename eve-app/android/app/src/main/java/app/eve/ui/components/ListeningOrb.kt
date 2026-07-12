@@ -1,5 +1,6 @@
 package app.eve.ui.components
 
+import app.eve.ASSISTANT_NAME
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
@@ -45,7 +46,7 @@ fun ListeningOrb(
     state: VoiceState,
     modifier: Modifier = Modifier,
     reducedMotion: Boolean = false,
-    /** When EVE is running a tool / delegating, the orb shifts to the green "working" hue and an
+    /** When Atlas is running a tool / delegating, the orb shifts to the green "working" hue and an
      *  orbiting comet arc — the transformative "doing something" motion. Takes visual precedence
      *  over [state] (a tool can run across listening/thinking), mirroring the desktop avatar's
      *  `working` morph. */
@@ -80,7 +81,7 @@ fun ListeningOrb(
         animationSpec = infiniteRepeatable(tween(420, easing = LinearEasing), RepeatMode.Reverse),
         label = "wave",
     )
-    // eve-halo: expanding rings that radiate outward while EVE is connecting or listening — the
+    // eve-halo: expanding rings that radiate outward while Atlas is connecting or listening — the
     // orb's signature "I'm here, the floor is yours" motion. 0→1 = one ring's outward sweep.
     val halo = transition.animateFloat(
         initialValue = 0f,
@@ -110,9 +111,9 @@ fun ListeningOrb(
 
     // The spoken/announced label. While working it overrides the state label so the orb reads
     // "working on it" to a screen reader (the status line below carries the specific tool).
-    val description = if (working) "EVE is working on it" else orbContentDescription(state)
+    val description = if (working) "$ASSISTANT_NAME is working on it" else orbContentDescription(state)
 
-    // Halo radiates only while connecting / waiting-for-you / hearing you — not while EVE thinks
+    // Halo radiates only while connecting / waiting-for-you / hearing you — not while Atlas thinks
     // (shimmer), speaks (wave), or works (the orbiting comet), and never under reduced-motion.
     val showHalo = !effectiveReducedMotion && !working && when (state) {
         VoiceState.Connecting, VoiceState.YourTurn, VoiceState.Reconnecting -> true
@@ -217,12 +218,12 @@ fun ListeningOrb(
 
 /** Per-state spoken label (also used as the live-region announcement). */
 fun orbContentDescription(state: VoiceState): String = when (state) {
-    VoiceState.Idle -> "Tap to talk to EVE"
-    VoiceState.Connecting -> "Connecting to EVE"
+    VoiceState.Idle -> "Tap to talk to $ASSISTANT_NAME"
+    VoiceState.Connecting -> "Connecting to $ASSISTANT_NAME"
     VoiceState.YourTurn -> "Go ahead, I'm listening"
     is VoiceState.Hearing -> "Hearing you"
-    VoiceState.Thinking -> "EVE is thinking"
-    VoiceState.Speaking -> "EVE is speaking"
+    VoiceState.Thinking -> "$ASSISTANT_NAME is thinking"
+    VoiceState.Speaking -> "$ASSISTANT_NAME is speaking"
     VoiceState.Reconnecting -> "Reconnecting"
     VoiceState.NoAudio -> "Connected, but no audio is getting through"
     is VoiceState.Error -> "Connection problem: ${state.message}"

@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
  * Flow: immediately swap the notification to "Denying…" (Deny action removed, so a second tap can't
  * race), then over a goAsync window run [DenyFlow] (send + await the correlated result, 8s bound
  * inside the ~10s goAsync limit) and post the honest terminal [DenyUpdate]. Every leg is named — a
- * dead Data Layer, no reply, or an EVE-side failure are distinct wrist messages, never a fake
+ * dead Data Layer, no reply, or an Atlas-side failure are distinct wrist messages, never a fake
  * "denied".
  */
 class WearDenyReceiver : BroadcastReceiver() {

@@ -64,7 +64,7 @@ data class ConversationDetail(
 
 /**
  * A single timeline entry. [role] is one of user | assistant | tool | delegation. The first two
- * render as chat bubbles; `tool` and `delegation` render as "what EVE actually did" action rows.
+ * render as chat bubbles; `tool` and `delegation` render as "what Atlas actually did" action rows.
  *
  * [meta] is a lenient [JsonObject] because its keys vary by role:
  *   - tool:        { tool, target, args, status, ok, detail }

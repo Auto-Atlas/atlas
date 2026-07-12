@@ -1,5 +1,7 @@
 package app.eve.wear.livevoice
 
+import app.eve.ASSISTANT_NAME
+
 /**
  * The SINGLE source of the watch LIVE-VOICE experience's user copy. Every state label and every
  * failure leg is named here exactly once, so the screen, the ViewModel, the controller and the codec
@@ -15,13 +17,13 @@ object WearLiveVoiceCopy {
     const val NOT_CONFIGURED = "No voice door configured — set it in phone Settings."
 
     /** The connect/reconnect window elapsed with no door answer — can't reach the voice door. */
-    const val CONNECT_TIMED_OUT = "Can't reach EVE — the voice door didn't answer."
+    const val CONNECT_TIMED_OUT = "Can't reach $ASSISTANT_NAME — the voice door didn't answer."
 
     /** The server never produced a reply within the think window. */
-    const val THINK_TIMED_OUT = "EVE isn't responding."
+    const val THINK_TIMED_OUT = "$ASSISTANT_NAME isn't responding."
 
     /** Bounded reconnects exhausted — the session is genuinely lost. */
-    const val CONNECTION_LOST = "Lost connection to EVE."
+    const val CONNECTION_LOST = "Lost connection to $ASSISTANT_NAME."
 
     /** The bearer token was rejected by the door / server (fail-closed auth). */
     const val UNAUTHORIZED = "Voice door rejected the token — re-pair the watch in phone Settings."
@@ -33,13 +35,13 @@ object WearLiveVoiceCopy {
     const val MIC_UNAVAILABLE = "Microphone unavailable — check permission and try again."
 
     /** A malformed control frame from the door/server — surfaced loudly, never ignored into silence. */
-    const val BAD_CONTROL_FRAME = "EVE sent something the watch couldn't read."
+    const val BAD_CONTROL_FRAME = "$ASSISTANT_NAME sent something the watch couldn't read."
 
     /** The socket dropped and could not be re-established (used as the reconnect-exhausted detail). */
     fun socketError(reason: String): String = "Voice door connection error: $reason"
 
     /** A server "error" control frame carries its own message; render it verbatim behind a stable lead. */
-    fun serverError(message: String): String = "EVE reported a problem: $message"
+    fun serverError(message: String): String = "$ASSISTANT_NAME reported a problem: $message"
 }
 
 /**
@@ -48,12 +50,12 @@ object WearLiveVoiceCopy {
  */
 fun orbContentDescription(state: VoiceState): String = when (state) {
     VoiceState.NotConfigured -> WearLiveVoiceCopy.NOT_CONFIGURED
-    VoiceState.Idle -> "Tap to talk to EVE"
-    VoiceState.Connecting -> "Connecting to EVE"
+    VoiceState.Idle -> "Tap to talk to $ASSISTANT_NAME"
+    VoiceState.Connecting -> "Connecting to $ASSISTANT_NAME"
     VoiceState.YourTurn -> "Go ahead, I'm listening"
     is VoiceState.Hearing -> "Hearing you"
-    VoiceState.Thinking -> "EVE is thinking"
-    VoiceState.Speaking -> "EVE is speaking"
+    VoiceState.Thinking -> "$ASSISTANT_NAME is thinking"
+    VoiceState.Speaking -> "$ASSISTANT_NAME is speaking"
     VoiceState.Reconnecting -> "Reconnecting"
     VoiceState.NoAudio -> "Connected, but no audio is getting through"
     is VoiceState.Error -> "Connection problem: ${state.message}"

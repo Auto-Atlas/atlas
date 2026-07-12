@@ -1,5 +1,6 @@
 package app.eve.vision
 
+import app.eve.ASSISTANT_NAME
 import android.Manifest
 import android.app.Activity
 import android.content.Context
@@ -86,7 +87,7 @@ class FrameCaptureController(
             } catch (e: CancellationException) {
                 throw e
             } catch (t: Throwable) {
-                // Honest failure path: log only. The server's 25s timeout is the real signal to EVE.
+                // Honest failure path: log only. The server's 25s timeout is the real signal to Atlas.
                 Log.w(TAG, "capture_frame failed for ${request.requestId}: ${t.message}", t)
             } finally {
                 gate.release()
@@ -182,7 +183,7 @@ class FrameCaptureController(
     }
 
     private fun showLookingIndicator(activity: Activity, prompt: String) {
-        val text = if (prompt.isBlank()) "EVE is looking…" else "EVE is looking… ($prompt)"
+        val text = if (prompt.isBlank()) "$ASSISTANT_NAME is looking…" else "$ASSISTANT_NAME is looking… ($prompt)"
         Toast.makeText(activity, text, Toast.LENGTH_LONG).show()
     }
 

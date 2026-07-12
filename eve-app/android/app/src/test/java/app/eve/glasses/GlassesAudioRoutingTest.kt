@@ -7,7 +7,7 @@ import kotlin.test.assertNull
 
 /**
  * The pure device-type choice for glasses audio (no AudioManager). Meta's DAT exposes no audio API,
- * so EVE's TTS rides the glasses as a standard Bluetooth device — we prefer LE Audio (BLE headset)
+ * so Atlas's TTS rides the glasses as a standard Bluetooth device — we prefer LE Audio (BLE headset)
  * then classic Bluetooth SCO, and leave routing untouched when neither is present.
  */
 class GlassesAudioRoutingTest {

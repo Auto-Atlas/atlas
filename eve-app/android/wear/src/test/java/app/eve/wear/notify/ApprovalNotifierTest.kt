@@ -1,5 +1,6 @@
 package app.eve.wear.notify
 
+import app.eve.ASSISTANT_NAME
 import android.app.Application
 import android.app.Notification
 import android.app.NotificationManager
@@ -105,7 +106,7 @@ class ApprovalNotifierTest {
     @Test
     fun server_down_snapshot_posts_nothing_and_leaves_the_store_untouched() {
         val store = FakeStore(setOf("a1"))
-        ApprovalNotifier(store).onSnapshot(app, TestApprovals.serverDownSnapshot("cannot reach EVE: timeout"))
+        ApprovalNotifier(store).onSnapshot(app, TestApprovals.serverDownSnapshot("cannot reach $ASSISTANT_NAME: timeout"))
         assertNull(shadowOf(nm).getNotification("a9".hashCode()))
         assertEquals(setOf("a1"), store.ids, "server-down must not touch the dedupe set")
     }
@@ -129,7 +130,7 @@ class ApprovalNotifierTest {
 
         val failed = ApprovalNotifier(FakeStore())
             .buildDenyResult(app, "a1", "T", DenyUpdate.NoReply)
-        assertEquals("No reply from phone — check the EVE app", failed.extras.getString(Notification.EXTRA_TEXT))
+        assertEquals("No reply from phone — check the $ASSISTANT_NAME app", failed.extras.getString(Notification.EXTRA_TEXT))
         assertEquals(0L, failed.timeoutAfter, "a failure must stay visible (no auto-dismiss)")
     }
 }

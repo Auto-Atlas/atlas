@@ -89,7 +89,7 @@ class MainActivity : ComponentActivity() {
             }
         }
 
-    // ---- Health v2: heart alerts (passive HR stream -> EVE warns in her voice) ----
+    // ---- Health v2: heart alerts (passive HR stream -> Atlas warns in her voice) ----
 
     /** UI mirror of HrAlertsStore.enabled — flips only when enable/disable actually succeeded. */
     private var heartAlertsOn by mutableStateOf(false)

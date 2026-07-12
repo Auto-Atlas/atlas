@@ -1,5 +1,6 @@
 package app.eve.ui.approvals
 
+import app.eve.ASSISTANT_NAME
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
@@ -64,7 +65,7 @@ fun ApprovalsScreen(viewModel: ApprovalsViewModel, modifier: Modifier = Modifier
             .padding(horizontal = EveTheme.spacing.gutterScreen),
     ) {
         // The hero screen always wears its identity: title + how many actions wait + the "Guarded"
-        // shield pill (the trust promise — every action is gated). Per the EVE design system template.
+        // shield pill (the trust promise — every action is gated). Per the Atlas design system template.
         ApprovalsHeader(waiting = waiting, online = state !is ApprovalsUiState.Offline)
 
         // Live delegated-agent window (live-delegation-approvals): what Hermes/Claude/Codex
@@ -110,7 +111,7 @@ fun ApprovalsScreen(viewModel: ApprovalsViewModel, modifier: Modifier = Modifier
 private fun ApprovalsHeader(waiting: Int, online: Boolean, modifier: Modifier = Modifier) {
     val colors = EveTheme.colors
     val subtitle = when {
-        !online -> "Reconnecting to EVE…"
+        !online -> "Reconnecting to $ASSISTANT_NAME…"
         waiting == 0 -> "You're all clear."
         waiting == 1 -> "1 action waiting on you"
         else -> "$waiting actions waiting on you"
@@ -261,7 +262,7 @@ private fun OfflineBanner() {
         Canvas(Modifier.size(8.dp)) { drawCircle(color = colors.warning, center = Offset(size.width / 2, size.height / 2)) }
         Spacer(Modifier.width(EveTheme.spacing.s3))
         Text(
-            text = "Can't reach EVE — you're off the tailnet",
+            text = "Can't reach $ASSISTANT_NAME — you're off the tailnet",
             style = EveTheme.type.label.copy(color = colors.warning),
         )
     }

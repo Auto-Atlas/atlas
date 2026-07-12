@@ -25,7 +25,7 @@ import kotlinx.serialization.Serializable
  *   "gaps": {}
  * }
  * ```
- * HONEST GAPS: a type EVE couldn't read is OMITTED from the object (its key absent == null) and its
+ * HONEST GAPS: a type Atlas couldn't read is OMITTED from the object (its key absent == null) and its
  * reason recorded in [gaps] — e.g. `"gaps": {"blood_pressure_latest": "no data", "spo2_latest": "no permission"}`.
  * A field is NEVER present-but-fabricated; if it's here, it's real.
  */

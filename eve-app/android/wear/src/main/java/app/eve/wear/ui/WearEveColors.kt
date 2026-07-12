@@ -3,7 +3,7 @@ package app.eve.wear.ui
 import androidx.compose.ui.graphics.Color
 
 /**
- * EVE brand colors for the watch, ported VERBATIM from :app ui/theme/Color.kt (color.dark — the
+ * Atlas brand colors for the watch, ported VERBATIM from :app ui/theme/Color.kt (color.dark — the
  * primary brand theme) and the risk hues from :app ui/components/RiskBadge.kt. Copied (not shared)
  * because :app's theme depends on Compose-for-phone material3 the :wear module doesn't pull in;
  * keeping the raw values here avoids that coupling.

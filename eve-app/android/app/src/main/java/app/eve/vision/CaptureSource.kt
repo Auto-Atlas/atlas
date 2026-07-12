@@ -5,11 +5,11 @@ package app.eve.vision
  * ("any" | "phone" | "glasses"); this normalizes it. A missing/blank/unknown value is the tolerant
  * default [ANY] so an older server (no source field) keeps working exactly as before — the phone.
  *
- *  - [ANY] — EVE doesn't care; prefer the glasses when they're enabled + connected, else the phone.
+ *  - [ANY] — Atlas doesn't care; prefer the glasses when they're enabled + connected, else the phone.
  *  - [PHONE] — the phone camera specifically. Glasses are irrelevant to this request.
  *  - [GLASSES] — the Meta glasses specifically. If glasses are off/not connected this is an honest
  *    ERROR (see [CaptureRouter]); we do NOT silently fall back to the phone for an explicit glasses
- *    request — that would send EVE a picture from the wrong camera.
+ *    request — that would send Atlas a picture from the wrong camera.
  */
 enum class CaptureSource {
     ANY,
@@ -38,7 +38,7 @@ enum class CaptureRoute {
     /**
      * An explicit glasses request that cannot be honoured (toggle off, or glasses not connected).
      * The controller logs an honest failure and captures NOTHING — the server's own timeout tells
-     * EVE, and we never substitute a phone frame for a glasses request.
+     * Atlas, and we never substitute a phone frame for a glasses request.
      */
     ERROR_GLASSES_UNAVAILABLE,
 }

@@ -1,5 +1,6 @@
 package app.eve.wear
 
+import app.eve.ASSISTANT_NAME
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,7 +16,7 @@ import androidx.wear.compose.material.Text
 import androidx.wear.compose.material.TimeText
 
 /**
- * The single Wear screen for this increment: the EVE wordmark over a phone-link status line.
+ * The single Wear screen for this increment: the Atlas wordmark over a phone-link status line.
  * Pure/stateless — it renders whatever [PhoneLinkState] it is handed, so every state is directly
  * unit-testable (no NodeClient, no coroutines). Dark, ambient-friendly Wear Material defaults
  * (black background, mono text); TimeText satisfies the Wear quality guideline for the top clock.
@@ -32,7 +33,7 @@ fun WearAppScreen(state: PhoneLinkState) {
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Text(
-                    text = "EVE",
+                    text = "$ASSISTANT_NAME",
                     style = MaterialTheme.typography.display1,
                     color = MaterialTheme.colors.onBackground,
                     textAlign = TextAlign.Center,

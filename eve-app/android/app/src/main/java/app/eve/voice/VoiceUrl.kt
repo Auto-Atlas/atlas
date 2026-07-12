@@ -36,7 +36,7 @@ fun deriveVoiceUrl(approvalBase: String, override: String, voicePort: Int = 8444
 /**
  * Pure derivation of the WATCH voice-door URL — the public wss endpoint the wrist streams to
  * (watch_bot behind `tailscale funnel --https=10000`; 10000 is one of Funnel's three allowed
- * ports and the documented EVE convention). Pairing is automatic: same host as the approval
+ * ports and the documented Atlas convention). Pairing is automatic: same host as the approval
  * base, fixed door port and path — the user configures NOTHING unless they set an override.
  *
  * @param approvalBase the configured approval API base (e.g. https://host.ts.net:8443)

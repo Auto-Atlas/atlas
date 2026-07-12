@@ -31,7 +31,7 @@ import kotlin.math.sin
 
 /**
  * JARVIS RING — the wrist call visual. An arc-reactor orb (core disc + 3 concentric arc-ring layers,
- * additively glowing like NeuralBrain's BlendMode.Plus discs) that MOVES when EVE talks, replacing the
+ * additively glowing like NeuralBrain's BlendMode.Plus discs) that MOVES when Atlas talks, replacing the
  * 128-particle morphing NeuralBrain on the watch. The owner's hardware note: "the swirling thing is a
  * little weird — more of a Jarvis circle, or anything that moves when it talks." This is that circle.
  *
@@ -44,9 +44,9 @@ import kotlin.math.sin
  *   speaking                   → AMBER  rings pulse rhythmically (SYNTHETIC envelope — see note)
  *   no-audio / error           → DANGER frozen dim ring (the screen's danger/dim language)
  *
- * SPEAKING is REAL: the pulse follows [botLevel] — the smoothed RMS of EVE's actual downlink PCM
+ * SPEAKING is REAL: the pulse follows [botLevel] — the smoothed RMS of Atlas's actual downlink PCM
  * ([PcmLevel] + [SpeakingEnvelope] published by the socket client). It is read as a lambda inside the
- * frame loop (deferred read — level ticks never recompose). When EVE is quiet the ring rests at its
+ * frame loop (deferred read — level ticks never recompose). When Atlas is quiet the ring rests at its
  * base glow; it never invents motion. (The synthetic sine stand-in died 2026-07-10.)
  *
  * Under reduced-motion the ring renders a single deterministic static frame per state (the caller's
@@ -83,7 +83,7 @@ internal data class RingSpec(
     val counterRotate: Boolean, // odd ring layers reverse (thinking) + spin ramps
     val radarSweep: Boolean, // one bright arc scans over dim rings (connecting)
     val pulseWithMic: Boolean, // radius/glow track REAL mic level; segments tighten (listening)
-    val speakPulse: Boolean, // radius/glow track EVE's REAL output level (speaking)
+    val speakPulse: Boolean, // radius/glow track Atlas's REAL output level (speaking)
     val breathe: Boolean, // slow glow breathing (idle / listening)
     val frozen: Boolean, // no motion at all (dead states)
     val dim: Float, // overall brightness multiplier
@@ -220,7 +220,7 @@ private class RingSim {
     val ring = floatArrayOf(45f, 165f, 190f)
     val glow = floatArrayOf(80f, 200f, 220f)
 
-    /** Advance one frame. mic is REAL (Hearing.level); the speaking pulse is EVE's REAL output level. */
+    /** Advance one frame. mic is REAL (Hearing.level); the speaking pulse is Atlas's REAL output level. */
     fun update(dt: Float, spec: RingSpec, rawMic: Float, rawBot: Float = 0f) {
         phase += dt
         val k = min(1f, dt * 5f)
@@ -272,10 +272,10 @@ fun JarvisRing(
     modifier: Modifier = Modifier,
     size: Dp = 150.dp,
     reducedMotion: Boolean = false,
-    // A muted mic turns the whole orb RED (truthful, label-free "EVE can't hear you" cue — owner's
+    // A muted mic turns the whole orb RED (truthful, label-free "Atlas can't hear you" cue — owner's
     // color language: red = muted, blue = live) and is spoken in the content description.
     micMuted: Boolean = false,
-    // Deferred read (lambda, not value): EVE's real output level ticks ~25-50x/s and must feed the
+    // Deferred read (lambda, not value): Atlas's real output level ticks ~25-50x/s and must feed the
     // frame loop without recomposing the composable. Default 0f keeps previews/old callers valid.
     botLevel: () -> Float = { 0f },
     // Deferred read: the long-press-to-end progress (0..1). While held the ring contracts + dims

@@ -1,5 +1,7 @@
 package app.eve.wear.tile
 
+import app.eve.ASSISTANT_NAME
+
 /**
  * PURE copy for the Status Tile — every user-visible string, so pluralization / truncation /
  * freshness bucketing are unit-tested without rendering a single ProtoLayout element ([EveTileService]
@@ -14,14 +16,14 @@ object TileCopy {
     /** Label under the numeral — singular exactly at 1, plural otherwise (incl. an honest 0). */
     fun pendingLabel(count: Int): String = if (count == 1) "pending approval" else "pending approvals"
 
-    /** EVE desktop/brain presence line for [TileState.Live]. */
-    fun desktopLine(online: Boolean): String = if (online) "EVE desktop online" else "EVE desktop offline"
+    /** Atlas desktop/brain presence line for [TileState.Live]. */
+    fun desktopLine(online: Boolean): String = if (online) "$ASSISTANT_NAME desktop online" else "$ASSISTANT_NAME desktop offline"
 
     /** Freshness footer, e.g. "updated 12s ago". */
     fun freshness(ageMs: Long): String = "updated ${relativeAge(ageMs)}"
 
     /** [TileState.ServerDown] headline. */
-    fun serverDownHeadline(): String = "Phone can't reach EVE"
+    fun serverDownHeadline(): String = "Phone can't reach $ASSISTANT_NAME"
 
     /** The phone's real "which leg is down" detail, truncated sanely (never hidden). Null stays null. */
     fun serverDownDetail(detail: String?): String? = detail?.let { truncate(it, MAX_DETAIL) }

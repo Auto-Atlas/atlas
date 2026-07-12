@@ -106,12 +106,12 @@ class StreamService : Service() {
     private fun handleEvent(context: Context, event: StreamEvent) {
         when {
             event.isCaptureFrame -> {
-                // look_via_phone: EVE wants a camera frame. The controller is foreground-only and
+                // look_via_phone: Atlas wants a camera frame. The controller is foreground-only and
                 // single-in-flight; it no-ops (logs) when the app isn't visible or permission is off.
                 (context.applicationContext as EveApplication).container.frameCaptureController.onEvent(event)
             }
             event.isSurfaceVisual -> {
-                // surface_visual: EVE is SHOWING something. The hub validates + fetches/decodes the
+                // surface_visual: Atlas is SHOWING something. The hub validates + fetches/decodes the
                 // image and publishes the latest card as state the Talk screen renders.
                 (context.applicationContext as EveApplication).container.visualHub.onEvent(event)
             }

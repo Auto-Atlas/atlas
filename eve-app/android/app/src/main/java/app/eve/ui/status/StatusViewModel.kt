@@ -1,5 +1,6 @@
 package app.eve.ui.status
 
+import app.eve.ASSISTANT_NAME
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.eve.data.ApiResult
@@ -20,13 +21,13 @@ data class StatusUiState(
     val online: Boolean = false,
     val health: Health? = null,
     val remoteApprovalEnabled: Boolean = false,
-    /** The manual thinking toggle (Epic T): OFF = fast, ON = EVE reasons. */
+    /** The manual thinking toggle (Epic T): OFF = fast, ON = Atlas reasons. */
     val thinkingEnabled: Boolean = false,
     /** True while a toggle write is in flight; the switch is disabled during it. */
     val togglePending: Boolean = false,
     /** True while the THINKING write is in flight (independent of remote-approval's pending). */
     val thinkingPending: Boolean = false,
-    /** "Let me interrupt EVE" toggle: OFF = speakerphone-safe, ON = barge-in (best on a headset). */
+    /** "Let me interrupt Atlas" toggle: OFF = speakerphone-safe, ON = barge-in (best on a headset). */
     val bargeInEnabled: Boolean = false,
     /** True while the BARGE-IN write is in flight (independent of the others' pending). */
     val bargeInPending: Boolean = false,
@@ -89,7 +90,7 @@ class StatusViewModel(
         scope.launch(CRASH_GUARD) {
             _state.update { it.copy(loading = true, errorMessage = null) }
             // Glasses toggle is LOCAL (DataStore) — independent of the server, so read it up front so
-            // the row is truthful even when EVE is unreachable.
+            // the row is truthful even when Atlas is unreachable.
             glasses?.let { g ->
                 val enabled = g.isEnabled()
                 _state.update {
@@ -101,7 +102,7 @@ class StatusViewModel(
                 }
             }
             // Health row is LOCAL (Health Connect + WorkManager on THIS phone) — read up front so it's
-            // truthful even when EVE is unreachable.
+            // truthful even when Atlas is unreachable.
             health?.let { hc ->
                 val availability = hc.availability()
                 val permitted = hc.hasPermissions()
@@ -205,7 +206,7 @@ class StatusViewModel(
     }
 
     /**
-     * "Let me interrupt EVE" toggle. Like setThinking, only reflects the value the SERVER
+     * "Let me interrupt Atlas" toggle. Like setThinking, only reflects the value the SERVER
      * confirms — a failed write leaves the switch where it was. Takes effect on the NEXT
      * voice session (the loop reads it at session start).
      */
@@ -271,7 +272,7 @@ class StatusViewModel(
     }
 
     private fun describe(error: app.eve.data.ApiError): String = when (error) {
-        is app.eve.data.ApiError.NotConfigured -> "not connected to EVE yet"
+        is app.eve.data.ApiError.NotConfigured -> "not connected to $ASSISTANT_NAME yet"
         is app.eve.data.ApiError.Offline -> "off the tailnet"
         is app.eve.data.ApiError.Unauthorized -> "invalid app token"
         is app.eve.data.ApiError.NotFound -> "not found"

@@ -1,5 +1,6 @@
 package app.eve.ui.approvals
 
+import app.eve.ASSISTANT_NAME
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createComposeRule
@@ -29,7 +30,7 @@ import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
 
 /**
- * Compose UI tests for ApprovalsScreen — EVE's hero screen (compose-ui-testing-patterns: drive the
+ * Compose UI tests for ApprovalsScreen — Atlas's hero screen (compose-ui-testing-patterns: drive the
  * real state holder to each branch, then assert the rendered text/semantics). The VM auto-launches
  * an infinite stream collector + ticker in init, so each test gives it a standalone TestScope and
  * drives it with refresh()/runCurrent() — the same discipline as ApprovalsViewModelTest — before
@@ -124,10 +125,10 @@ class ApprovalsScreenTest {
         }
 
         // The honest off-tailnet banner (never silently showing "all clear" while blind).
-        rule.onNode(hasText("Can't reach EVE — you're off the tailnet", substring = true))
+        rule.onNode(hasText("Can't reach $ASSISTANT_NAME — you're off the tailnet", substring = true))
             .assertExists()
         // The header subtitle flips to the reconnecting variant while offline.
-        rule.onNodeWithText("Reconnecting to EVE…").assertIsDisplayed()
+        rule.onNodeWithText("Reconnecting to $ASSISTANT_NAME…").assertIsDisplayed()
         scope.cancel()
     }
 }

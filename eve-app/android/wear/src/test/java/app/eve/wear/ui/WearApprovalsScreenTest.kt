@@ -1,5 +1,6 @@
 package app.eve.wear.ui
 
+import app.eve.ASSISTANT_NAME
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
@@ -59,7 +60,7 @@ class WearApprovalsScreenTest {
         rule.setContent {
             WearApprovalsListScreen(
                 state = WearApprovalsUiState.ServerDown(
-                    detail = "cannot reach EVE: connection refused",
+                    detail = "cannot reach $ASSISTANT_NAME: connection refused",
                     staleApprovals = listOf(TestApprovals.invoice("a1")),
                     fetchedAtEpochMs = fetchedAt,
                 ),
@@ -69,7 +70,7 @@ class WearApprovalsScreenTest {
             )
         }
         rule.onNodeWithText("Stale — showing list from 2m ago").assertIsDisplayed()
-        rule.onNodeWithText("cannot reach EVE: connection refused").assertIsDisplayed()
+        rule.onNodeWithText("cannot reach $ASSISTANT_NAME: connection refused").assertIsDisplayed()
     }
 
     @Test
@@ -77,7 +78,7 @@ class WearApprovalsScreenTest {
         rule.setContent {
             WearApprovalsListScreen(
                 state = WearApprovalsUiState.ServerDown(
-                    detail = "phone not connected to EVE",
+                    detail = "phone not connected to $ASSISTANT_NAME",
                     staleApprovals = null,
                     fetchedAtEpochMs = 0L,
                 ),
@@ -85,7 +86,7 @@ class WearApprovalsScreenTest {
                 onRetryLink = {},
             )
         }
-        rule.onNodeWithText("phone not connected to EVE").assertIsDisplayed()
+        rule.onNodeWithText("phone not connected to $ASSISTANT_NAME").assertIsDisplayed()
     }
 
     // ---- a pending row (the four W's) --------------------------------------

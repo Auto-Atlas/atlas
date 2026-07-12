@@ -1,5 +1,6 @@
 package app.eve.ui.activity
 
+import app.eve.ASSISTANT_NAME
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -15,7 +16,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-/** The conversation feed list (what EVE actually did, newest first). */
+/** The conversation feed list (what Atlas actually did, newest first). */
 sealed interface ActivityUiState {
     data object Loading : ActivityUiState
     data class Loaded(val conversations: List<ConversationSummary>) : ActivityUiState
@@ -85,7 +86,7 @@ class ActivityViewModel(
 
     private fun describe(error: ApiError): String = when (error) {
         is ApiError.Offline -> "Off the tailnet."
-        is ApiError.NotConfigured -> "Not connected to EVE yet."
+        is ApiError.NotConfigured -> "Not connected to $ASSISTANT_NAME yet."
         is ApiError.Unauthorized -> "Invalid app token."
         else -> "Couldn't load activity."
     }

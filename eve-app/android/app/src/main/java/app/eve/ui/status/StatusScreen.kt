@@ -1,5 +1,6 @@
 package app.eve.ui.status
 
+import app.eve.ASSISTANT_NAME
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -164,14 +165,14 @@ fun StatusScreen(
             }
             Spacer(Modifier.padding(top = EveTheme.spacing.s2))
             Text(
-                "EVE reasons before answering. Turn it on for a hard question, off to go back to fast replies.",
+                "$ASSISTANT_NAME reasons before answering. Turn it on for a hard question, off to go back to fast replies.",
                 style = EveTheme.type.bodySm.copy(color = colors.textSecondary),
             )
         }
 
         Spacer(Modifier.padding(top = EveTheme.spacing.s2))
 
-        // ---- Barge-in toggle: let me talk over EVE (default off = speakerphone-safe) ----
+        // ---- Barge-in toggle: let me talk over Atlas (default off = speakerphone-safe) ----
         Column(
             Modifier
                 .fillMaxWidth()
@@ -181,7 +182,7 @@ fun StatusScreen(
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
-                    "Let me interrupt EVE",
+                    "Let me interrupt $ASSISTANT_NAME",
                     style = EveTheme.type.headline.copy(color = colors.textPrimary),
                     modifier = Modifier.weight(1f),
                 )
@@ -224,7 +225,7 @@ fun StatusScreen(
                 Spacer(Modifier.padding(top = EveTheme.spacing.s2))
                 Text(
                     if (state.glassesToolkitAvailable) {
-                        "When your Ray-Ban Meta or Oakley Meta glasses are connected, EVE looks through " +
+                        "When your Ray-Ban Meta or Oakley Meta glasses are connected, $ASSISTANT_NAME looks through " +
                             "the glasses camera and speaks out the glasses speaker."
                     } else {
                         "Meta's glasses toolkit isn't bundled in this build yet (it's a token-gated developer " +
@@ -235,7 +236,7 @@ fun StatusScreen(
             }
         }
 
-        // ---- Health (Health Connect → EVE): the owner's heart-first vitals feed ----
+        // ---- Health (Health Connect → Atlas): the owner's heart-first vitals feed ----
         if (state.healthSupported) {
             Spacer(Modifier.padding(top = EveTheme.spacing.s2))
             HealthCard(
@@ -263,7 +264,7 @@ fun StatusScreen(
             // tell the connection story (never fabricate engine numbers).
             !state.online ->
                 Text(
-                    "Connect to EVE to see engine telemetry.",
+                    "Connect to $ASSISTANT_NAME to see engine telemetry.",
                     style = EveTheme.type.bodySm.copy(color = colors.textTertiary),
                 )
 
@@ -288,7 +289,7 @@ fun StatusScreen(
                 .padding(EveTheme.spacing.padCard),
             verticalArrangement = Arrangement.spacedBy(EveTheme.spacing.s2),
         ) {
-            Text("Set up EVE again", style = EveTheme.type.headline.copy(color = colors.textPrimary))
+            Text("Set up $ASSISTANT_NAME again", style = EveTheme.type.headline.copy(color = colors.textPrimary))
             Text(
                 "Re-enter your name, re-enroll your voice, or update what matters to you.",
                 style = EveTheme.type.bodySm.copy(color = colors.textSecondary),
@@ -344,13 +345,13 @@ private fun HealthCard(
             state.healthAvailability == HealthAvailability.NOT_INSTALLED ->
                 Text(
                     "Health Connect isn't set up on this phone. Install or turn it on in your phone's " +
-                        "settings so EVE can read your heart rate and health from your watch.",
+                        "settings so $ASSISTANT_NAME can read your heart rate and health from your watch.",
                     style = EveTheme.type.bodySm.copy(color = colors.textSecondary),
                 )
 
             state.healthAvailability == HealthAvailability.PROVIDER_UPDATE_REQUIRED ->
                 Text(
-                    "Health Connect needs an update before EVE can read your health. Update it in your " +
+                    "Health Connect needs an update before $ASSISTANT_NAME can read your health. Update it in your " +
                         "phone's app store, then come back.",
                     style = EveTheme.type.bodySm.copy(color = colors.textSecondary),
                 )
@@ -358,7 +359,7 @@ private fun HealthCard(
             // Available but not (fully) permitted → ask.
             !state.healthPermitted -> {
                 Text(
-                    "Let EVE read your heart rate, sleep, steps, blood-oxygen, blood pressure and " +
+                    "Let $ASSISTANT_NAME read your heart rate, sleep, steps, blood-oxygen, blood pressure and " +
                         "workouts from your watch — so she knows how your heart's been.",
                     style = EveTheme.type.bodySm.copy(color = colors.textSecondary),
                 )
@@ -375,9 +376,9 @@ private fun HealthCard(
             else -> {
                 Text(
                     if (state.healthLastUploadAt == null) {
-                        "Connected. Not synced yet — sync to send your latest health to EVE."
+                        "Connected. Not synced yet — sync to send your latest health to $ASSISTANT_NAME."
                     } else {
-                        "Last synced ${relativeTime(state.healthLastUploadAt)}. EVE reads the last 24 hours " +
+                        "Last synced ${relativeTime(state.healthLastUploadAt)}. $ASSISTANT_NAME reads the last 24 hours " +
                             "from your watch; refreshes automatically every 30 minutes."
                     },
                     style = EveTheme.type.bodySm.copy(color = colors.textSecondary),

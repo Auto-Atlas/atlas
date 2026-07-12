@@ -1,5 +1,6 @@
 package app.eve.wear.livevoice
 
+import app.eve.ASSISTANT_NAME
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.down
 import androidx.compose.ui.test.junit4.createComposeRule
@@ -69,7 +70,7 @@ class WearLiveVoiceScreenTest {
     fun speaking_is_the_orb_alone() {
         render(VoiceState.Speaking)
         rule.onNodeWithTag("liveOrb").assertIsDisplayed()
-        rule.onNodeWithText("EVE is speaking").assertDoesNotExist()
+        rule.onNodeWithText("$ASSISTANT_NAME is speaking").assertDoesNotExist()
     }
 
     @Test

@@ -1,5 +1,6 @@
 package app.eve.ui.approvals
 
+import app.eve.ASSISTANT_NAME
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.eve.data.ApiError
@@ -188,7 +189,7 @@ class ApprovalsViewModel(
                 }
                 is CancelOutcome.Failed -> updateAgentCard(id) {
                     it.copy(cancelInFlight = false,
-                            detail = "cancel didn't reach EVE — check the connection and retry")
+                            detail = "cancel didn't reach $ASSISTANT_NAME — check the connection and retry")
                 }
             }
         }
@@ -214,7 +215,7 @@ class ApprovalsViewModel(
                 }
                 is RedirectOutcome.Failed -> updateAgentCard(id) {
                     it.copy(redirectInFlight = false,
-                            detail = "redirect didn't reach EVE — check the connection and retry")
+                            detail = "redirect didn't reach $ASSISTANT_NAME — check the connection and retry")
                 }
             }
         }

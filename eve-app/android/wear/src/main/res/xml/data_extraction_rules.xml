@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  EVE watch — data extraction rules (Android 12 / API 31+). Approval metadata relayed to the wrist
+  Atlas watch — data extraction rules (Android 12 / API 31+). Approval metadata relayed to the wrist
   (requester, amounts, summaries) must NEVER leave the device via Google cloud backup OR a device-
   to-device transfer. Both channels exclude every app-owned data domain, matching the
   android:allowBackup="false" intent for older API levels. If a domain isn't listed it defaults to

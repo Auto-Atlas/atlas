@@ -18,7 +18,7 @@ sealed interface WearApprovalsUiState {
     data class NoPhone(val reason: String) : WearApprovalsUiState
 
     /**
-     * The phone reached the watch but could NOT reach EVE (`serverReachable=false`). [detail] is the
+     * The phone reached the watch but could NOT reach Atlas (`serverReachable=false`). [detail] is the
      * phone's real error. If a previous good list exists it is carried in [staleApprovals] and MUST
      * be rendered explicitly as stale (with [fetchedAtEpochMs] driving the "from <time ago>" label).
      */
@@ -28,10 +28,10 @@ sealed interface WearApprovalsUiState {
         val fetchedAtEpochMs: Long,
     ) : WearApprovalsUiState
 
-    /** Reached EVE, nothing pending. The REAL empty state, not filler. */
+    /** Reached Atlas, nothing pending. The REAL empty state, not filler. */
     data object Empty : WearApprovalsUiState
 
-    /** Reached EVE, one or more pending approvals. */
+    /** Reached Atlas, one or more pending approvals. */
     data class Pending(val approvals: List<Approval>) : WearApprovalsUiState
 }
 

@@ -1,5 +1,6 @@
 package app.eve.wear.approvals
 
+import app.eve.ASSISTANT_NAME
 import app.eve.data.wear.Outcome
 import app.eve.data.wear.WearActionResult
 import kotlin.test.Test
@@ -42,7 +43,7 @@ class WearActionCopyTest {
     @Test
     fun server_unreachable_shows_phone_detail() {
         val r = WearActionCopy.forResult(result(Outcome.SERVER_UNREACHABLE, "connection refused"), isInvoice = false)
-        assertEquals("Phone can't reach EVE: connection refused", r.message)
+        assertEquals("Phone can't reach $ASSISTANT_NAME: connection refused", r.message)
         assertEquals(WearActionState.Tone.Negative, r.tone)
     }
 

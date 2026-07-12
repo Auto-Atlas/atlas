@@ -44,10 +44,10 @@ sealed interface VoiceState {
     /** Capturing you now; [level] (0..1) drives the live input meter / orb lean. */
     data class Hearing(val level: Float) : VoiceState
 
-    /** EVE is thinking (the brain form). The controller owns the think timeout. */
+    /** Atlas is thinking (the brain form). The controller owns the think timeout. */
     data object Thinking : VoiceState
 
-    /** EVE is speaking (the genie form). Tap-to-interrupt returns the floor. */
+    /** Atlas is speaking (the genie form). Tap-to-interrupt returns the floor. */
     data object Speaking : VoiceState
 
     /** Mid-session drop / network change → auto-retry with backoff (controller-driven). */
@@ -75,15 +75,15 @@ sealed interface VoiceEvent {
     /** Server VAD: you started speaking. */
     data object VadUserStart : VoiceEvent
 
-    /** Server VAD: you stopped (end of turn) → EVE thinks. */
+    /** Server VAD: you stopped (end of turn) → Atlas thinks. */
     data object VadUserEnd : VoiceEvent
 
     data object BotThinking : VoiceEvent
 
-    /** EVE began speaking. */
+    /** Atlas began speaking. */
     data object BotSpeaking : VoiceEvent
 
-    /** EVE finished speaking / server went idle → back to your turn (loop closed). */
+    /** Atlas finished speaking / server went idle → back to your turn (loop closed). */
     data object BotDone : VoiceEvent
 
     /** Audio bytes are flowing again. */
@@ -101,13 +101,13 @@ sealed interface VoiceEvent {
     /** User tapped to hang up. */
     data object HangUp : VoiceEvent
 
-    /** User tapped to interrupt EVE (barge-in) and reclaim the floor. */
+    /** User tapped to interrupt Atlas (barge-in) and reclaim the floor. */
     data object Interrupt : VoiceEvent
 
-    /** Server transcript of what EVE HEARD (display only — never changes the machine). */
+    /** Server transcript of what Atlas HEARD (display only — never changes the machine). */
     data class UserTranscript(val text: String) : VoiceEvent
 
-    /** Server transcript of what EVE SAID (display only — never changes the machine). */
+    /** Server transcript of what Atlas SAID (display only — never changes the machine). */
     data class BotTranscript(val text: String) : VoiceEvent
 }
 

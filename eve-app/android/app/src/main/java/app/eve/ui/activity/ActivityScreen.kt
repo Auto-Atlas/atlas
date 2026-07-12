@@ -1,5 +1,6 @@
 package app.eve.ui.activity
 
+import app.eve.ASSISTANT_NAME
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -73,7 +74,7 @@ private fun FeedView(
     ) {
         Text("Activity", style = EveTheme.type.titleXl.copy(color = colors.textPrimary))
         Text(
-            "What EVE has been doing.",
+            "What $ASSISTANT_NAME has been doing.",
             style = EveTheme.type.bodySm.copy(color = colors.textSecondary),
         )
 
@@ -90,11 +91,11 @@ private fun FeedView(
             is ActivityUiState.Empty ->
                 EmptyState(
                     title = "Nothing yet",
-                    body = "Once you talk to EVE, your conversations show up here — newest first.",
+                    body = "Once you talk to $ASSISTANT_NAME, your conversations show up here — newest first.",
                 )
 
             is ActivityUiState.Error ->
-                EmptyState(title = "Can't reach EVE", body = state.message)
+                EmptyState(title = "Can't reach $ASSISTANT_NAME", body = state.message)
 
             is ActivityUiState.Loaded ->
                 LazyColumn(
@@ -243,7 +244,7 @@ private fun ChatBubble(msg: ConversationMessage) {
     val border = if (isUser) colors.accentLine else colors.borderDefault
     Column(Modifier.fillMaxWidth(), horizontalAlignment = align) {
         Text(
-            text = if (isUser) "You" else "EVE",
+            text = if (isUser) "You" else "$ASSISTANT_NAME",
             style = EveTheme.type.micro.copy(color = colors.textTertiary),
             modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
         )
@@ -259,7 +260,7 @@ private fun ChatBubble(msg: ConversationMessage) {
     }
 }
 
-/** A tool call — reads as an ACTION EVE took, not a chat bubble. */
+/** A tool call — reads as an ACTION Atlas took, not a chat bubble. */
 @Composable
 private fun ToolRow(msg: ConversationMessage) {
     val colors = EveTheme.colors
@@ -305,7 +306,7 @@ private fun ToolRow(msg: ConversationMessage) {
     }
 }
 
-/** An agent delegation — EVE handed work to another brain (hermes / codex / …). */
+/** An agent delegation — Atlas handed work to another brain (hermes / codex / …). */
 @Composable
 private fun DelegationRow(msg: ConversationMessage) {
     val colors = EveTheme.colors

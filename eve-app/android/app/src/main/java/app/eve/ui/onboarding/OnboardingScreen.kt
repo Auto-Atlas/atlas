@@ -1,5 +1,6 @@
 package app.eve.ui.onboarding
 
+import app.eve.ASSISTANT_NAME
 import android.Manifest
 import android.content.pm.PackageManager
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -124,7 +125,7 @@ private fun StepHeader(title: String, subtitle: String?) {
 @Composable
 private fun WelcomeStep(busy: Boolean, onContinue: () -> Unit) {
     StepHeader(
-        title = "Hi, I'm EVE.",
+        title = "Hi, I'm $ASSISTANT_NAME.",
         subtitle = "I'm your private chief-of-staff. Let's spend two minutes so I get to know you — " +
             "your name, your voice, and what matters to you.",
     )
@@ -314,7 +315,7 @@ private fun DoneStep(state: OnboardingUiState, onEnter: () -> Unit) {
     )
     Spacer(Modifier.height(EveTheme.spacing.s2))
     EveButton(
-        text = "Enter EVE",
+        text = "Enter $ASSISTANT_NAME",
         onClick = onEnter,
         modifier = Modifier.fillMaxWidth(),
     )

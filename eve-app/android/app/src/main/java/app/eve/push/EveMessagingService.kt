@@ -47,13 +47,13 @@ class EveMessagingService : FirebaseMessagingService() {
             TYPE_MORNING_RITUAL -> {
                 Log.d(TAG, "morning_ritual push -> local audio wake")
                 // PRIMARY, connection-free path: start the foreground service that PLAYS the cached
-                // wake WAV (EVE's real voice) LOCALLY on the alarm stream — works from Doze, no
+                // wake WAV (Atlas's real voice) LOCALLY on the alarm stream — works from Doze, no
                 // WebRTC, no mic, no echo. The FCM `text` is passed as a last-resort TTS fallback.
                 RitualPlaybackService.start(applicationContext, message.data["text"])
                 // Do NOT also fire the auto-connecting Talk screen: the whys play LOCALLY now, so an
                 // auto-connected voice screen would just show "connected" with nothing to deliver
                 // (confusing). The playback service turns the screen on (wake lock) + shows its own
-                // notification; tapping it opens EVE normally so you can choose to talk.
+                // notification; tapping it opens Atlas normally so you can choose to talk.
             }
             TYPE_SET_ALARM -> {
                 Log.d(TAG, "set_alarm push -> arm reminder alarm")

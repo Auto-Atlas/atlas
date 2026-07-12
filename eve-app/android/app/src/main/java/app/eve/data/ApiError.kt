@@ -8,7 +8,7 @@ sealed interface ApiError {
     /** No base URL / token configured yet — the app should route to the connect screen. */
     data object NotConfigured : ApiError
 
-    /** Could not reach EVE (off the tailnet, DNS, connection refused, timeout). */
+    /** Could not reach Atlas (off the tailnet, DNS, connection refused, timeout). */
     data class Offline(val cause: String) : ApiError
 
     /** 401 — bad/expired app token. */

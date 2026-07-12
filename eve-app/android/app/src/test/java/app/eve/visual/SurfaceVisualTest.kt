@@ -1,5 +1,6 @@
 package app.eve.visual
 
+import app.eve.ASSISTANT_NAME
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
@@ -73,7 +74,7 @@ class SurfaceVisualTest {
     fun `blank title falls back to a per-kind default`() {
         assertEquals("Your desktop", SurfaceVisual.parse("desktop_screen", "", "deadbeef", "")?.title)
         assertEquals("Image", SurfaceVisual.parse("image", "  ", "deadbeef", "")?.title)
-        assertEquals("From EVE", SurfaceVisual.parse("note", "", "", "hi")?.title)
+        assertEquals("From $ASSISTANT_NAME", SurfaceVisual.parse("note", "", "", "hi")?.title)
     }
 
     @Test

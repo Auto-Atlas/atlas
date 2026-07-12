@@ -8,7 +8,7 @@ import android.os.Build
 import android.util.Log
 
 /**
- * Rings the phone like a real alarm clock when EVE sets a reminder.
+ * Rings the phone like a real alarm clock when Atlas sets a reminder.
  *
  * The server sends an FCM data push (`set_alarm` / `cancel_alarm`, see [app.eve.push.EveMessagingService])
  * that lands here even if the app was killed. Each reminder is persisted (so it survives a reboot)
@@ -150,7 +150,7 @@ object ReminderAlarmScheduler {
     private fun arm(context: Context, reminder: Reminder) {
         val am = alarmManager(context)
         val op = operationIntent(context, reminder.id)
-        // Tapping the system alarm affordance opens EVE.
+        // Tapping the system alarm affordance opens Atlas.
         val show = PendingIntent.getActivity(
             context,
             reminder.id.hashCode(),
@@ -159,7 +159,7 @@ object ReminderAlarmScheduler {
         )
         // Prefer an exact alarm-clock alarm. Some OEM builds still enforce the exact-alarm permission
         // even for setAlarmClock, so guard with canScheduleExactAlarms and ALWAYS catch
-        // SecurityException — a scheduling failure must never crash EVE. Falls back to an inexact,
+        // SecurityException — a scheduling failure must never crash Atlas. Falls back to an inexact,
         // Doze-tolerant alarm that still fires (just not to the exact minute). Mirrors RitualScheduler.
         val canExact = Build.VERSION.SDK_INT < Build.VERSION_CODES.S || am.canScheduleExactAlarms()
         try {

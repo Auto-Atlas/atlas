@@ -15,7 +15,7 @@ import app.eve.R
 /**
  * The reminder-alarm notification. Its own channel (separate from the morning ritual) carries the
  * ALARM audio attributes + the default alarm ringtone + vibration, and it posts a FULL-SCREEN intent
- * (category=alarm) so it wakes a locked phone and rings like an alarm clock. Tapping it opens EVE.
+ * (category=alarm) so it wakes a locked phone and rings like an alarm clock. Tapping it opens Atlas.
  *
  * Graceful degrade: on Android 14+ the OS may withhold the full-screen-intent privilege; the system
  * then shows this as a high-priority heads-up notification the user taps — degraded, but it still

@@ -1,5 +1,6 @@
 package app.eve.ui.talk
 
+import app.eve.ASSISTANT_NAME
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
@@ -41,9 +42,9 @@ class InCallControlsTest {
             }
         }
 
-        rule.onNodeWithContentDescription("Mic silenced locally. Tap to let EVE hear you again.", useUnmergedTree = true)
+        rule.onNodeWithContentDescription("Mic silenced locally. Tap to let $ASSISTANT_NAME hear you again.", useUnmergedTree = true)
             .assertIsDisplayed()
-        rule.onNodeWithContentDescription("Mic silenced locally. Tap to let EVE hear you again.", useUnmergedTree = true)
+        rule.onNodeWithContentDescription("Mic silenced locally. Tap to let $ASSISTANT_NAME hear you again.", useUnmergedTree = true)
             .performClick()
 
         assertTrue("Tapping the mute control must invoke onToggleMute", toggledMute)

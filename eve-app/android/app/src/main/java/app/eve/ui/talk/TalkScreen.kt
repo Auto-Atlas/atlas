@@ -1,5 +1,6 @@
 package app.eve.ui.talk
 
+import app.eve.ASSISTANT_NAME
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -60,7 +61,7 @@ import app.eve.voice.VoiceState
 /**
  * The Talk screen — a tap-to-toggle conversational voice session over native WebRTC (spec §3).
  * Tap the orb to connect; the floor is governed by phone_bot's server-side VAD; tap again to hang
- * up; while EVE speaks, tap to interrupt (barge-in). The orb never animates speech over silence —
+ * up; while Atlas speaks, tap to interrupt (barge-in). The orb never animates speech over silence —
  * a MediaStalled → NoAudio shows the honest "connected but no audio" state.
  *
  * RECORD_AUDIO is requested on the first tap with a verbatim rationale; soft-deny re-asks in-app;
@@ -138,7 +139,7 @@ fun TalkScreen(viewModel: TalkViewModel, modifier: Modifier = Modifier, autoStar
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top,
     ) {
-        Text("Talk to EVE", style = EveTheme.type.titleXl.copy(color = colors.textPrimary))
+        Text("Talk to $ASSISTANT_NAME", style = EveTheme.type.titleXl.copy(color = colors.textPrimary))
         Spacer(Modifier.height(EveTheme.spacing.s2))
 
         // Owner-tier banner — phone_bot asserts owner for the phone session (spec §3/§6).
@@ -146,7 +147,7 @@ fun TalkScreen(viewModel: TalkViewModel, modifier: Modifier = Modifier, autoStar
 
         Spacer(Modifier.height(EveTheme.spacing.s3))
 
-        // Thinking toggle (Epic T) — flip EVE's reasoning right here on the Talk screen.
+        // Thinking toggle (Epic T) — flip Atlas's reasoning right here on the Talk screen.
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(EveTheme.spacing.s2),
@@ -182,7 +183,7 @@ fun TalkScreen(viewModel: TalkViewModel, modifier: Modifier = Modifier, autoStar
 
         Spacer(Modifier.height(EveTheme.spacing.s3))
 
-        // ---- Surfaced visual card (surface_visual): EVE SHOWS something. Sits above the tool/
+        // ---- Surfaced visual card (surface_visual): Atlas SHOWS something. Sits above the tool/
         // delegation surfaces and never blocks the voice controls; dismissible. ----
         visual?.let { card ->
             VisualCardView(card = card, onDismiss = { viewModel.dismissVisual() })
@@ -245,7 +246,7 @@ fun TalkScreen(viewModel: TalkViewModel, modifier: Modifier = Modifier, autoStar
                 textAlign = TextAlign.Center,
             )
             host != null -> Text(
-                "Connected to EVE",
+                "Connected to $ASSISTANT_NAME",
                 style = EveTheme.type.bodySm.copy(color = colors.textSecondary),
                 textAlign = TextAlign.Center,
             )
@@ -262,7 +263,7 @@ fun TalkScreen(viewModel: TalkViewModel, modifier: Modifier = Modifier, autoStar
             )
         }
 
-        // Interrupt affordance while EVE speaks.
+        // Interrupt affordance while Atlas speaks.
         if (state == VoiceState.Speaking) {
             Spacer(Modifier.height(EveTheme.spacing.s2))
             Text(
@@ -316,7 +317,7 @@ internal fun InCallControls(
         horizontalArrangement = Arrangement.Center,
     ) {
         ControlIconButton(
-            // "Local silence" — this only gates YOUR mic locally (EVE stops hearing you). It is NOT
+            // "Local silence" — this only gates YOUR mic locally (Atlas stops hearing you). It is NOT
             // an interrupt/barge-in (that real-time floor-reclaim is a later phase). Naming it "mute"
             // overclaimed; the label reflects what the control actually does today.
             icon = if (controls.micMuted) Icons.Filled.MicOff else Icons.Filled.Mic,
@@ -324,14 +325,14 @@ internal fun InCallControls(
             iconTint = if (controls.micMuted) colors.danger else colors.textSecondary,
             background = if (controls.micMuted) colors.dangerSoft else colors.surfaceRaised,
             contentDescription = if (controls.micMuted) {
-                "Mic silenced locally. Tap to let EVE hear you again."
+                "Mic silenced locally. Tap to let $ASSISTANT_NAME hear you again."
             } else {
                 "Mic on. Tap to silence your mic locally."
             },
             onClick = onToggleMute,
         )
         Spacer(Modifier.width(EveTheme.spacing.s6))
-        // Always-visible kill switch: ends the session instantly if EVE ever loops or misbehaves.
+        // Always-visible kill switch: ends the session instantly if Atlas ever loops or misbehaves.
         ControlIconButton(
             icon = Icons.Filled.CallEnd,
             label = "End",
@@ -409,7 +410,7 @@ private fun MicRationale(permanentlyDenied: Boolean, onAllow: () -> Unit) {
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
-            "EVE needs your mic to hear you. Your audio goes only to your EVE on your private " +
+            "$ASSISTANT_NAME needs your mic to hear you. Your audio goes only to your $ASSISTANT_NAME on your private " +
                 "tailnet — never to the cloud.",
             style = EveTheme.type.bodySm.copy(color = colors.textSecondary),
             textAlign = TextAlign.Center,
@@ -427,7 +428,7 @@ private fun MicRationale(permanentlyDenied: Boolean, onAllow: () -> Unit) {
     }
 }
 
-/** Fires a haptic tick when the floor changes hands (you ⇄ EVE) — spec §3 a11y. */
+/** Fires a haptic tick when the floor changes hands (you ⇄ Atlas) — spec §3 a11y. */
 @Composable
 private fun HapticTurnCues(state: VoiceState, haptics: androidx.compose.ui.hapticfeedback.HapticFeedback) {
     val key = when (state) {

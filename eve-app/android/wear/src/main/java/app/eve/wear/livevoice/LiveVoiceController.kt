@@ -114,7 +114,7 @@ class LiveVoiceController(
         reconnectAttempts = 0
         // A NEW call always starts with a live mic. Mute persists across MID-call reconnects
         // (the YourTurn re-assert below), but carrying it into the next user-initiated call
-        // produced a deaf-looking EVE on hardware (2026-07-10): mute tapped in call #1 silently
+        // produced a deaf-looking Atlas on hardware (2026-07-10): mute tapped in call #1 silently
         // survived into call #2 and "she stopped responding".
         _controls.value = _controls.value.copy(micMuted = false)
         client.setMicMuted(false)
@@ -144,7 +144,7 @@ class LiveVoiceController(
         client.setMicMuted(muted)
     }
 
-    /** User tapped to interrupt EVE while it speaks. */
+    /** User tapped to interrupt Atlas while it speaks. */
     fun interrupt() {
         if (_state.value == VoiceState.Speaking || _state.value == VoiceState.NoAudio) {
             client.interrupt()
@@ -153,9 +153,9 @@ class LiveVoiceController(
     }
 
     /**
-     * Tap while EVE is speaking: stop her playback AND hand the floor back with a LIVE mic. If the
+     * Tap while Atlas is speaking: stop her playback AND hand the floor back with a LIVE mic. If the
      * user had muted himself, this unmutes first (truthfully — the client's outbound mic reopens) so
-     * a mid-utterance tap is never a silent no-op that leaves a deaf EVE.
+     * a mid-utterance tap is never a silent no-op that leaves a deaf Atlas.
      */
     fun interruptAndUnmute() {
         if (_controls.value.micMuted) {

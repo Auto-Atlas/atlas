@@ -1,5 +1,6 @@
 package app.eve.wear.ui
 
+import app.eve.ASSISTANT_NAME
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -38,7 +39,7 @@ import app.eve.data.models.Approval
 import app.eve.wear.approvals.WearApprovalsUiState
 
 /**
- * The pending-approvals LIST — Wear-native (ScalingLazyColumn + TimeText), EVE-branded. Renders each
+ * The pending-approvals LIST — Wear-native (ScalingLazyColumn + TimeText), Atlas-branded. Renders each
  * honest [WearApprovalsUiState] with REAL copy (no filler): a Loading spinner, the no-phone /
  * server-down legs named explicitly (server-down shows the phone's real detail and, if a prior list
  * exists, labels it as stale from <time ago>), a genuine Empty, or the pending rows.
@@ -139,7 +140,7 @@ private fun ServerDownContent(
     val stale = state.staleApprovals
     if (stale.isNullOrEmpty()) {
         CenteredColumn {
-            StatusTitle("Phone can't reach EVE", WearEveColors.warning)
+            StatusTitle("Phone can't reach $ASSISTANT_NAME", WearEveColors.warning)
             BodyText(state.detail)
         }
     } else {
@@ -164,7 +165,7 @@ private fun ApprovalList(
     onSelect: (Approval) -> Unit,
     headerColor: Color = WearEveColors.textSecondary,
     subheader: String? = null,
-    // Optional entry chip pinned above the header (the "Talk to EVE" mic entry on the live list).
+    // Optional entry chip pinned above the header (the "Talk to Atlas" mic entry on the live list).
     topEntry: (@Composable () -> Unit)? = null,
 ) {
     val listState = rememberScalingLazyListState()

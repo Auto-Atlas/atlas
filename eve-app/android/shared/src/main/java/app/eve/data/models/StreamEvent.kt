@@ -57,7 +57,7 @@ data class StreamEvent(
     // ---- Phone camera vision (look_via_phone) ----
     /** capture_frame correlation id — plain lowercase hex, 8-32 chars (see vision_frames.valid_id). */
     @SerialName("request_id") val requestId: String? = null,
-    /** What EVE wants to see (may be empty); shown to the user in the "EVE is looking…" indicator. */
+    /** What Atlas wants to see (may be empty); shown to the user in the "Atlas is looking…" indicator. */
     val prompt: String? = null,
     /**
      * Capture source hint on capture_frame: "any" | "phone" | "glasses". Missing/unknown → treated
@@ -65,7 +65,7 @@ data class StreamEvent(
      * "any" prefers the Meta glasses when they're connected + enabled, else the phone.
      */
     val source: String? = null,
-    // ---- Surfaced visuals (surface_visual) — EVE SHOWS something on the phone ----
+    // ---- Surfaced visuals (surface_visual) — Atlas SHOWS something on the phone ----
     /** Visual kind: "desktop_screen" | "image" | "note" (see visual_tool.py). */
     val kind: String? = null,
     /** Short card title (server pre-fills a default; may still be empty). */
@@ -125,7 +125,7 @@ data class StreamEvent(
         // Phone camera vision: the server asks the app to snap one frame.
         const val TYPE_CAPTURE_FRAME = "capture_frame"
 
-        // Surfaced visual: EVE pushes a card (screenshot / image / note) for the app to SHOW.
+        // Surfaced visual: Atlas pushes a card (screenshot / image / note) for the app to SHOW.
         const val TYPE_SURFACE_VISUAL = "surface_visual"
 
         // Agent talk-back lifecycle: a delegated agent (Hermes/Claude/Codex) working a real

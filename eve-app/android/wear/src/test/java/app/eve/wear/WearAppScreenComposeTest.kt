@@ -1,5 +1,6 @@
 package app.eve.wear
 
+import app.eve.ASSISTANT_NAME
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
@@ -11,7 +12,7 @@ import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
 
 /**
- * Robolectric render of [WearAppScreen] for each [PhoneLinkState], asserting the EVE wordmark and
+ * Robolectric render of [WearAppScreen] for each [PhoneLinkState], asserting the Atlas wordmark and
  * the exact status line. Mirrors the phone app's compose-test convention
  * (RobolectricTestRunner + @Config(sdk=34) + NATIVE graphics + createComposeRule).
  */
@@ -26,7 +27,7 @@ class WearAppScreenComposeTest {
     @Test
     fun always_shows_the_eve_wordmark() {
         rule.setContent { WearAppScreen(PhoneLinkState.Checking) }
-        rule.onNodeWithText("EVE").assertIsDisplayed()
+        rule.onNodeWithText("$ASSISTANT_NAME").assertIsDisplayed()
     }
 
     @Test

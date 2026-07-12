@@ -1,5 +1,6 @@
 package app.eve.ui.skills
 
+import app.eve.ASSISTANT_NAME
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -99,10 +100,10 @@ class SkillsViewModel(
     }
 
     private fun describe(error: ApiError): String = when (error) {
-        is ApiError.NotConfigured -> "not connected to EVE yet"
+        is ApiError.NotConfigured -> "not connected to $ASSISTANT_NAME yet"
         is ApiError.Offline -> "off the tailnet"
         is ApiError.Unauthorized -> "invalid app token"
-        is ApiError.NotFound -> "EVE doesn't have that skill"
+        is ApiError.NotFound -> "$ASSISTANT_NAME doesn't have that skill"
         is ApiError.AlreadyResolved -> "already changed"
         is ApiError.Http -> "server error ${error.status}"
         is ApiError.Decode -> "unexpected response"

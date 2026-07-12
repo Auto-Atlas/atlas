@@ -1,5 +1,6 @@
 package app.eve.wear.notify
 
+import app.eve.ASSISTANT_NAME
 import app.eve.data.wear.ApprovalsSnapshot
 import app.eve.wear.approvals.TestApprovals
 import kotlin.test.Test
@@ -63,7 +64,7 @@ class NotifyPlanTest {
         // Not authoritative: the approvals may still be pending — never cancel, never re-notify, and
         // leave the persisted id set EXACTLY as it was.
         val prior = setOf("a1", "a2")
-        val snapshot = TestApprovals.serverDownSnapshot("cannot reach EVE: timeout")
+        val snapshot = TestApprovals.serverDownSnapshot("cannot reach $ASSISTANT_NAME: timeout")
         val plan = planApprovalNotifications(previouslyNotified = prior, snapshot = snapshot)
 
         assertTrue(plan.toNotify.isEmpty())

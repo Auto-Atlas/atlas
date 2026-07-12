@@ -1,5 +1,6 @@
 package app.eve.wear.livevoice
 
+import app.eve.ASSISTANT_NAME
 import android.Manifest
 import android.content.pm.PackageManager
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -50,7 +51,7 @@ import kotlinx.coroutines.launch
  * The LIVE-VOICE screen — the real call, and the whole screen is the orb (2026-07-11 wrist UX:
  * "app opens → call auto-starts → the orb is the screen; it doesn't even have to say it"). When a
  * door is configured and the mic is granted the call dials itself on entry ([onAutoStart]); the orb
- * then morphs through EVE's REAL server states with NO labels, buttons, or status text on the happy
+ * then morphs through Atlas's REAL server states with NO labels, buttons, or status text on the happy
  * path.
  *
  * The orb's press contract, disambiguated by DURATION (one press fires at most one action):
@@ -69,7 +70,7 @@ import kotlinx.coroutines.launch
  * count as the (reversible) mute toggle — but a released press can never end the call.
  *
  * The honesty spine holds: states the owner must ACT on — no door, a named error, or "connected but
- * no audio" — still show their exact copy (and NoAudio still shows EVE's transcript, so her words
+ * no audio" — still show their exact copy (and NoAudio still shows Atlas's transcript, so her words
  * reach the wrist even when her voice can't). Nothing is faked, no state is silent.
  *
  * Stateless over the ViewModel: it renders the handed [state] / [controls] / [transcript] and calls
@@ -88,7 +89,7 @@ fun WearLiveVoiceScreen(
     onAutoStart: () -> Unit,
     onMicPermissionDenied: () -> Unit,
     modifier: Modifier = Modifier,
-    // Deferred read: EVE's real output level for the ring's Speaking pulse (see JarvisRing).
+    // Deferred read: Atlas's real output level for the ring's Speaking pulse (see JarvisRing).
     botLevel: () -> Float = { 0f },
 ) {
     val context = LocalContext.current
@@ -228,7 +229,7 @@ fun WearLiveVoiceScreen(
             }
 
             // Honesty spine: only states the owner must act on carry text — the happy path is the
-            // orb alone. NoAudio also shows EVE's latest words so her reply reaches the wrist when
+            // orb alone. NoAudio also shows Atlas's latest words so her reply reaches the wrist when
             // her voice can't.
             if (showsHonestText(state)) {
                 Spacer(Modifier.size(6.dp))
@@ -244,7 +245,7 @@ fun WearLiveVoiceScreen(
                     transcript.lastOrNull()?.let { line ->
                         Spacer(Modifier.size(4.dp))
                         Text(
-                            text = (if (line.speaker == LiveTranscriptLine.Speaker.You) "You: " else "EVE: ") + line.text,
+                            text = (if (line.speaker == LiveTranscriptLine.Speaker.You) "You: " else "$ASSISTANT_NAME: ") + line.text,
                             color = WearEveColors.textSecondary,
                             style = MaterialTheme.typography.caption2,
                             textAlign = TextAlign.Center,

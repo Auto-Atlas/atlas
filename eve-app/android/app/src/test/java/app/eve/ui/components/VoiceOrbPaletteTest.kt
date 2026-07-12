@@ -8,7 +8,7 @@ import kotlin.test.assertNotEquals
 
 /**
  * The Talk orb must read its conversation state through COLOR — the per-state speaking palette
- * ported from the EVE desktop stage (idle teal, listening sky-blue, thinking purple, speaking
+ * ported from the Atlas desktop stage (idle teal, listening sky-blue, thinking purple, speaking
  * amber, problems red), not a single teal for everything. Pure mapping, JVM-testable.
  */
 class VoiceOrbPaletteTest {

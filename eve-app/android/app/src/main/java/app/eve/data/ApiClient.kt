@@ -42,7 +42,7 @@ import kotlinx.serialization.json.putJsonArray
 import kotlin.coroutines.cancellation.CancellationException
 
 /**
- * Typed Ktor client for the EVE approval API. CIO engine by default; an alternate engine
+ * Typed Ktor client for the Atlas approval API. CIO engine by default; an alternate engine
  * (e.g. MockEngine) can be injected for tests. Bearer token + base URL are pulled FRESH from
  * the provided [connection] lambda for every call, so rotating credentials in-app takes effect
  * without rebuilding the client.
@@ -80,7 +80,7 @@ class ApiClient(
         call(HttpMethod.Post, "/v1/approvals/$id/deny") { decode(it) }
 
     /**
-     * Push-to-talk (watch): sends ONE utterance to EVE's full brain (`POST /v1/ask {"text": ...}`)
+     * Push-to-talk (watch): sends ONE utterance to Atlas's full brain (`POST /v1/ask {"text": ...}`)
      * and returns its `{"reply": "..."}`. The brain leg can take a while (tool calls, model latency),
      * so this call gets a longer [requestTimeoutMs] than the default 15s — the watch awaits 60s and
      * the server's own brain leg is capped at 50s, so 55s here sits honestly between them (each leg
@@ -96,7 +96,7 @@ class ApiClient(
 
     /**
      * v2 NATIVE watch voice turn: uploads ONE recorded utterance as base64 WAV to
-     * `POST /v1/voice/turn` and returns EVE's own STT transcript + brain reply + her synthesized voice
+     * `POST /v1/voice/turn` and returns Atlas's own STT transcript + brain reply + her synthesized voice
      * (16 kHz mono PCM16 WAV, base64) — no Google in the path. [audioB64] is a base64-encoded WAV
      * (RIFF, mono, 16-bit PCM at 16k). The server chains STT -> brain -> TTS, so this leg is the
      * longest of all: it gets [VOICE_TURN_TIMEOUT_MS] (65s), which sits below the watch's 75s channel
@@ -120,7 +120,7 @@ class ApiClient(
     /**
      * Health v2: forwards ONE watch-raised heart-rate alert to `POST /v1/health/event`. The body
      * mirrors the server contract ({"type", "bpm", "threshold_bpm", "observed_at", "source"});
-     * the sidecar stamps its own receive time and the initiative engine turns it into EVE's
+     * the sidecar stamps its own receive time and the initiative engine turns it into Atlas's
      * spoken warning. Failures surface as honest [ApiError]s — the caller logs them LOUDLY
      * (a swallowed health alert would be the worst silent fallback in the app).
      */
@@ -268,7 +268,7 @@ class ApiClient(
      * (`POST /v1/health/snapshot`, same bearer). [snapshot] is the already-built JSON object
      * ([app.eve.health.HealthSnapshot] encoded with EveWireJson) — ApiClient stays free of the health
      * DTO and just posts it, exactly like [uploadVisionFrame] posts its frame body. The sidecar stamps
-     * it and stores it for EVE's `health_status` tool; it replies `{"ok": true, ...}`. Every failure is
+     * it and stores it for Atlas's `health_status` tool; it replies `{"ok": true, ...}`. Every failure is
      * an honest [ApiResult.Err] — never a fake OK.
      */
     suspend fun uploadHealthSnapshot(
@@ -277,7 +277,7 @@ class ApiClient(
         call(HttpMethod.Post, "/v1/health/snapshot", jsonBody = snapshot) { decode(it) }
 
     /**
-     * surface_visual: fetches ONE surfaced image (a desktop screenshot or a picture EVE chose to
+     * surface_visual: fetches ONE surfaced image (a desktop screenshot or a picture Atlas chose to
      * show) from the authenticated `GET /v1/visual/{id}`, returning the raw `image/jpeg` bytes for
      * BitmapFactory to decode. [visualId] is plain lowercase hex (the event's `visual_id`); it is a
      * single, already-validated path segment so no extra encoding is needed. Reads are
@@ -287,7 +287,7 @@ class ApiClient(
     suspend fun fetchVisual(visualId: String): ApiResult<ByteArray> =
         call(HttpMethod.Get, "/v1/visual/$visualId") { it.readBytes() }
 
-    // ---- canonical OpenJarvis-proxied feed/status (the rich "what EVE did" surfaces) ----
+    // ---- canonical OpenJarvis-proxied feed/status (the rich "what Atlas did" surfaces) ----
 
     suspend fun getActivityFeed(limit: Int = 25): ApiResult<app.eve.data.models.ActivityFeed> =
         call(HttpMethod.Get, "/v1/activity/feed", query = mapOf("limit" to limit.toString())) { decode(it) }
@@ -410,7 +410,7 @@ class ApiClient(
         query: Map<String, String> = emptyMap(),
         jsonBody: JsonObject? = null,
         // Per-call override of the client-wide request/socket timeout, for a long leg like /v1/ask
-        // (EVE's brain). Null keeps the default 15s installed in the plugin above.
+        // (Atlas's brain). Null keeps the default 15s installed in the plugin above.
         requestTimeoutMs: Long? = null,
         parse: suspend (HttpResponse) -> T,
     ): ApiResult<T> {

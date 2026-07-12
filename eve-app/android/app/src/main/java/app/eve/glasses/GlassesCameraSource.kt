@@ -32,7 +32,7 @@ interface GlassesCameraSource {
 
     /**
      * Capture ONE frame from the glasses and return it as an upload-ready base64 JPEG (NO_WRAP, the
-     * same shape the phone path uploads). [prompt] is EVE's "what I want to see" hint — passed
+     * same shape the phone path uploads). [prompt] is Atlas's "what I want to see" hint — passed
      * through for any on-glasses/on-phone indicator, never validated.
      */
     suspend fun capture(prompt: String): GlassesCaptureResult

@@ -1,5 +1,6 @@
 package app.eve.push
 
+import app.eve.ASSISTANT_NAME
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -124,7 +125,7 @@ object Notifications {
         val review = reviewContentIntent(context, approvalId)
         val deny = denyBroadcastIntent(context, approvalId)
         val body =
-            "EVE couldn't reach the server to deny this request — it's still pending. " +
+            "$ASSISTANT_NAME couldn't reach the server to deny this request — it's still pending. " +
                 "Retry Deny, or open to review."
         val n = NotificationCompat.Builder(context, CHANNEL_APPROVALS)
             .setSmallIcon(R.drawable.ic_launcher_foreground)

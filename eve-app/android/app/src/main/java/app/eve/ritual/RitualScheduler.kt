@@ -8,7 +8,7 @@ import android.os.Build
 import java.util.Calendar
 
 /**
- * Schedules EVE's morning ritual as a real alarm-clock alarm.
+ * Schedules Atlas's morning ritual as a real alarm-clock alarm.
  *
  * Uses [AlarmManager.setAlarmClock], which is exempt from Doze/battery optimization and — unlike
  * `setExactAndAllowWhileIdle` — does NOT require the `SCHEDULE_EXACT_ALARM` permission, so it works
@@ -112,7 +112,7 @@ object RitualScheduler {
         val am = alarmManager(context)
         val op = operationIntent(context)
         // The show-intent is what the system surfaces (status-bar alarm icon / lock screen); tapping
-        // it opens EVE. The operation intent is the actual broadcast that fires the ritual.
+        // it opens Atlas. The operation intent is the actual broadcast that fires the ritual.
         val show = PendingIntent.getActivity(
             context,
             RC_SHOW,
@@ -121,7 +121,7 @@ object RitualScheduler {
         )
         // Prefer an exact alarm-clock alarm (to the minute). Some OEM builds still enforce the
         // exact-alarm permission even for setAlarmClock, so guard with canScheduleExactAlarms and
-        // ALWAYS catch SecurityException — a scheduling failure must never crash EVE. Falls back to
+        // ALWAYS catch SecurityException — a scheduling failure must never crash Atlas. Falls back to
         // an inexact, Doze-tolerant alarm that still fires (just not to the exact minute).
         val canExact = Build.VERSION.SDK_INT < Build.VERSION_CODES.S || am.canScheduleExactAlarms()
         try {

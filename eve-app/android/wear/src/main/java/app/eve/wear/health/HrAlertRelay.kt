@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
  *
  * House rule — no silent fallbacks: a failed send is Log.e'd with the named leg. It is NOT retried
  * here: the passive stream keeps flowing (the policy re-fires after re-arm+cooldown), and Samsung
- * Health's own high/low HR alert remains the OS-level safety net underneath EVE's voice.
+ * Health's own high/low HR alert remains the OS-level safety net underneath Atlas's voice.
  */
 class HrAlertRelay(
     private val gateway: GatewayClient,

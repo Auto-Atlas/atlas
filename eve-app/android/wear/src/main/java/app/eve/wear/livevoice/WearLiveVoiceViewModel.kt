@@ -9,13 +9,13 @@ import kotlinx.coroutines.launch
 
 /**
  * Owns the watch LIVE-VOICE experience: the real call over one secure WebSocket, the orb morphing
- * through EVE's REAL server states, tap-to-interrupt, and the running transcript. Thin over
+ * through Atlas's REAL server states, tap-to-interrupt, and the running transcript. Thin over
  * [LiveVoiceController] (the state machine + timeouts/backoff) — it adds the config feed, the transcript
  * surface, and the tap contract.
  *
  * The [scope], [controller] and seams are injected so the JVM gate drives virtual time with fakes (no
  * GMS, no OkHttp, no audio engines). House rule — reply/state TEXT renders regardless of audio: the
- * transcript is fed from control frames, never from playback, so EVE's words reach the wrist even if
+ * transcript is fed from control frames, never from playback, so Atlas's words reach the wrist even if
  * her voice can't.
  *
  * Tap contract (exactly the phone's): idle/not-configured/error → connect (re-checks the door);
@@ -30,7 +30,7 @@ class WearLiveVoiceViewModel(
     val state: StateFlow<VoiceState> = controller.state
     val controls: StateFlow<VoiceControls> = controller.controls
 
-    /** EVE's REAL output level (0..1, smoothed downlink-PCM RMS) — drives the ring's Speaking pulse. */
+    /** Atlas's REAL output level (0..1, smoothed downlink-PCM RMS) — drives the ring's Speaking pulse. */
     val botLevel: StateFlow<Float> = client.botLevel
 
     private val _transcript = MutableStateFlow<List<LiveTranscriptLine>>(emptyList())

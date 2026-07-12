@@ -1,5 +1,6 @@
 package app.eve.ui.components
 
+import app.eve.ASSISTANT_NAME
 import androidx.compose.ui.test.assertHasNoClickAction
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.hasText
@@ -22,7 +23,7 @@ import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
 
 /**
- * Compose UI tests for ApprovalCard — EVE's money-bearing hero (compose-ui-testing-patterns:
+ * Compose UI tests for ApprovalCard — Atlas's money-bearing hero (compose-ui-testing-patterns:
  * smallest state-driven tests; assert text/semantics, not pixels). reducedMotion = true makes the
  * animateContentSize / AnimatedVisibility / Crossfade deterministic. The approval is decoded from
  * the real test fixture (mirrors ApprovalsViewModelTest.fixtureApprovals): first row is an invoice
@@ -97,7 +98,7 @@ class ApprovalCardTest {
         // The honest stale banner is present (never silently failing). assertExists rather than
         // assertIsDisplayed: in the headless Robolectric window the expanded card can push the
         // banner below the visible bounds, but its presence in the semantics tree is the signal.
-        rule.onNode(hasText("Stale — can't reach EVE", substring = true)).assertExists()
+        rule.onNode(hasText("Stale — can't reach $ASSISTANT_NAME", substring = true)).assertExists()
     }
 
     @Test

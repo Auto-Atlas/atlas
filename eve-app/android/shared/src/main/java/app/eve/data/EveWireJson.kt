@@ -3,7 +3,7 @@ package app.eve.data
 import kotlinx.serialization.json.Json
 
 /**
- * THE wire Json config for every EVE surface — phone HTTP/WS (ApiClient/StreamClient), and the
+ * THE wire Json config for every Atlas surface — phone HTTP/WS (ApiClient/StreamClient), and the
  * phone<->watch Data Layer payloads. One definition so the phone and the watch can never drift
  * apart on how the same DTO bytes decode.
  *

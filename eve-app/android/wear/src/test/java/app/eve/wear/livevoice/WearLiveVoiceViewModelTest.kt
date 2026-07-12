@@ -123,14 +123,14 @@ class WearLiveVoiceViewModelTest {
         vm.onOrbTap(); scope.runCurrent()
         assertEquals(1, client.interruptCount)
         assertEquals(VoiceState.YourTurn, vm.state.value)
-        // The floor is handed back with a LIVE mic — never a muted, deaf-looking EVE.
+        // The floor is handed back with a LIVE mic — never a muted, deaf-looking Atlas.
         assertEquals(false, vm.controls.value.micMuted)
         scope.cancel()
     }
 
     @Test
     fun tap_while_speaking_after_a_mute_interrupts_and_unmutes() {
-        // The owner muted himself, then taps the orb while EVE talks: the tap stops her AND
+        // The owner muted himself, then taps the orb while Atlas talks: the tap stops her AND
         // reopens his mic so he can speak — the tap is never a silent no-op mid-utterance.
         val scope = TestScope()
         val client = FakeWsVoiceClient()
@@ -458,7 +458,7 @@ class WearLiveVoiceViewModelTest {
 
     @Test
     fun bot_level_surfaces_the_clients_real_speaking_amplitude() {
-        // The ring's Speaking pulse is REAL now: the client publishes a smoothed RMS of EVE's
+        // The ring's Speaking pulse is REAL now: the client publishes a smoothed RMS of Atlas's
         // downlink PCM and the ViewModel exposes it verbatim (no copy, no synthetic stand-in).
         val scope = TestScope()
         val client = FakeWsVoiceClient()

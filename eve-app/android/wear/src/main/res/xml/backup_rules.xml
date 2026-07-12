@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  EVE watch — full-backup content rules (Android 11 / API <= 30, the android:fullBackupContent
+  Atlas watch — full-backup content rules (Android 11 / API <= 30, the android:fullBackupContent
   path). Excludes every app-owned data domain so approval metadata is never written to auto-backup.
   Redundant with android:allowBackup="false" (which disables backup outright) but stated explicitly
   so the exclusion intent is documented and lint-clean across API levels.

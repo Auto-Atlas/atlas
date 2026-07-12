@@ -1,5 +1,6 @@
 package app.eve.wearbridge
 
+import app.eve.ASSISTANT_NAME
 import android.util.Log
 import app.eve.data.ApiError
 import app.eve.data.ApiResult
@@ -22,7 +23,7 @@ import java.util.Base64
  * one opened bidirectional channel's [InputStream]/[OutputStream], it:
  *
  *   1. reads the [VoiceTurnRequest] envelope + the recorded WAV bytes (the watch's half),
- *   2. base64-encodes the WAV and POSTs it to `/v1/voice/turn` via [voiceTurn] (EVE's own STT ->
+ *   2. base64-encodes the WAV and POSTs it to `/v1/voice/turn` via [voiceTurn] (Atlas's own STT ->
  *      brain -> her voice — no Google in the path),
  *   3. maps the result to a [VoiceTurnReply] envelope, STRIPS the WAV header from her returned audio
  *      so the watch never parses RIFF, and writes `envelope + raw PCM` back on the same channel.
@@ -83,7 +84,7 @@ class VoiceTurnRelay(
             return
         }
 
-        // ---- HTTP leg to EVE's own speech stack ----
+        // ---- HTTP leg to Atlas's own speech stack ----
         val audioB64 = Base64.getEncoder().encodeToString(wav)
         val result = try {
             voiceTurn(audioB64, request.requestId)
@@ -162,10 +163,10 @@ class VoiceTurnRelay(
     private fun apiErrorToReply(requestId: String, error: ApiError): VoiceTurnReplyWithPcm {
         val reply = when (error) {
             is ApiError.Offline -> failed(requestId, Outcome.SERVER_UNREACHABLE, error.cause)
-            ApiError.NotConfigured -> failed(requestId, Outcome.SERVER_UNREACHABLE, "phone not connected to EVE")
+            ApiError.NotConfigured -> failed(requestId, Outcome.SERVER_UNREACHABLE, "phone not connected to $ASSISTANT_NAME")
             ApiError.Unauthorized -> failed(requestId, Outcome.UNAUTHORIZED, "unauthorized (401) — reconnect the phone")
-            ApiError.NotFound -> failed(requestId, Outcome.ERROR, "EVE has no /v1/voice/turn endpoint (404)")
-            ApiError.AlreadyResolved -> failed(requestId, Outcome.ERROR, "unexpected 409 from EVE")
+            ApiError.NotFound -> failed(requestId, Outcome.ERROR, "$ASSISTANT_NAME has no /v1/voice/turn endpoint (404)")
+            ApiError.AlreadyResolved -> failed(requestId, Outcome.ERROR, "unexpected 409 from $ASSISTANT_NAME")
             is ApiError.Http ->
                 if (error.status == HTTP_NO_SPEECH) {
                     // No speech recognized: blank transcript is the watch's DIDNT_CATCH signal.

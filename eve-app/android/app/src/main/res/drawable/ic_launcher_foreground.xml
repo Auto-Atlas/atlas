@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  EVE launcher foreground — the listening orb (teal->indigo ring + 5-bar waveform),
+  Atlas launcher foreground — the listening orb (teal->indigo ring + 5-bar waveform),
   ported from eve-app/design/brand/eve-icon.svg. Authored as a 108dp adaptive-icon
   foreground: the brand artwork (160x160 viewport) is centred inside the 108x108 safe
   zone, scaled and offset so the orb sits in the inner 66dp circle the launcher masks to.

@@ -1,5 +1,6 @@
 package app.eve.ui
 
+import app.eve.ASSISTANT_NAME
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -30,7 +31,7 @@ import com.journeyapps.barcodescanner.ScanContract
 import com.journeyapps.barcodescanner.ScanOptions
 import kotlinx.coroutines.launch
 
-// No hardcoded credentials. Fresh installs start blank — the owner pairs by scanning the QR EVE
+// No hardcoded credentials. Fresh installs start blank — the owner pairs by scanning the QR Atlas
 // puts on screen ("Scan to connect"), or types the values once. Any saved value still wins.
 private const val DEFAULT_BASE_URL = ""
 private const val DEFAULT_TOKEN = ""
@@ -44,8 +45,8 @@ internal fun initialFieldValue(saved: String?, default: String): String =
     saved?.takeIf { it.isNotBlank() } ?: default
 
 /**
- * Parse a pairing payload (the QR EVE shows): `eve://connect?base=<url>&token=<tok>` -> a
- * connection, or null if it isn't a valid EVE pairing code. Pure (java.net.URI, not android.net)
+ * Parse a pairing payload (the QR Atlas shows): `eve://connect?base=<url>&token=<tok>` -> a
+ * connection, or null if it isn't a valid Atlas pairing code. Pure (java.net.URI, not android.net)
  * so it is unit-testable on the JVM.
  */
 internal fun parsePairingPayload(raw: String): EveConnection? {
@@ -65,7 +66,7 @@ internal fun parsePairingPayload(raw: String): EveConnection? {
 }
 
 /**
- * First-run connection setup: scan EVE's pairing QR, or enter the tailnet URL + app token.
+ * First-run connection setup: scan Atlas's pairing QR, or enter the tailnet URL + app token.
  *
  * [onConfigSaved] fires after a successful manual "Save & connect" so the host can push the fresh
  * config to a paired watch (the live-voice door URL rides to the wrist over the Data Layer). Defaulted
@@ -103,7 +104,7 @@ fun ConnectScreen(settings: Settings, modifier: Modifier = Modifier, onConfigSav
         if (raw == null) return@rememberLauncherForActivityResult  // user cancelled
         val conn = parsePairingPayload(raw)
         if (conn == null || !conn.isConfigured) {
-            error = "That QR isn't a valid EVE pairing code."
+            error = "That QR isn't a valid $ASSISTANT_NAME pairing code."
         } else {
             baseUrl = conn.baseUrl
             token = conn.token
@@ -133,9 +134,9 @@ fun ConnectScreen(settings: Settings, modifier: Modifier = Modifier, onConfigSav
             .padding(EveTheme.spacing.gutterScreen),
         verticalArrangement = Arrangement.spacedBy(EveTheme.spacing.gapCard),
     ) {
-        Text("Connect to EVE", style = EveTheme.type.titleXl.copy(color = colors.textPrimary))
+        Text("Connect to $ASSISTANT_NAME", style = EveTheme.type.titleXl.copy(color = colors.textPrimary))
         Text(
-            "Ask EVE to \"pair my phone\", then scan the QR she puts on screen.",
+            "Ask $ASSISTANT_NAME to \"pair my phone\", then scan the QR she puts on screen.",
             style = EveTheme.type.body.copy(color = colors.textSecondary),
         )
         EveButton(
@@ -144,7 +145,7 @@ fun ConnectScreen(settings: Settings, modifier: Modifier = Modifier, onConfigSav
                 error = null
                 scanLauncher.launch(
                     ScanOptions().apply {
-                        setPrompt("Point at EVE's pairing QR")
+                        setPrompt("Point at $ASSISTANT_NAME's pairing QR")
                         setBeepEnabled(false)
                         setOrientationLocked(false)
                     },

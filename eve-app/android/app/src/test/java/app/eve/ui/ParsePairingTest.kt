@@ -4,7 +4,7 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
 
-/** The pure pairing-payload parser (the QR EVE shows). JVM-testable — no android.net.Uri. */
+/** The pure pairing-payload parser (the QR Atlas shows). JVM-testable — no android.net.Uri. */
 class ParsePairingTest {
 
     @Test

@@ -118,7 +118,7 @@ class MainActivity : ComponentActivity() {
 
     /**
      * The morning-ritual alarm launches this activity (via the full-screen intent) while the phone
-     * may be locked and asleep. Show over the keyguard and turn the screen on so EVE's wake-up
+     * may be locked and asleep. Show over the keyguard and turn the screen on so Atlas's wake-up
      * actually reaches the user, and clear the alarm notification. Returns true when this launch is
      * a ritual, so the UI auto-connects to the Talk screen.
      */

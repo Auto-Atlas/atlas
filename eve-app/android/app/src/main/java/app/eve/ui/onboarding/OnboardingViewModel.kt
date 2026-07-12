@@ -1,5 +1,6 @@
 package app.eve.ui.onboarding
 
+import app.eve.ASSISTANT_NAME
 import android.content.Context
 import android.util.Base64
 import android.util.Log
@@ -215,7 +216,7 @@ class OnboardingViewModel(
     }
 
     private fun describe(error: ApiError): String = when (error) {
-        is ApiError.NotConfigured -> "not connected to EVE yet"
+        is ApiError.NotConfigured -> "not connected to $ASSISTANT_NAME yet"
         is ApiError.Offline -> "you're off the tailnet"
         is ApiError.Unauthorized -> "the app token is invalid"
         is ApiError.NotFound -> "the server route is missing"
