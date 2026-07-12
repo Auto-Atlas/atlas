@@ -56,8 +56,8 @@ changes until you flip it).
 | **The brain** — voice loops, approval hub, tools, agent fabric | this repo | stable, used daily |
 | **Wear OS watch** — the orb on your wrist | **[atlas-watch](https://github.com/Auto-Atlas/atlas-watch)** | **public beta** — sideload install, [guide](https://github.com/Auto-Atlas/atlas-watch#get-it-on-your-watch-beta) |
 | **Android phone app** — remote approvals, status, memory, voice | **[atlas-android](https://github.com/Auto-Atlas/atlas-android)** (mirrored at [`eve-app/android`](eve-app/android)) | works, build-it-yourself |
-| **iOS app** — approvals + status (Apple Watch later) | [`eve-app/ios`](eve-app/ios) in this repo | early — API layer tested, app shell builds |
-| **Smart-glasses bridge** — MentraOS camera/speaker/display | [`glasses/mentra-eve`](glasses/mentra-eve) in this repo | works, needs Mentra-compatible glasses |
+| **iOS app** — approvals + status (Apple Watch later) | **[atlas-ios](https://github.com/Auto-Atlas/atlas-ios)** (mirrored at [`eve-app/ios`](eve-app/ios)) | early — **untested**, published for contributors |
+| **Smart-glasses bridge** — MentraOS camera/speaker/display | **[atlas-glasses](https://github.com/Auto-Atlas/atlas-glasses)** (mirrored at [`glasses/mentra-eve`](glasses/mentra-eve)) | software tested; **never run on real glasses yet** |
 
 The apps talk to this repo's approval API (`:8799`) and WebSocket stream — pair them
 after the core is running.
