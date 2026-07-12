@@ -256,6 +256,11 @@ Found a vulnerability? Please report it privately — see [SECURITY.md](SECURITY
 Trust tiers only kick in once Atlas can tell people apart. Until anyone is enrolled it runs in a
 self-closing *"treat every voice as owner"* mode, so a fresh box still works while you set this up.
 
+> **Easiest path: the phone app trains the voice for you.** The Android app's onboarding
+> records a few clips and enrolls you automatically (`POST /v1/enroll` — no CLI, no config
+> files). Pair the app, follow the wizard, done. Everything below is the manual/desktop
+> path for finer control or re-enrollment.
+
 > **The one rule: enroll from Atlas's OWN microphone, not an offline recording.** An offline clip
 > lands in a slightly different audio domain and the real speaker gets false-rejected. So you
 > capture a few minutes of live audio first, then build the profile from that.
