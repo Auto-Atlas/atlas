@@ -184,6 +184,7 @@ specialist agents — each a **declarative spec** (data, not hand-written code):
 | Agent | Specialty | Transport | Status |
 |---|---|---|---|
 | **Hermes** | Messaging / comms (telegram, slack, sms, email…) + scheduling | CLI (`hermes -z`) | ✅ live |
+| **Claude Code** | Coding agent — real repo work (features, fixes, reviews) delegated by voice | ACP (`claude` in the background, [setup](docs/acp-claude-code.md)) | ✅ live |
 | **Jarvis** | Generalist brain (web, files, shell/code, git, memory) | HTTP / tiered CLI | wired as `jarvis_agent` |
 | **Open Claw** | 20+ live channels + multi-agent routing | WebSocket gateway | 🔜 Phase 2 |
 
