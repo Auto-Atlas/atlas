@@ -1,5 +1,6 @@
 package app.eve.ui.components
 
+import app.eve.ASSISTANT_NAME
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.animateContentSize
@@ -62,7 +63,7 @@ private fun countdownLabel(secs: Long): String {
 }
 
 /**
- * EVE's defining component. Collapsed shows the four W's; expanded shows full detail and the
+ * Atlas's defining component. Collapsed shows the four W's; expanded shows full detail and the
  * approve/deny actions. The amount is ALWAYS computed from frozen args (approval.totalDollars),
  * never the summary. Actions are gated on [ApprovalCardState.actionsEnabled] and an external
  * [online] flag (offline => disabled, never silently failing).
@@ -212,7 +213,7 @@ fun ApprovalCard(
 
         if (stale && state.phase is CardPhase.Pending) {
             Spacer(Modifier.padding(top = EveTheme.spacing.s2))
-            StatusBanner("Stale — can't reach EVE", colors.warning)
+            StatusBanner("Stale — can't reach $ASSISTANT_NAME", colors.warning)
         }
     }
 }
@@ -372,7 +373,7 @@ private fun ResolvedBanner(outcome: ResolvedOutcome, requester: String?, state: 
             StatusBanner("Sent — ${detail ?: "done"}. I let $who know.", colors.success)
         }
         is ResolvedOutcome.SendFailed ->
-            StatusBanner("Approved, but EVE couldn't reach the service — Retry.", colors.warning)
+            StatusBanner("Approved, but $ASSISTANT_NAME couldn't reach the service — Retry.", colors.warning)
         is ResolvedOutcome.Unverified ->
             StatusBanner("Approved — outcome unverified, check the service.", colors.warning)
         is ResolvedOutcome.Elsewhere ->

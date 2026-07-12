@@ -105,11 +105,11 @@ class TodayViewModelTest {
     private companion object {
         val LOADED = Today(
             date = "2026-06-24",
-            user = "Jonny Jets",
-            whys = listOf("God put you here for a purpose."),
-            goals = mapOf("wealth" to listOf("10x DiPilato Automations")),
-            strategy = "First, ship one demo. Second, turn LinkedIn into revenue.",
-            actionItems = listOf("block two hours and ship one demo", "turn LinkedIn into revenue"),
+            user = "Test Owner",
+            whys = listOf("A reason to get up that the ritual recites."),
+            goals = mapOf("wealth" to listOf("grow the sample business 10x")),
+            strategy = "First, ship one thing. Second, tell people about it.",
+            actionItems = listOf("ship one thing", "tell people about it"),
         )
     }
 }

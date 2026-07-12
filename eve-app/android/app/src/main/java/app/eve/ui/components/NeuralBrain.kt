@@ -1,5 +1,6 @@
 package app.eve.ui.components
 
+import app.eve.ASSISTANT_NAME
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
@@ -33,7 +34,7 @@ import kotlin.math.sqrt
 
 /**
  * The living avatar — a faithful Compose-Canvas port of the desktop web NeuralBrain. One pool of
- * 128 glowing particles that physically MORPHS between forms as EVE's state changes, with additive
+ * 128 glowing particles that physically MORPHS between forms as Atlas's state changes, with additive
  * luminous glow, a real force-directed neural graph, and traveling synapse pulses:
  *
  *   idle / connecting → SMOKE  : a calm plume of drifting smoke (ambient, breathing)
@@ -544,7 +545,7 @@ fun NeuralBrain(
     }
 
     val vis = visOf(state, working)
-    val description = if (working) "EVE is working on it" else orbContentDescription(state)
+    val description = if (working) "$ASSISTANT_NAME is working on it" else orbContentDescription(state)
 
     Canvas(
         modifier = modifier

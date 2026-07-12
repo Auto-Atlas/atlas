@@ -1,5 +1,6 @@
 package app.eve.data.wear
 
+import app.eve.ASSISTANT_NAME
 import app.eve.data.models.ApprovalsResponse
 import app.eve.data.models.SystemStatus
 import app.eve.data.models.Telemetry
@@ -45,12 +46,12 @@ class WearLinkTest {
             approvals = emptyList(),
             fetchedAtEpochMs = 42L,
             serverReachable = false,
-            errorDetail = "cannot reach EVE: connection refused",
+            errorDetail = "cannot reach $ASSISTANT_NAME: connection refused",
         )
         val back = ApprovalsSnapshot.fromBytes(original.toBytes())
         assertEquals(original, back)
         assertEquals(false, back.serverReachable)
-        assertEquals("cannot reach EVE: connection refused", back.errorDetail)
+        assertEquals("cannot reach $ASSISTANT_NAME: connection refused", back.errorDetail)
     }
 
     @Test
@@ -132,12 +133,12 @@ class WearLinkTest {
             requestId = "talk-2",
             reply = null,
             outcome = Outcome.SERVER_UNREACHABLE,
-            detail = "cannot reach EVE: connection refused",
+            detail = "cannot reach $ASSISTANT_NAME: connection refused",
         )
         val back = TalkReply.fromBytes(original.toBytes())
         assertEquals(original, back)
         assertNull(back.reply)
-        assertEquals("cannot reach EVE: connection refused", back.detail)
+        assertEquals("cannot reach $ASSISTANT_NAME: connection refused", back.detail)
     }
 
     @Test

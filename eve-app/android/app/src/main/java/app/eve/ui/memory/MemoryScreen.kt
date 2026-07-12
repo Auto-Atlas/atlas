@@ -1,5 +1,6 @@
 package app.eve.ui.memory
 
+import app.eve.ASSISTANT_NAME
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -40,7 +41,7 @@ import app.eve.ui.theme.EveColorScheme
 import app.eve.ui.theme.EveTheme
 
 /**
- * "What EVE knows about you" — the owner's canonical fact vault, rendered from the structured
+ * "What Atlas knows about you" — the owner's canonical fact vault, rendered from the structured
  * `items` of GET /v1/memory. Facts are grouped under calm category headers, each carrying a date
  * chip and a subtle category accent. A live search filters client-side; an add box writes a new
  * fact straight to the owner page. Intimate by design — this is what your assistant remembers.
@@ -52,7 +53,7 @@ fun MemoryScreen(viewModel: MemoryViewModel, modifier: Modifier = Modifier) {
     var factDraft by remember { mutableStateOf("") }
     val snackbarHostState = remember { SnackbarHostState() }
 
-    // Load the real vault on open — no typing required to see EVE's memory.
+    // Load the real vault on open — no typing required to see Atlas's memory.
     LaunchedEffect(Unit) { viewModel.load() }
     // One-shot feedback ("Saved.", errors) — collected once, never replayed on rotation.
     LaunchedEffect(Unit) {
@@ -88,7 +89,7 @@ fun MemoryScreen(viewModel: MemoryViewModel, modifier: Modifier = Modifier) {
         ) {
             Text("Memory", style = EveTheme.type.titleXl.copy(color = colors.textPrimary))
             Text(
-                "What EVE knows about you.",
+                "What $ASSISTANT_NAME knows about you.",
                 style = EveTheme.type.bodySm.copy(color = colors.textSecondary),
             )
 
@@ -105,16 +106,16 @@ fun MemoryScreen(viewModel: MemoryViewModel, modifier: Modifier = Modifier) {
             )
 
             // The body switches on the load phase; it always sits above the add affordance so the
-            // "tell EVE one thing" action is reachable from every state.
+            // "tell Atlas one thing" action is reachable from every state.
             Box(modifier = Modifier.weight(1f).fillMaxWidth()) {
                 when (val phase = state.phase) {
-                    is MemoryPhase.Loading -> CenteredNote("Gathering what EVE remembers…", colors)
+                    is MemoryPhase.Loading -> CenteredNote("Gathering what $ASSISTANT_NAME remembers…", colors)
                     is MemoryPhase.Error -> CenteredNote(
                         "Couldn't reach your memory. Pull again in a moment.",
                         colors,
                     )
                     is MemoryPhase.Empty -> CenteredNote(
-                        "EVE hasn't learned anything about you yet — she will as you talk.",
+                        "$ASSISTANT_NAME hasn't learned anything about you yet — that changes as you talk.",
                         colors,
                     )
                     is MemoryPhase.Loaded ->
@@ -131,7 +132,7 @@ fun MemoryScreen(viewModel: MemoryViewModel, modifier: Modifier = Modifier) {
                 value = factDraft,
                 onValueChange = { factDraft = it },
                 label = { Text("Add a memory") },
-                placeholder = { Text("Something EVE should remember about you") },
+                placeholder = { Text("Something $ASSISTANT_NAME should remember about you") },
                 singleLine = true,
                 colors = fieldColors,
                 shape = EveTheme.shape.md,

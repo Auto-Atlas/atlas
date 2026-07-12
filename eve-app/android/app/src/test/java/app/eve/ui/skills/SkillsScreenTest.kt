@@ -1,5 +1,6 @@
 package app.eve.ui.skills
 
+import app.eve.ASSISTANT_NAME
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
@@ -121,7 +122,7 @@ class SkillsScreenTest {
             }
         }
 
-        rule.onNodeWithText("Off the tailnet — can't reach EVE.").assertIsDisplayed()
+        rule.onNodeWithText("Off the tailnet — can't reach $ASSISTANT_NAME.").assertIsDisplayed()
         scope.cancel()
     }
 }

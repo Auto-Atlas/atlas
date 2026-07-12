@@ -1,5 +1,6 @@
 package app.eve.ui.skills
 
+import app.eve.ASSISTANT_NAME
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -53,7 +54,7 @@ private fun SkillsContent(
     Column(modifier.fillMaxSize().padding(EveTheme.spacing.s4)) {
         Text("Skills", style = EveTheme.type.title.copy(color = colors.textPrimary))
         Text(
-            "Things EVE knows how to do — hand her one.",
+            "Things $ASSISTANT_NAME knows how to do — hand one over.",
             style = EveTheme.type.body.copy(color = colors.textSecondary),
             modifier = Modifier.padding(top = EveTheme.spacing.s1, bottom = EveTheme.spacing.s3),
         )
@@ -61,7 +62,7 @@ private fun SkillsContent(
             is SkillsUiState.Loading ->
                 Text("Loading…", style = EveTheme.type.body.copy(color = colors.textSecondary))
             is SkillsUiState.Offline ->
-                Text("Off the tailnet — can't reach EVE.", style = EveTheme.type.body.copy(color = colors.textSecondary))
+                Text("Off the tailnet — can't reach $ASSISTANT_NAME.", style = EveTheme.type.body.copy(color = colors.textSecondary))
             is SkillsUiState.Error ->
                 Text(state.message, style = EveTheme.type.body.copy(color = colors.danger))
             is SkillsUiState.Loaded -> LazyColumn(verticalArrangement = Arrangement.spacedBy(EveTheme.spacing.s2)) {
@@ -91,7 +92,7 @@ private fun SkillsContent(
                     modifier = Modifier.padding(vertical = EveTheme.spacing.s2),
                 )
                 EveButton(
-                    text = "Use now — she's listening",
+                    text = "Use now — $ASSISTANT_NAME is listening",
                     onClick = { onFeed(row.tool, FeedMode.Live); sheetFor = null },
                 )
                 Spacer(Modifier.height(EveTheme.spacing.s2))
@@ -127,7 +128,7 @@ private fun SkillRowItem(row: SkillRow, onOpen: () -> Unit, onUnprime: (String) 
                         style = EveTheme.type.micro.copy(color = colors.accent),
                         modifier = Modifier.clickable { onUnprime(row.tool) },
                     )
-                    FeedState.HandedToEve -> Text("Handed to EVE", style = EveTheme.type.micro.copy(color = colors.accent))
+                    FeedState.HandedToEve -> Text("Handed to $ASSISTANT_NAME", style = EveTheme.type.micro.copy(color = colors.accent))
                     FeedState.Sending -> Text("Sending…", style = EveTheme.type.micro.copy(color = colors.textTertiary))
                     FeedState.Expired -> Text("Didn't catch it", style = EveTheme.type.micro.copy(color = colors.textTertiary))
                     FeedState.Idle -> Unit

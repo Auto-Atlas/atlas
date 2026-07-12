@@ -1,5 +1,6 @@
 package app.eve.wear.ui
 
+import app.eve.ASSISTANT_NAME
 import android.Manifest
 import android.app.Activity
 import android.content.ActivityNotFoundException
@@ -50,7 +51,7 @@ import app.eve.wear.talk.WearTalkPhase
 
 /**
  * The push-to-talk screen. In v2 the big round mic button drives the NATIVE path: tap to record on the
- * wrist ([onStartRecording]), tap again (or hit the 15s cap) to stop and send; EVE answers in her own
+ * wrist ([onStartRecording]), tap again (or hit the 15s cap) to stop and send; Atlas answers in her own
  * voice, played by the VM's [app.eve.wear.talk.PcmPlayer]. The reply TEXT always renders from [phase]
  * regardless of [voiceState] (voice failure never hides text). The old RecognizerIntent path stays as
  * an explicit, honestly-labelled fallback chip ([WearTalkCopy.FALLBACK_LABEL]) whose text-only reply
@@ -130,7 +131,7 @@ fun WearTalkScreen(
         }
         val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
             putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
-            putExtra(RecognizerIntent.EXTRA_PROMPT, "Talk to EVE")
+            putExtra(RecognizerIntent.EXTRA_PROMPT, "Talk to $ASSISTANT_NAME")
         }
         try {
             sttLauncher.launch(intent)
@@ -186,7 +187,7 @@ private fun MicButton(isRecording: Boolean, enabled: Boolean, onClick: () -> Uni
 private fun PhaseLine(phase: WearTalkPhase) {
     when (phase) {
         is WearTalkPhase.Idle ->
-            CenterText("Tap the mic to talk to EVE", WearEveColors.textSecondary)
+            CenterText("Tap the mic to talk to $ASSISTANT_NAME", WearEveColors.textSecondary)
         is WearTalkPhase.Recording -> {
             // Visible countdown in the final 5s; "Listening…" before that.
             val label = if (phase.remainingSeconds <= COUNTDOWN_FROM_SECONDS) {
@@ -248,7 +249,7 @@ private fun TranscriptBubble(turn: TalkTurn) {
         horizontalAlignment = if (isYou) Alignment.End else Alignment.Start,
     ) {
         Text(
-            text = if (isYou) "You" else "EVE",
+            text = if (isYou) "You" else "$ASSISTANT_NAME",
             color = if (isYou) WearEveColors.textTertiary else WearEveColors.accent,
             style = MaterialTheme.typography.caption3,
         )
@@ -316,7 +317,7 @@ internal fun VoiceEntryChips(
             ),
             modifier = Modifier.testTag("liveEntry"),
         )
-        // "Voice note" — the v2 push-to-talk fallback (renamed from "Talk to EVE").
+        // "Voice note" — the v2 push-to-talk fallback (renamed from "Talk to Atlas").
         CompactChip(
             onClick = onOpenTalk,
             label = { Text("Voice note") },

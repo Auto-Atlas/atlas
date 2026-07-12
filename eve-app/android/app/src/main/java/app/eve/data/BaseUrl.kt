@@ -3,7 +3,7 @@ package app.eve.data
 import java.net.URI
 
 /**
- * Pure validation/normalization of the EVE approval API base URL.
+ * Pure validation/normalization of the Atlas approval API base URL.
  *
  * A base URL reaches three throwing call sites once saved — Ktor's `takeFrom` in [ApiClient]
  * and the `URLBuilder().takeFrom(...).build()` in [StreamClient] (which then feeds

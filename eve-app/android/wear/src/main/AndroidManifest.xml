@@ -10,7 +10,7 @@
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <!-- v2 native voice turn: the wrist mic records raw PCM (AudioRecord) that we stream to the phone
-         and into EVE's own speech stack — no Google in the path. Runtime-requested in MainActivity. -->
+         and into Atlas's own speech stack — no Google in the path. Runtime-requested in MainActivity. -->
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
     <!-- v3 LIVE voice: the wrist opens ONE secure WebSocket (TLS) to the owner's public voice door and

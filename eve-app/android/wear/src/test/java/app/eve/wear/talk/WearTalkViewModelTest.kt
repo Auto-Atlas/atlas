@@ -1,5 +1,6 @@
 package app.eve.wear.talk
 
+import app.eve.ASSISTANT_NAME
 import app.eve.data.wear.Outcome
 import app.eve.data.wear.TalkReply
 import app.eve.data.wear.TalkRequest
@@ -183,7 +184,7 @@ class WearTalkViewModelTest {
         val replied = assertIs<WearTalkPhase.Replied>(vm.phase.value)
         assertEquals("You have a 3pm with Jamie.", replied.text)
         assertTrue(replied.spokenOnWatch, "native audio is played as PCM; the screen must NOT re-TTS it")
-        // Server-side STT transcript becomes the You turn; her answer the EVE turn.
+        // Server-side STT transcript becomes the You turn; her answer the Atlas turn.
         assertEquals(
             listOf(TalkTurn.Speaker.You to "what's on today?", TalkTurn.Speaker.Eve to "You have a 3pm with Jamie."),
             vm.transcript.value.map { it.speaker to it.text },
@@ -235,7 +236,7 @@ class WearTalkViewModelTest {
 
         assertEquals("Reminder set for 5pm.", assertIs<WearTalkPhase.Replied>(vm.phase.value).text)
         assertEquals(
-            "EVE's voice is unavailable — text only",
+            "$ASSISTANT_NAME's voice is unavailable — text only",
             assertIs<VoiceState.Failed>(vm.voiceState.value).message,
         )
         assertTrue(fakes.pcmPlayer.played.isEmpty(), "no audio should play when the voice leg failed")
@@ -446,7 +447,7 @@ class WearTalkViewModelTest {
         fakes.gateway.emitReply(TalkReply("t-1", outcome = Outcome.SERVER_UNREACHABLE, detail = "connection refused"))
         scope.runCurrent()
 
-        assertEquals("Phone can't reach EVE: connection refused", assertIs<WearTalkPhase.TalkFailure>(vm.phase.value).message)
+        assertEquals("Phone can't reach $ASSISTANT_NAME: connection refused", assertIs<WearTalkPhase.TalkFailure>(vm.phase.value).message)
         scope.cancel()
     }
 
@@ -461,7 +462,7 @@ class WearTalkViewModelTest {
         fakes.gateway.emitReply(TalkReply("t-1", reply = "   ", outcome = Outcome.OK))
         scope.runCurrent()
 
-        assertEquals("EVE returned an empty reply", assertIs<WearTalkPhase.TalkFailure>(vm.phase.value).message)
+        assertEquals("$ASSISTANT_NAME returned an empty reply", assertIs<WearTalkPhase.TalkFailure>(vm.phase.value).message)
         scope.cancel()
     }
 }

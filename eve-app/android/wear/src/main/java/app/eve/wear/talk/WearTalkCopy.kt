@@ -1,5 +1,6 @@
 package app.eve.wear.talk
 
+import app.eve.ASSISTANT_NAME
 import app.eve.data.wear.Outcome
 import app.eve.data.wear.TalkReply
 import app.eve.data.wear.VoiceTurnReply
@@ -16,7 +17,7 @@ object WearTalkCopy {
     /** The watch<->phone Data Layer down phrase — shared verbatim with the approvals leg. */
     val DATA_LAYER_DOWN: String = WearActionCopy.DATA_LAYER_DOWN
 
-    // ---- v2 native path (wrist mic -> EVE's own voice) ----
+    // ---- v2 native path (wrist mic -> Atlas's own voice) ----
 
     /** The wrist mic is capturing (native path). */
     const val RECORDING = "Listening…"
@@ -37,16 +38,16 @@ object WearTalkCopy {
     const val RECORDING_EMPTY = "Didn't hear anything — tap to retry."
 
     /** Server delivered her answer TEXT but her voice leg failed — shown as a small note, text stays. */
-    const val VOICE_UNAVAILABLE = "EVE's voice is unavailable — text only"
+    const val VOICE_UNAVAILABLE = "$ASSISTANT_NAME's voice is unavailable — text only"
 
     /** Playing her PCM reply on the wrist failed — a small note; the reply text is still shown above. */
-    const val PLAYBACK_FAILED = "Couldn't play EVE's voice — reply shown above"
+    const val PLAYBACK_FAILED = "Couldn't play $ASSISTANT_NAME's voice — reply shown above"
 
     /** The explicit, honest label for the old RecognizerIntent path (now a fallback, not the default). */
     const val FALLBACK_LABEL = "Google voice (fallback)"
 
-    /** In-flight, after the request left the watch: EVE's brain is working. */
-    const val THINKING = "EVE is thinking…"
+    /** In-flight, after the request left the watch: Atlas's brain is working. */
+    const val THINKING = "$ASSISTANT_NAME is thinking…"
 
     /** The phone never answered within the watch's await window — honest failure, never a fake reply. */
     const val NO_REPLY = "No reply from phone"
@@ -57,8 +58,8 @@ object WearTalkCopy {
     /** No on-watch recognizer (SpeechRecognizer unavailable / ActivityNotFoundException). */
     const val NO_SPEECH_SERVICE = "No speech service on this watch — enable Speech Services by Google."
 
-    /** EVE answered OK but with empty text — a broken contract, surfaced loudly (never a blank reply). */
-    const val EMPTY_REPLY = "EVE returned an empty reply"
+    /** Atlas answered OK but with empty text — a broken contract, surfaced loudly (never a blank reply). */
+    const val EMPTY_REPLY = "$ASSISTANT_NAME returned an empty reply"
 
     /** Voice output is warming up (Wear cold-boot TTS can take ~10s). The reply TEXT still shows regardless. */
     const val WARMING_UP_VOICE = "warming up voice…"
@@ -83,13 +84,13 @@ object WearTalkCopy {
 
     private fun failureFor(outcome: Outcome, detail: String?): String? = when (outcome) {
         Outcome.OK -> null
-        // Phone reached the watch but not EVE — show the phone's real detail.
-        Outcome.SERVER_UNREACHABLE -> "Phone can't reach EVE: ${detail ?: "unreachable"}"
+        // Phone reached the watch but not Atlas — show the phone's real detail.
+        Outcome.SERVER_UNREACHABLE -> "Phone can't reach $ASSISTANT_NAME: ${detail ?: "unreachable"}"
         // These carry a real, specific detail from the phone — render it verbatim.
         Outcome.UNAUTHORIZED -> detail ?: "Unauthorized"
         Outcome.ERROR -> detail ?: "Something went wrong"
         // Outcomes the talk leg never emits (approve/deny vocabulary). Surface honestly, never crash.
         Outcome.APPROVED, Outcome.DENIED, Outcome.ALREADY_RESOLVED, Outcome.NOT_FOUND ->
-            detail ?: "Unexpected reply from EVE ($outcome)"
+            detail ?: "Unexpected reply from $ASSISTANT_NAME ($outcome)"
     }
 }

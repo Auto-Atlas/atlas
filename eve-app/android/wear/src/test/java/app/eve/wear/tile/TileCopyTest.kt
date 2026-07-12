@@ -1,5 +1,6 @@
 package app.eve.wear.tile
 
+import app.eve.ASSISTANT_NAME
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
@@ -23,8 +24,8 @@ class TileCopyTest {
 
     @Test
     fun desktop_line_reflects_presence() {
-        assertEquals("EVE desktop online", TileCopy.desktopLine(true))
-        assertEquals("EVE desktop offline", TileCopy.desktopLine(false))
+        assertEquals("$ASSISTANT_NAME desktop online", TileCopy.desktopLine(true))
+        assertEquals("$ASSISTANT_NAME desktop offline", TileCopy.desktopLine(false))
     }
 
     @Test
@@ -42,13 +43,13 @@ class TileCopyTest {
 
     @Test
     fun server_down_headline_is_fixed() {
-        assertEquals("Phone can't reach EVE", TileCopy.serverDownHeadline())
+        assertEquals("Phone can't reach $ASSISTANT_NAME", TileCopy.serverDownHeadline())
     }
 
     @Test
     fun server_down_detail_passes_short_through_and_stays_null_for_null() {
         assertNull(TileCopy.serverDownDetail(null))
-        assertEquals("cannot reach EVE: timeout", TileCopy.serverDownDetail("cannot reach EVE: timeout"))
+        assertEquals("cannot reach $ASSISTANT_NAME: timeout", TileCopy.serverDownDetail("cannot reach $ASSISTANT_NAME: timeout"))
     }
 
     @Test

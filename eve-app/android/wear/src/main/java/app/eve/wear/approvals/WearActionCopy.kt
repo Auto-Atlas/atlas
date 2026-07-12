@@ -1,5 +1,6 @@
 package app.eve.wear.approvals
 
+import app.eve.ASSISTANT_NAME
 import app.eve.data.wear.Outcome
 import app.eve.data.wear.WearActionResult
 
@@ -10,7 +11,7 @@ import app.eve.data.wear.WearActionResult
  * exists exactly ONCE and the wrist notification can never drift from the in-app banner.
  *
  * Named-leg honesty (house rule): nothing is swallowed into a fake success. A phone that reached the
- * watch but not EVE is [Outcome.SERVER_UNREACHABLE] with the phone's real detail; a partial
+ * watch but not Atlas is [Outcome.SERVER_UNREACHABLE] with the phone's real detail; a partial
  * "approved but the tool didn't fire" arrives as [Outcome.ERROR] with detail — never APPROVED.
  */
 object WearActionCopy {
@@ -36,9 +37,9 @@ object WearActionCopy {
             // Resolved on another surface before this tap landed.
             Outcome.ALREADY_RESOLVED ->
                 WearActionState.Resolved("Already handled elsewhere", WearActionState.Tone.Neutral)
-            // Phone reached the watch but not EVE — show the phone's real detail.
+            // Phone reached the watch but not Atlas — show the phone's real detail.
             Outcome.SERVER_UNREACHABLE -> WearActionState.Resolved(
-                "Phone can't reach EVE: ${result.detail ?: "unreachable"}",
+                "Phone can't reach $ASSISTANT_NAME: ${result.detail ?: "unreachable"}",
                 WearActionState.Tone.Negative,
             )
             // These carry a real, specific detail from the phone — render it verbatim.
@@ -51,6 +52,6 @@ object WearActionCopy {
             // OK is the talk leg's success outcome — it never rides an approve/deny result. If one
             // ever arrives here it's a wire/protocol fault, surfaced loudly (never a fake approval).
             Outcome.OK ->
-                WearActionState.Resolved(result.detail ?: "Unexpected reply from EVE", WearActionState.Tone.Negative)
+                WearActionState.Resolved(result.detail ?: "Unexpected reply from $ASSISTANT_NAME", WearActionState.Tone.Negative)
         }
 }

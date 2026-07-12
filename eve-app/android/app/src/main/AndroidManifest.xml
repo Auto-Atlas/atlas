@@ -7,14 +7,14 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
-    <!-- The 5 AM wake plays EVE's voice locally from a foreground service (alarm-style), even from
+    <!-- The 5 AM wake plays Atlas's voice locally from a foreground service (alarm-style), even from
          deep Doze — this is the connection-free wake path. -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <!-- Morning ritual alarm: setAlarmClock() needs no SCHEDULE_EXACT_ALARM, but we re-arm after a
          reboot, wake the screen via a full-screen intent, and keep the device up long enough to
-         launch EVE into the ritual. -->
+         launch Atlas into the ritual. -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
@@ -27,12 +27,12 @@
          EXTRA_SKIP_UI) so it shows alongside their normal alarms. The in-app alarm is the reliable
          path; if the clock intent fails we skip silently. -->
     <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
-    <!-- "Scan to connect": the zxing scanner uses the camera to read EVE's pairing QR. -->
+    <!-- "Scan to connect": the zxing scanner uses the camera to read Atlas's pairing QR. -->
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-feature android:name="android.hardware.camera" android:required="false" />
 
     <!-- Meta glasses (Wearables Device Access Toolkit). BLUETOOTH_CONNECT is needed at runtime to
-         route EVE's voice out the glasses' Bluetooth speaker (AudioManager.setCommunicationDevice /
+         route Atlas's voice out the glasses' Bluetooth speaker (AudioManager.setCommunicationDevice /
          Bluetooth SCO); BLUETOOTH covers the legacy pre-S path. The DAT SDK itself (camera + Meta AI
          app mediation) is a token-gated dev preview and NOT bundled yet — the glasses feature is
          opt-in and inert until then, so these are declared not required. -->
@@ -41,7 +41,7 @@
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
     <uses-feature android:name="android.hardware.bluetooth" android:required="false" />
 
-    <!-- Health Connect (EVE Health v1): READ-ONLY access to the owner's watch vitals from the on-phone
+    <!-- Health Connect (Atlas Health v1): READ-ONLY access to the owner's watch vitals from the on-phone
          Health Connect hub. Each permission must be declared HERE as well as requested at runtime
          (connect-client 1.1.0 requires both) and must match HealthConnectManager.READ_PERMISSIONS. -->
     <uses-permission android:name="android.permission.health.READ_HEART_RATE" />
@@ -65,13 +65,13 @@
         android:label="@string/app_name"
         android:networkSecurityConfig="@xml/network_security_config"
         android:supportsRtl="true"
-        android:theme="@style/Theme.EVE">
+        android:theme="@style/Theme.Atlas">
 
         <activity
             android:name=".MainActivity"
             android:exported="true"
             android:launchMode="singleTask"
-            android:theme="@style/Theme.EVE">
+            android:theme="@style/Theme.Atlas">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -89,7 +89,7 @@
         <!-- Health Connect permission rationale. On Android 14+ Health Connect lives in the platform and
              opens the rationale via VIEW_PERMISSION_USAGE; on API < 34 (Health Connect as a separate app)
              it uses the legacy ACTION_SHOW_PERMISSIONS_RATIONALE. Both route to MainActivity, where
-             Status > Health explains exactly what EVE reads (heart-first vitals) and why — no separate
+             Status > Health explains exactly what Atlas reads (heart-first vitals) and why — no separate
              placeholder screen, no dead end. -->
         <activity-alias
             android:name="ViewPermissionUsageActivity"
@@ -135,7 +135,7 @@
             </intent-filter>
         </service>
 
-        <!-- The 5 AM wake: plays the cached wake WAV (EVE's voice) LOCALLY on the alarm stream,
+        <!-- The 5 AM wake: plays the cached wake WAV (Atlas's voice) LOCALLY on the alarm stream,
              started by the FCM morning_ritual push. Connection-free, works from Doze. -->
         <service
             android:name=".ritual.RitualPlaybackService"
@@ -163,7 +163,7 @@
             android:name=".ritual.RitualAlarmReceiver"
             android:exported="false" />
 
-        <!-- Reminder alarm: AlarmManager fires this when a reminder EVE set comes due; it rings the
+        <!-- Reminder alarm: AlarmManager fires this when a reminder Atlas set comes due; it rings the
              phone like an alarm clock (server pushes set_alarm/cancel_alarm). -->
         <receiver
             android:name=".reminder.ReminderAlarmReceiver"

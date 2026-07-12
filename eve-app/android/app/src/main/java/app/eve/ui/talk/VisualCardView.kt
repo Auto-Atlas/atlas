@@ -1,5 +1,6 @@
 package app.eve.ui.talk
 
+import app.eve.ASSISTANT_NAME
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
@@ -63,7 +64,7 @@ import app.eve.visual.VisualCard
 
 /**
  * The surface_visual card for the Talk screen — a sibling of the tool-call / delegation surfaces
- * (same EveTheme tokens, raised dark card, subtle border). EVE SHOWS something here instead of only
+ * (same EveTheme tokens, raised dark card, subtle border). Atlas SHOWS something here instead of only
  * saying it: a live desktop screenshot, an image, or a text/log note. Images load async with a
  * shimmer placeholder and degrade honestly (expired / failed); tapping an image opens a pinch-zoom
  * full-screen viewer. The card is dismissible and never blocks the voice UI.
@@ -92,7 +93,7 @@ fun VisualCardView(card: VisualCard, onDismiss: () -> Unit, modifier: Modifier =
             )
             Spacer(Modifier.width(EveTheme.spacing.s2))
             Text(
-                text = "EVE is showing you",
+                text = "$ASSISTANT_NAME is showing you",
                 style = EveTheme.type.micro.copy(color = colors.textTertiary),
             )
             Spacer(Modifier.weight(1f))
@@ -147,7 +148,7 @@ fun VisualCardView(card: VisualCard, onDismiss: () -> Unit, modifier: Modifier =
             }
             is ImageLoad.Expired -> StateMessage(
                 icon = Icons.Outlined.BrokenImage,
-                text = "This image expired — ask EVE to show it again.",
+                text = "This image expired — ask $ASSISTANT_NAME to show it again.",
                 tint = colors.warning,
             )
             is ImageLoad.Failed -> StateMessage(

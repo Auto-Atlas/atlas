@@ -24,7 +24,7 @@ import java.util.Locale
  * Plays the 5 AM wake LOCALLY, alarm-style, from a foreground service — no WebRTC, no mic, no echo,
  * works from deep Doze (exactly how an alarm app plays a sound). This is the connection-free PRIMARY
  * wake path: the FCM `morning_ritual` push starts this service, which plays the cached `wake.wav`
- * (EVE's real voice) on the ALARM stream at full alarm volume so it actually wakes him.
+ * (Atlas's real voice) on the ALARM stream at full alarm volume so it actually wakes him.
  *
  * Fallback order (so he is ALWAYS woken, never a crash):
  *   1. Play the cached `wake.wav` if present.

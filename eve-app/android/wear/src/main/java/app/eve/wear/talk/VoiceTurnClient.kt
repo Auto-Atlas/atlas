@@ -18,7 +18,7 @@ import app.eve.data.wear.VoiceTurnRequest
 interface VoiceTurnClient {
     /**
      * Run one full turn on a fresh channel. [onSent] is invoked AFTER the request envelope + WAV have
-     * been written and BEFORE the reply is awaited, so the VM can move to "EVE is thinking…" at the
+     * been written and BEFORE the reply is awaited, so the VM can move to "Atlas is thinking…" at the
      * honest moment. The overall channel-await timeout is owned by the VM (it wraps this call).
      */
     suspend fun runTurn(request: VoiceTurnRequest, wav: ByteArray, onSent: () -> Unit): VoiceTurnOutcome

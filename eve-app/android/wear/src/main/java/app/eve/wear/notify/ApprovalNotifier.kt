@@ -1,5 +1,6 @@
 package app.eve.wear.notify
 
+import app.eve.ASSISTANT_NAME
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -54,7 +55,7 @@ class ApprovalNotifier(private val store: NotifiedIdsStore) {
             CHANNEL_ID,
             "Approvals",
             NotificationManager.IMPORTANCE_HIGH,
-        ).apply { description = "EVE approvals that need your decision" }
+        ).apply { description = "$ASSISTANT_NAME approvals that need your decision" }
         notificationManager(context).createNotificationChannel(channel)
     }
 

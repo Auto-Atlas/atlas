@@ -9,15 +9,15 @@ sealed interface ApprovalsUiState {
     data object Loading : ApprovalsUiState
 
     /**
-     * Can't reach EVE (off the tailnet). Visually distinct from Empty — never "all clear" while
+     * Can't reach Atlas (off the tailnet). Visually distinct from Empty — never "all clear" while
      * blind. Carries the last-known queue to render greyed/stale with actions disabled.
      */
     data class Offline(val staleItems: List<ApprovalCardState> = emptyList()) : ApprovalsUiState
 
-    /** Reached EVE, nothing waiting. */
+    /** Reached Atlas, nothing waiting. */
     data object Empty : ApprovalsUiState
 
-    /** Reached EVE, one or more cards. */
+    /** Reached Atlas, one or more cards. */
     data class Items(val cards: List<ApprovalCardState>) : ApprovalsUiState
 }
 

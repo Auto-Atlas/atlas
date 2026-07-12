@@ -1,5 +1,6 @@
 package app.eve.wear.notify
 
+import app.eve.ASSISTANT_NAME
 import app.eve.data.wear.Outcome
 import app.eve.data.wear.TalkReply
 import app.eve.data.wear.TalkRequest
@@ -99,7 +100,7 @@ class DenyFlowTest {
         gateway.emitResult(WearActionResult("req-1", "a1", Outcome.SERVER_UNREACHABLE, detail = "connection refused"))
         scope.runCurrent()
 
-        assertEquals("Phone can't reach EVE: connection refused", update!!.message)
+        assertEquals("Phone can't reach $ASSISTANT_NAME: connection refused", update!!.message)
         assertTrue(!update!!.autoDismiss, "a failure must stay visible, never auto-clear")
         scope.cancel()
     }
@@ -117,7 +118,7 @@ class DenyFlowTest {
         scope.advanceTimeBy(8_001)
         scope.runCurrent()
 
-        assertEquals("No reply from phone — check the EVE app", update!!.message)
+        assertEquals("No reply from phone — check the $ASSISTANT_NAME app", update!!.message)
         assertTrue(!update!!.autoDismiss)
         scope.cancel()
     }

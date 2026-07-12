@@ -1,4 +1,4 @@
-<!-- EVE brand mark: a geometric flat-top hexagon ring with a center dot ("watching eye" motif).
+<!-- Atlas brand mark: a geometric flat-top hexagon ring with a center dot ("watching eye" motif).
      Single white fill on a 24x24 viewport so complications/tiles TINT it correctly. Real shippable
      asset (not a placeholder). Ring uses evenOdd fill (outer hexagon minus inner hexagon). -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"

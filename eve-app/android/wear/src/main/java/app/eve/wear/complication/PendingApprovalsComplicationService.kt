@@ -19,8 +19,8 @@ import app.eve.wear.tile.TileState
 import app.eve.wear.tile.TileStateReader
 
 /**
- * A watch-face complication for the EVE pending-approvals count. Supports SHORT_TEXT (the number,
- * titled "EVE") and RANGED_VALUE (the number as an arc). Reads the SAME phone snapshots the Tile
+ * A watch-face complication for the Atlas pending-approvals count. Supports SHORT_TEXT (the number,
+ * titled "Atlas") and RANGED_VALUE (the number as an arc). Reads the SAME phone snapshots the Tile
  * does via [TileStateReader]; all rendering strings/values come from the pure, unit-tested
  * [ComplicationCopy]. Tapping opens [MainActivity].
  *

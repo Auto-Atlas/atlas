@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  EVE watch launcher foreground. Reuses the brand mark geometry from ic_eve_mark.xml (the
+  Atlas watch launcher foreground. Reuses the brand mark geometry from ic_eve_mark.xml (the
   "watching eye" hexagon ring + centre dot, authored on a 24x24 grid) scaled into the 108x108
   adaptive-icon canvas and centred inside the 66dp safe circle the round Wear launcher masks to.
-  Ring is the EVE accent teal (#2DD4BF), the pupil is white — legible on the dark adaptive
+  Ring is the Atlas accent teal (#2DD4BF), the pupil is white — legible on the dark adaptive
   background layer (@color/ic_launcher_background). Real shippable asset, not a placeholder.
 
   Transform: scale 2.5, translate 24 -> the 24-grid centre (12,12) lands on (54,54); the hexagon

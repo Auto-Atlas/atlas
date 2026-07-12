@@ -1,5 +1,6 @@
 package app.eve.wear.approvals
 
+import app.eve.ASSISTANT_NAME
 import app.eve.data.models.Approval
 import app.eve.data.wear.ApprovalsSnapshot
 import app.eve.data.wear.WearAction
@@ -79,7 +80,7 @@ class WearApprovalsViewModel(
         firstSnapshotWatchdog?.cancel()
         _uiState.value = when {
             !snapshot.serverReachable -> WearApprovalsUiState.ServerDown(
-                detail = snapshot.errorDetail ?: "Phone can't reach EVE",
+                detail = snapshot.errorDetail ?: "Phone can't reach $ASSISTANT_NAME",
                 staleApprovals = lastGoodApprovals.takeIf { it.isNotEmpty() },
                 fetchedAtEpochMs = snapshot.fetchedAtEpochMs,
             )
@@ -131,9 +132,9 @@ class WearApprovalsViewModel(
      * Ask the phone to push fresh snapshots now. Call ONCE per foreground (onResume) — no timer.
      *
      * Pre-first-snapshot honesty (gap found on the Wear OS 5 emulator, 2026-07-10: a connected
-     * companion node WITHOUT the EVE gateway capability left the UI on an eternal spinner): while no
+     * companion node WITHOUT the Atlas gateway capability left the UI on an eternal spinner): while no
      * snapshot has ever arrived, the refresh outcome is folded into a named state —
-     *  - NoGatewayNode → "phone link up, but EVE isn't reachable on the phone" (open the EVE app)
+     *  - NoGatewayNode → "phone link up, but Atlas isn't reachable on the phone" (open the Atlas app)
      *  - SendFailed    → the Data-Layer leg with the real reason
      *  - Sent          → a single [FIRST_SNAPSHOT_WAIT_MS] watchdog; if the phone never writes,
      *                    say so instead of spinning. Any arriving snapshot wins immediately.
@@ -145,7 +146,7 @@ class WearApprovalsViewModel(
             if (haveSnapshot) return@launch
             when (outcome) {
                 SendOutcome.NoGatewayNode -> _uiState.value = WearApprovalsUiState.NoPhone(
-                    "Phone link up, but EVE isn't reachable on the phone — open the EVE app",
+                    "Phone link up, but $ASSISTANT_NAME isn't reachable on the phone — open the $ASSISTANT_NAME app",
                 )
                 is SendOutcome.SendFailed -> _uiState.value = WearApprovalsUiState.NoPhone(
                     "${WearActionCopy.DATA_LAYER_DOWN}: ${outcome.reason}",
@@ -156,7 +157,7 @@ class WearApprovalsViewModel(
                         delay(FIRST_SNAPSHOT_WAIT_MS)
                         if (!haveSnapshot) {
                             _uiState.value = WearApprovalsUiState.NoPhone(
-                                "No data from the phone yet — open the EVE app on your phone",
+                                "No data from the phone yet — open the $ASSISTANT_NAME app on your phone",
                             )
                         }
                     }

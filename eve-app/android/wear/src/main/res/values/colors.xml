@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Adaptive launcher-icon background. EVE dark canvas — matches WearEveColors.background
+    <!-- Adaptive launcher-icon background. Atlas dark canvas — matches WearEveColors.background
          (0xFF0B0F14) and the phone app's @color/ic_launcher_background. -->
     <color name="ic_launcher_background">#0B0F14</color>
 </resources>

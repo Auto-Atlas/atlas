@@ -1,5 +1,6 @@
 package app.eve.wear.approvals
 
+import app.eve.ASSISTANT_NAME
 import app.eve.data.wear.ApprovalsSnapshot
 import app.eve.data.wear.Outcome
 import app.eve.data.wear.TalkReply
@@ -118,14 +119,14 @@ class WearApprovalsViewModelTest {
         val snapshots = FakeSnapshotSource()
         val vm = startedVm(scope, snapshots, FakeGatewayClient())
 
-        // A prior GOOD list, then the phone loses EVE.
+        // A prior GOOD list, then the phone loses Atlas.
         snapshots.emit(TestApprovals.pendingSnapshot(listOf(TestApprovals.invoice("a1"))))
         scope.runCurrent()
-        snapshots.emit(TestApprovals.serverDownSnapshot("cannot reach EVE: connection refused", atMs = 5_000L))
+        snapshots.emit(TestApprovals.serverDownSnapshot("cannot reach $ASSISTANT_NAME: connection refused", atMs = 5_000L))
         scope.runCurrent()
 
         val state = assertIs<WearApprovalsUiState.ServerDown>(vm.uiState.value)
-        assertEquals("cannot reach EVE: connection refused", state.detail)
+        assertEquals("cannot reach $ASSISTANT_NAME: connection refused", state.detail)
         assertEquals("a1", state.staleApprovals?.single()?.id)
         assertEquals(5_000L, state.fetchedAtEpochMs)
         scope.cancel()
@@ -137,7 +138,7 @@ class WearApprovalsViewModelTest {
         val snapshots = FakeSnapshotSource()
         val vm = startedVm(scope, snapshots, FakeGatewayClient())
 
-        snapshots.emit(TestApprovals.serverDownSnapshot("phone not connected to EVE"))
+        snapshots.emit(TestApprovals.serverDownSnapshot("phone not connected to $ASSISTANT_NAME"))
         scope.runCurrent()
 
         val state = assertIs<WearApprovalsUiState.ServerDown>(vm.uiState.value)
@@ -293,7 +294,7 @@ class WearApprovalsViewModelTest {
         scope.runCurrent()
 
         assertEquals(
-            "Phone can't reach EVE: connection refused",
+            "Phone can't reach $ASSISTANT_NAME: connection refused",
             assertIs<WearActionState.Resolved>(vm.actions.value["a1"]).message,
         )
         scope.cancel()
@@ -405,7 +406,7 @@ class WearApprovalsViewModelTest {
         scope.runCurrent()
 
         assertEquals(
-            "Phone link up, but EVE isn't reachable on the phone — open the EVE app",
+            "Phone link up, but $ASSISTANT_NAME isn't reachable on the phone — open the $ASSISTANT_NAME app",
             assertIs<WearApprovalsUiState.NoPhone>(vm.uiState.value).reason,
         )
         scope.cancel()
@@ -443,7 +444,7 @@ class WearApprovalsViewModelTest {
         scope.advanceTimeBy(2)
         scope.runCurrent()
         assertEquals(
-            "No data from the phone yet — open the EVE app on your phone",
+            "No data from the phone yet — open the $ASSISTANT_NAME app on your phone",
             assertIs<WearApprovalsUiState.NoPhone>(vm.uiState.value).reason,
         )
         scope.cancel()

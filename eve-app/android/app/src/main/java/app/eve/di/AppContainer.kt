@@ -139,7 +139,7 @@ class AppContainer(context: Context) {
             fetchStatus = { statusRepository.status() },
             snapshotWriter = gmsWearGateway,
             resultSender = gmsWearGateway,
-            // Watch push-to-talk: one utterance through EVE's full brain (POST /v1/ask). Same
+            // Watch push-to-talk: one utterance through Atlas's full brain (POST /v1/ask). Same
             // fresh-per-call style as the fetch lambdas — the bridge holds no ApiClient itself.
             askEve = { text -> talkRepository.ask(text) },
             // Live-voice door for the watch — AUTOMATIC pairing: derived from the approval base
@@ -197,7 +197,7 @@ class AppContainer(context: Context) {
      */
     suspend fun newVoiceClient(): VoiceClient? {
         val url = voiceUrl() ?: return null
-        // When the glasses toggle is on, hand the voice client a router that steers EVE's speech to
+        // When the glasses toggle is on, hand the voice client a router that steers Atlas's speech to
         // the glasses' Bluetooth speaker (DAT exposes no audio API — it's standard BT A2DP/SCO). Off
         // → the inert router, so playback stays on the phone exactly as before. Read once at session
         // start (like barge-in), so toggling mid-call takes effect on the next session.

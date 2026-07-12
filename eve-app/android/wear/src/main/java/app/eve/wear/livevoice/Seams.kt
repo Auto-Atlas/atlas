@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.StateFlow
 
 /**
  * The live-voice transport: ONE secure WebSocket to the owner's public voice door. Streams mic PCM16
- * (16 kHz mono) up, plays EVE's PCM down, and surfaces server control frames as [VoiceEvent]s on
+ * (16 kHz mono) up, plays Atlas's PCM down, and surfaces server control frames as [VoiceEvent]s on
  * [events] (a SharedFlow so BOTH the controller and the ViewModel can collect it — state and
  * transcript). The FIRST frame it sends on open is the auth frame; a rejected token / socket error /
  * server error frame all become NAMED events, never silence.
@@ -24,7 +24,7 @@ interface WsVoiceClient {
     val events: SharedFlow<VoiceEvent>
 
     /**
-     * EVE's REAL output level (0..1): smoothed RMS of each downlink PCM frame ([PcmLevel] +
+     * Atlas's REAL output level (0..1): smoothed RMS of each downlink PCM frame ([PcmLevel] +
      * [SpeakingEnvelope]), reset to 0 on every teardown. The ring's Speaking pulse reads this —
      * the honest replacement for the synthetic sine it launched with.
      */
@@ -33,10 +33,10 @@ interface WsVoiceClient {
     /** Dial [wsUrl] and authenticate with [token]. Called on start AND on each reconnect attempt. */
     suspend fun connect(wsUrl: String, token: String)
 
-    /** Gate the outbound mic locally (EVE stops hearing you). Never an interrupt/barge-in. */
+    /** Gate the outbound mic locally (Atlas stops hearing you). Never an interrupt/barge-in. */
     fun setMicMuted(muted: Boolean)
 
-    /** Send the interrupt control frame (barge-in) — stop EVE mid-utterance and reclaim the floor. */
+    /** Send the interrupt control frame (barge-in) — stop Atlas mid-utterance and reclaim the floor. */
     fun interrupt()
 
     /** Send bye (best-effort) and tear the socket + mic + player down. User-initiated: emits no Dropped. */

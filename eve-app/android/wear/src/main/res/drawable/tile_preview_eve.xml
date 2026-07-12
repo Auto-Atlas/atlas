@@ -1,6 +1,6 @@
-<!-- Tile PICKER preview (androidx.wear.tiles.PREVIEW). A real, minimal vector: EVE's dark rounded
+<!-- Tile PICKER preview (androidx.wear.tiles.PREVIEW). A real, minimal vector: Atlas's dark rounded
      square, the accent hexagon-dot mark, and three accent dots standing in for a pending count (3).
-     No raster placeholder — geometric only. Colors are EVE's surfaceCanvas (#0B0F14) + accent (#2DD4BF). -->
+     No raster placeholder — geometric only. Colors are Atlas's surfaceCanvas (#0B0F14) + accent (#2DD4BF). -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="48dp"
     android:height="48dp"

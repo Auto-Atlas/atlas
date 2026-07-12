@@ -34,7 +34,7 @@ import kotlin.math.sqrt
 /**
  * The living avatar — a faithful Compose-Canvas port of the phone's ui/components/NeuralBrain (same
  * forms, palettes, physics and animation), sized for the round watch face (~180dp default). One pool
- * of 128 glowing particles that physically MORPHS between forms as EVE's REAL server state changes:
+ * of 128 glowing particles that physically MORPHS between forms as Atlas's REAL server state changes:
  *
  *   not-configured / error / reconnect → dim SMOKE slate (frozen haze)
  *   idle / connecting                  → SMOKE  teal (calm plume)

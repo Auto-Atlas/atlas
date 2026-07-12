@@ -2,15 +2,15 @@
 <resources>
     <string name="app_name">Atlas</string>
     <string name="stream_channel_name">Live approvals</string>
-    <string name="stream_channel_desc">Holds the live connection to EVE while the app is open.</string>
+    <string name="stream_channel_desc">Holds the live connection to Atlas while the app is open.</string>
     <string name="approvals_channel_name">Approval requests</string>
     <string name="approvals_channel_desc">A known family member has a high-risk request waiting for you.</string>
     <string name="ritual_channel_name">Morning ritual</string>
-    <string name="ritual_channel_desc">Your 5 AM wake-up — EVE recites your whys, your goals, and the day ahead.</string>
-    <string name="ritual_notif_title">Good morning, Jonny Jets</string>
-    <string name="ritual_notif_body">Your ritual is ready — tap to start the day with EVE.</string>
+    <string name="ritual_channel_desc">Your 5 AM wake-up — Atlas recites your whys, your goals, and the day ahead.</string>
+    <string name="ritual_notif_title">Good morning</string>
+    <string name="ritual_notif_body">Your ritual is ready — tap to start the day with Atlas.</string>
     <string name="reminder_channel_name">Reminders</string>
-    <string name="reminder_channel_desc">Rings like an alarm clock when a reminder EVE set for you comes due.</string>
+    <string name="reminder_channel_desc">Rings like an alarm clock when a reminder Atlas set for you comes due.</string>
     <string name="reminder_notif_title">Reminder</string>
-    <string name="reminder_notif_default_body">You asked EVE to remind you.</string>
+    <string name="reminder_notif_default_body">You asked Atlas to remind you.</string>
 </resources>

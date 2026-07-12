@@ -13,6 +13,6 @@ data class Health(
     @SerialName("remote_approval_enabled") val remoteApprovalEnabled: Boolean,
     // Default false so an older backend that omits the field still decodes (Epic T).
     @SerialName("thinking_enabled") val thinkingEnabled: Boolean = false,
-    // "Let me interrupt EVE" toggle; default false so an older backend still decodes.
+    // "Let me interrupt Atlas" toggle; default false so an older backend still decodes.
     @SerialName("barge_in_enabled") val bargeInEnabled: Boolean = false,
 )

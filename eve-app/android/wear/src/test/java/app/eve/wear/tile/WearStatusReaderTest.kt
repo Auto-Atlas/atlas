@@ -1,5 +1,6 @@
 package app.eve.wear.tile
 
+import app.eve.ASSISTANT_NAME
 import app.eve.data.models.SystemStatus
 import app.eve.data.wear.ApprovalsSnapshot
 import app.eve.data.wear.StatusSnapshot
@@ -95,11 +96,11 @@ class WearStatusReaderTest {
             approvals = emptyList(),
             fetchedAtEpochMs = now - 300_000L,
             serverReachable = false,
-            errorDetail = "cannot reach EVE: timeout",
+            errorDetail = "cannot reach $ASSISTANT_NAME: timeout",
         )
         val state = WearStatusReader.reduce(approvals, status(reachable = false, atMs = now - 300_000L), now)
         assertEquals(
-            TileState.ServerDown(detail = "cannot reach EVE: timeout", pendingCountFromStale = null, ageMs = 300_000L),
+            TileState.ServerDown(detail = "cannot reach $ASSISTANT_NAME: timeout", pendingCountFromStale = null, ageMs = 300_000L),
             state,
         )
     }
@@ -120,10 +121,10 @@ class WearStatusReaderTest {
 
     @Test
     fun server_down_stale_count_falls_back_to_status_field_when_approvals_missing() {
-        val status = status(reachable = false, pendingApprovals = 3, detail = "phone not connected to EVE")
+        val status = status(reachable = false, pendingApprovals = 3, detail = "phone not connected to $ASSISTANT_NAME")
         val state = WearStatusReader.reduce(null, status, now) as TileState.ServerDown
         assertEquals(3, state.pendingCountFromStale)
-        assertEquals("phone not connected to EVE", state.detail)
+        assertEquals("phone not connected to $ASSISTANT_NAME", state.detail)
     }
 
     @Test

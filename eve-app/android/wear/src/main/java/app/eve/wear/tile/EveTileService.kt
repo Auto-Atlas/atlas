@@ -32,7 +32,7 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 
 /**
- * The EVE Status Tile. Renders the pending-approvals count + EVE desktop presence + freshness from a
+ * The Atlas Status Tile. Renders the pending-approvals count + Atlas desktop presence + freshness from a
  * [TileState] reduced ([WearStatusReader]) from the phone's retained snapshots. Tapping ANYWHERE on
  * the tile launches [app.eve.wear.MainActivity] (the approvals experience).
  *
@@ -73,7 +73,7 @@ class EveTileService : TileService() {
 
     // ---- Layout ---------------------------------------------------------------------------------
 
-    /** Whole-tile tap -> MainActivity (the approvals experience), plus the dark EVE surface. */
+    /** Whole-tile tap -> MainActivity (the approvals experience), plus the dark Atlas surface. */
     private fun rootLayout(state: TileState): LayoutElement {
         val clickable = Clickable.Builder()
             .setId("open_eve")

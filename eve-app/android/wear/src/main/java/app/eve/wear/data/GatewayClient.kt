@@ -33,7 +33,7 @@ interface GatewayClient {
      * Ask the phone to write fresh snapshots NOW (empty-payload refresh message). Called ONCE when
      * the watch app comes to the foreground — never on a timer/loop. Returns the honest
      * [SendOutcome] of the refresh SEND: [SendOutcome.NoGatewayNode] is how the watch learns "a
-     * phone is connected but EVE isn't reachable on it" (a node without the gateway capability) —
+     * phone is connected but Atlas isn't reachable on it" (a node without the gateway capability) —
      * the ViewModel turns that into a named state instead of spinning forever (gap found on the
      * Wear OS 5 emulator, 2026-07-10).
      */
@@ -43,7 +43,7 @@ interface GatewayClient {
      * Send one push-to-talk utterance ([TalkRequest]) to the phone gateway. Same honest [SendOutcome]
      * semantics as [sendAction] — [SendOutcome.NoGatewayNode] is the Data-Layer-down leg,
      * [SendOutcome.SendFailed] carries the real reason, [SendOutcome.Sent] means the message left the
-     * watch (EVE's answer then arrives on [talkReplies]).
+     * watch (Atlas's answer then arrives on [talkReplies]).
      */
     suspend fun sendTalk(request: TalkRequest): SendOutcome
 
@@ -57,7 +57,7 @@ interface GatewayClient {
     /**
      * Health v2: send one passive heart-rate alert ([app.eve.data.wear.HealthAlert]) to the phone
      * gateway ([app.eve.data.wear.WearLink.PATH_ACTION_HEALTH_EVENT]); the phone POSTs it to the
-     * sidecar and EVE warns in her voice. Same honest [SendOutcome] semantics as [sendAction] —
+     * sidecar and Atlas warns in her voice. Same honest [SendOutcome] semantics as [sendAction] —
      * a failed send is logged by the caller, never swallowed (Samsung Health's own HR alert stays
      * the OS-level safety net).
      */

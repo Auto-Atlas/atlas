@@ -61,7 +61,7 @@ object LiveVoiceCodec {
     /** The FIRST client frame: authenticate with the bearer token (fail-closed on the server). */
     fun authFrame(token: String): String = frame { put("type", "auth"); put("token", token) }
 
-    /** Client barge-in: stop EVE's current utterance and hand the floor back. */
+    /** Client barge-in: stop Atlas's current utterance and hand the floor back. */
     fun interruptFrame(): String = frame { put("type", "interrupt") }
 
     /** Client graceful close: end the session cleanly before the socket tears down. */

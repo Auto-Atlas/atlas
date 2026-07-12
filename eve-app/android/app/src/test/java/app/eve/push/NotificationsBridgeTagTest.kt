@@ -1,5 +1,6 @@
 package app.eve.push
 
+import app.eve.ASSISTANT_NAME
 import android.app.Application
 import androidx.core.app.NotificationCompat
 import app.eve.R
@@ -45,7 +46,7 @@ class NotificationsBridgeTagTest {
         Notifications.ensureChannels(app)
         val stream = NotificationCompat.Builder(app, Notifications.CHANNEL_STREAM)
             .setSmallIcon(R.drawable.ic_launcher_foreground)
-            .setContentTitle("EVE is listening")
+            .setContentTitle("$ASSISTANT_NAME is listening")
             .setOngoing(true)
             .setPriority(NotificationCompat.PRIORITY_LOW)
             .build()

@@ -12,11 +12,11 @@ import app.eve.R
 
 /**
  * The morning-ritual alarm notification. Uses a FULL-SCREEN intent (category=alarm) so it wakes a
- * locked phone and launches EVE straight into the ritual, exactly like an alarm clock.
+ * locked phone and launches Atlas straight into the ritual, exactly like an alarm clock.
  *
  * Graceful degrade: on Android 14+ the OS may withhold the full-screen-intent privilege from a
  * non-calling app (USE_FULL_SCREEN_INTENT is no longer auto-granted). In that case the system shows
- * this as a high-priority heads-up notification the user taps to open EVE — degraded, but the
+ * this as a high-priority heads-up notification the user taps to open Atlas — degraded, but the
  * ritual still reaches them. Either way the launch carries [EXTRA_RITUAL] so MainActivity knows to
  * auto-connect.
  */
@@ -67,14 +67,14 @@ object RitualNotification {
     }
 
     /**
-     * The notification that fronts [app.eve.ritual.RitualPlaybackService] while EVE's wake audio
+     * The notification that fronts [app.eve.ritual.RitualPlaybackService] while Atlas's wake audio
      * plays locally. Reuses the IMPORTANCE_HIGH ritual channel and carries a full-screen + content
-     * intent (category=alarm) so a tap opens EVE to talk — but the LOCAL audio is the primary,
+     * intent (category=alarm) so a tap opens Atlas to talk — but the LOCAL audio is the primary,
      * connection-free wake; this notification is the visual/affordance around it.
      */
     fun playbackNotification(context: Context): Notification {
         ensureChannel(context)
-        // Opens EVE NORMALLY on tap (no EXTRA_RITUAL) — the whys play locally, so we must not
+        // Opens Atlas NORMALLY on tap (no EXTRA_RITUAL) — the whys play locally, so we must not
         // auto-connect the voice screen. No full-screen intent either: the playback service's wake
         // lock turns the screen on; a full-screen auto-launch would re-open the "connected, silent"
         // Talk screen.

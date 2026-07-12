@@ -7,7 +7,7 @@ import android.content.Intent
 /**
  * Fired by AlarmManager at the configured ritual time. Re-arms the next day's alarm (alarm-clock
  * alarms are one-shot), then wakes the phone with a full-screen-intent notification that launches
- * EVE straight into the morning ritual — the alarm-clock pattern.
+ * Atlas straight into the morning ritual — the alarm-clock pattern.
  */
 class RitualAlarmReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent?) {

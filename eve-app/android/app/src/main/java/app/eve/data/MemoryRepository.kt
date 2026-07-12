@@ -8,7 +8,7 @@ open class MemoryRepository(private val api: ApiClient) {
     open suspend fun facts(speaker: String? = null): ApiResult<List<String>> =
         api.getMemory(speaker).map { it.facts }
 
-    /** Structured, newest-first facts EVE knows about the owner — what the Memory tab renders. */
+    /** Structured, newest-first facts Atlas knows about the owner — what the Memory tab renders. */
     open suspend fun items(speaker: String? = null): ApiResult<List<MemoryItem>> =
         api.getMemory(speaker).map { it.items }
 

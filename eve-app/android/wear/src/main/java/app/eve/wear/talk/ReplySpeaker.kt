@@ -3,7 +3,7 @@ package app.eve.wear.talk
 import kotlinx.coroutines.flow.StateFlow
 
 /**
- * Speaks EVE's reply on the wrist. Seam over the on-watch TextToSpeech so the talk screen depends on
+ * Speaks Atlas's reply on the wrist. Seam over the on-watch TextToSpeech so the talk screen depends on
  * an interface (fakeable, manual DI — no mocking library) rather than the Android engine directly.
  *
  * Contract — voice failure NEVER hides the text: [speak] is fire-and-forget; the reply text is always

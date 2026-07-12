@@ -25,11 +25,11 @@ sealed interface WearTalkPhase {
     /** The audio is captured; it is being sent to the phone (native path) or STT produced a transcript (fallback). */
     data object Sending : WearTalkPhase
 
-    /** The request left the watch; awaiting EVE's reply ("EVE is thinking…"). */
+    /** The request left the watch; awaiting Atlas's reply ("Atlas is thinking…"). */
     data object ThinkingAwaitingReply : WearTalkPhase
 
     /**
-     * EVE answered. [text] is the reply, rendered immediately (independent of any voice state).
+     * Atlas answered. [text] is the reply, rendered immediately (independent of any voice state).
      * [spokenOnWatch] is true when the audio was already played on the wrist by the native path's
      * [PcmPlayer] — the screen then must NOT also TTS-speak it (that would double her voice); false for
      * the fallback (Google) path, whose text-only reply is spoken via the on-watch TTS.

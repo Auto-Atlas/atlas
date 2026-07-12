@@ -6,13 +6,13 @@ package app.eve.vision
  * mirrors `vision_frames.valid_id` so a hostile or malformed id is rejected on the phone before we
  * ever touch the camera or echo the id back to `/v1/vision/frame`.
  *
- * [prompt] is optional by contract (EVE may just want "a look") — it is only used for the on-screen
- * "EVE is looking…" indicator, never validated for content.
+ * [prompt] is optional by contract (Atlas may just want "a look") — it is only used for the on-screen
+ * "Atlas is looking…" indicator, never validated for content.
  */
 data class CaptureRequest(
     val requestId: String,
     val prompt: String,
-    /** Which camera EVE wants this frame from — see [CaptureSource]. Defaults to [CaptureSource.ANY]. */
+    /** Which camera Atlas wants this frame from — see [CaptureSource]. Defaults to [CaptureSource.ANY]. */
     val source: CaptureSource = CaptureSource.ANY,
 ) {
     companion object {

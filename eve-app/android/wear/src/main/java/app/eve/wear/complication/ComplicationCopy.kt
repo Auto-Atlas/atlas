@@ -1,5 +1,6 @@
 package app.eve.wear.complication
 
+import app.eve.ASSISTANT_NAME
 import app.eve.wear.tile.TileState
 
 /**
@@ -15,7 +16,7 @@ import app.eve.wear.tile.TileState
 object ComplicationCopy {
 
     /** SHORT_TEXT title + the icon/monochrome-image caption. */
-    const val TITLE = "EVE"
+    const val TITLE = "$ASSISTANT_NAME"
 
     /** The em dash shown when there is no live count to display. */
     const val NO_VALUE = "—"
@@ -28,9 +29,9 @@ object ComplicationCopy {
 
     /** Spoken/description string — always explains the state honestly. */
     fun contentDescription(state: TileState): String = when (state) {
-        is TileState.Live -> "EVE: ${pendingPhrase(state.pendingCount)}"
-        TileState.NeverSynced -> "EVE: waiting for phone"
-        is TileState.ServerDown -> "EVE: server unreachable"
+        is TileState.Live -> "$ASSISTANT_NAME: ${pendingPhrase(state.pendingCount)}"
+        TileState.NeverSynced -> "$ASSISTANT_NAME: waiting for phone"
+        is TileState.ServerDown -> "$ASSISTANT_NAME: server unreachable"
     }
 
     /** RANGED_VALUE value = the live count (>=0), or 0 for the fallbacks (paired with the "—" text). */

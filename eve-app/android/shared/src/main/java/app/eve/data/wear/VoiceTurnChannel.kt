@@ -42,9 +42,9 @@ data class VoiceTurnRequest(
  * Phone->watch: the reply envelope of one voice turn, written back on the SAME channel and followed
  * by [pcmByteCount] raw PCM16 bytes (the WAV header is stripped phone-side so the watch never parses
  * RIFF). The honest, named-leg contract mirrors [TalkReply]:
- *  - [outcome] == [Outcome.OK]: [transcript] (what EVE heard) and [reply] (her answer text) are both
+ *  - [outcome] == [Outcome.OK]: [transcript] (what Atlas heard) and [reply] (the answer text) are both
  *    present; audio MAY still be absent ([pcmByteCount] == 0) when TTS failed — then [voiceError]
- *    names the leg and the reply TEXT is still delivered (her answer must reach the wrist even when
+ *    names the leg and the reply TEXT is still delivered (the answer must reach the wrist even when
  *    her voice can't).
  *  - a blank [transcript] with a non-OK outcome is the server's "no speech recognized" (HTTP 422)
  *    signal — the watch renders the "Didn't catch that" copy.

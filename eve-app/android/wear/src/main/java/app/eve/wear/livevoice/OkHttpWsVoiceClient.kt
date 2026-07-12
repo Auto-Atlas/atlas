@@ -20,7 +20,7 @@ import java.util.concurrent.TimeUnit
 
 /**
  * Real [WsVoiceClient] over OkHttp's WebSocket — the thin transport edge only. Streams wrist-mic PCM16
- * (16 kHz mono) up as binary frames and plays EVE's PCM down; server text frames become [VoiceEvent]s
+ * (16 kHz mono) up as binary frames and plays Atlas's PCM down; server text frames become [VoiceEvent]s
  * via the pure [LiveVoiceCodec]. All conversation logic (timeouts, backoff, tap contract) lives in the
  * JVM-tested [LiveVoiceController] / [WearLiveVoiceViewModel]; this class only opens a socket and moves
  * bytes.
@@ -48,7 +48,7 @@ class OkHttpWsVoiceClient(
     private val _events = MutableSharedFlow<VoiceEvent>(extraBufferCapacity = 256)
     override val events: SharedFlow<VoiceEvent> = _events.asSharedFlow()
 
-    // EVE's real output level: smoothed RMS of every downlink PCM frame (pure math in PcmLevel;
+    // Atlas's real output level: smoothed RMS of every downlink PCM frame (pure math in PcmLevel;
     // this edge only publishes). Reset on every teardown so no session inherits a stale glow.
     private val speakingEnvelope = SpeakingEnvelope()
     private val _botLevel = MutableStateFlow(0f)

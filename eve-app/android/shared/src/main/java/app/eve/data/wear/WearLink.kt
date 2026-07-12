@@ -69,7 +69,7 @@ object WearLink {
 
     /**
      * Watch->phone: one push-to-talk utterance (already transcribed on the watch) to run through
-     * EVE's full brain. Payload = [TalkRequest]. MUST stay under `/eve/action/` — [WearBridgeService]
+     * Atlas's full brain. Payload = [TalkRequest]. MUST stay under `/eve/action/` — [WearBridgeService]
      * drops any path that isn't in that namespace in code (its own guard), even though the manifest
      * intent-filter is only scoped to `/eve`.
      */
@@ -78,13 +78,13 @@ object WearLink {
     /**
      * Watch->phone: one passive heart-rate threshold alert (Health v2 — "if my heart rate jumps
      * she can warn me"). Payload = [HealthAlert]. The phone POSTs it to approval_api's
-     * /v1/health/event; the sidecar's initiative engine turns it into EVE's spoken warning.
+     * /v1/health/event; the sidecar's initiative engine turns it into Atlas's spoken warning.
      * Under `/eve/action/` for the same [WearBridgeService] namespace guard as talk.
      */
     const val PATH_ACTION_HEALTH_EVENT = "/eve/action/health_event"
 
     /**
-     * Phone->watch: EVE's reply to a talk request. Payload = [TalkReply]. DELIBERATELY separate from
+     * Phone->watch: Atlas's reply to a talk request. Payload = [TalkReply]. DELIBERATELY separate from
      * [PATH_ACTION_RESULT]: the approvals listener filters on that path and must never decode a
      * [TalkReply] as a [WearActionResult] (and vice-versa). Reply bytes ride their own channel.
      */
@@ -95,7 +95,7 @@ object WearLink {
      * THE single bidirectional ChannelClient path for one native voice turn (v2). The watch OPENS a
      * channel to the phone gateway node on this path and writes a len-prefixed [VoiceTurnRequest]
      * envelope followed by the recorded WAV bytes (see [VoiceEnvelope]); the phone runs it through
-     * EVE's own speech stack and writes back a [VoiceTurnReply] envelope + raw PCM on the SAME
+     * Atlas's own speech stack and writes back a [VoiceTurnReply] envelope + raw PCM on the SAME
      * channel. A ChannelClient (not a Message) because the audio payloads exceed the ~100 KB Message
      * cap. Deliberately under `/eve/` so it rides the same manifest path-prefix scoping as every other
      * Data-Layer surface, but its OWN path so no Message listener ever sees channel bytes.
@@ -213,7 +213,7 @@ data class TalkRequest(
 /**
  * Watch->phone passive heart-rate alert (Health v2). Raised by the watch's Health Services
  * passive monitor when a threshold goal fires; the phone forwards it to the sidecar, where the
- * initiative engine judges context and EVE warns in her own voice. [observedAtEpochMs] is the
+ * initiative engine judges context and Atlas warns in her own voice. [observedAtEpochMs] is the
  * watch's observation time — the SERVER stamps its own receive time too (device clocks are not
  * trusted for staleness math, matching the snapshot rule).
  */
@@ -233,7 +233,7 @@ data class HealthAlert(
 }
 
 /**
- * Phone->watch reply to one [TalkRequest]. [reply] is EVE's answer text (present exactly when
+ * Phone->watch reply to one [TalkRequest]. [reply] is Atlas's answer text (present exactly when
  * [outcome] is [Outcome.OK]); on any failure leg it is null and [detail] carries the real reason.
  * The same named-leg honesty as [WearActionResult]: a leg that broke is [Outcome.SERVER_UNREACHABLE]
  * / [Outcome.UNAUTHORIZED] / [Outcome.ERROR] with detail, never a fake OK with empty text.
@@ -258,7 +258,7 @@ enum class Outcome {
     @SerialName("approved")
     APPROVED,
 
-    /** Talk leg succeeded — EVE answered. [TalkReply.reply] carries the answer text. */
+    /** Talk leg succeeded — Atlas answered. [TalkReply.reply] carries the answer text. */
     @SerialName("ok")
     OK,
 

@@ -9,7 +9,7 @@ data class SettingsDto(
     @SerialName("remote_approval_enabled") val remoteApprovalEnabled: Boolean,
     // Default false so a thinking-only or older response still decodes (Epic T).
     @SerialName("thinking_enabled") val thinkingEnabled: Boolean = false,
-    // "Let me interrupt EVE" toggle; default false so an older response still decodes.
+    // "Let me interrupt Atlas" toggle; default false so an older response still decodes.
     @SerialName("barge_in_enabled") val bargeInEnabled: Boolean = false,
 )
 
@@ -27,7 +27,7 @@ data class MemoryFacts(
 )
 
 /**
- * One structured fact EVE remembers about the owner. `date` is `YYYY-MM-DD` (empty string when
+ * One structured fact Atlas remembers about the owner. `date` is `YYYY-MM-DD` (empty string when
  * undated) and `category` ∈ faith | health | family | business | goal | preference | general
  * (empty -> "Other"). Both default so a sparse/partial item still decodes cleanly.
  */
@@ -75,7 +75,7 @@ data class DenyResult(
 )
 
 /**
- * POST /v1/ask -> {"reply": "..."}. One push-to-talk utterance answered by EVE's full brain (the
+ * POST /v1/ask -> {"reply": "..."}. One push-to-talk utterance answered by Atlas's full brain (the
  * watch talk flow). [reply] is the assistant's answer text; it is the ONE required field — an empty
  * body or missing key is a decode failure the caller surfaces honestly (never a fake blank answer).
  */
@@ -86,8 +86,8 @@ data class AskResult(
 
 /**
  * POST /v1/voice/turn -> the v2 NATIVE watch voice turn. The server transcribes the uploaded WAV with
- * EVE's own STT, runs [transcript] through the same brain leg as /v1/ask, and synthesizes [reply] in
- * her canonical voice. [transcript] and [reply] are always present on a 200; [audioB64] is a 16 kHz
+ * Atlas's own STT, runs [transcript] through the same brain leg as /v1/ask, and synthesizes [reply] in
+ * its canonical voice. [transcript] and [reply] are always present on a 200; [audioB64] is a 16 kHz
  * mono PCM16 WAV (base64) OR null when the TTS leg failed — in which case [voiceError] names the leg
  * and the reply TEXT is still delivered (no silent fallback to a different voice). The named failure
  * legs are HTTP statuses the [app.eve.data.ApiClient] maps to [app.eve.data.ApiError] (400 undecodable
@@ -118,7 +118,7 @@ data class VisionFrameResult(
 
 /**
  * POST /v1/health/snapshot -> {"ok": true, ...}. The phone uploads a compact 24h health snapshot
- * (see [app.eve.health.HealthSnapshot]); the sidecar stamps it written_at and stores it for EVE's
+ * (see [app.eve.health.HealthSnapshot]); the sidecar stamps it written_at and stores it for Atlas's
  * `health_status` tool. [ok] is the one field we assert; any extra keys the server adds are ignored
  * (EveWireJson.ignoreUnknownKeys), and it defaults false so a bodyless 2xx still decodes honestly.
  */

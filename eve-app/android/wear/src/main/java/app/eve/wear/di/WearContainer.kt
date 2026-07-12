@@ -45,11 +45,11 @@ class WearContainer(context: Context) {
     /**
      * On-watch TTS for the FALLBACK (Google) path's text-only reply. Held here so the talk screen
      * depends on the seam, not the Android engine; prewarm/shutdown are driven by the talk screen's
-     * lifecycle. The v2 native path uses [pcmPlayer] instead (EVE's own synthesized voice).
+     * lifecycle. The v2 native path uses [pcmPlayer] instead (Atlas's own synthesized voice).
      */
     val replySpeaker: ReplySpeaker by lazy { TtsReplySpeaker(appContext) }
 
-    // ---- v2 native voice turn seams (wrist mic -> EVE's own voice) ----
+    // ---- v2 native voice turn seams (wrist mic -> Atlas's own voice) ----
 
     /** Wrist mic capture (16 kHz mono PCM16 -> WAV). Lazy so JVM tests never touch AudioRecord. */
     val wristRecorder: WristRecorder by lazy { AudioRecordWristRecorder() }
@@ -57,7 +57,7 @@ class WearContainer(context: Context) {
     /** The bidirectional voice-turn channel to the phone gateway node (ChannelClient). */
     val voiceTurnClient: VoiceTurnClient by lazy { GmsVoiceTurnClient(appContext) }
 
-    /** Plays EVE's returned PCM on the wrist speaker (AudioTrack). Lazy for the same reason. */
+    /** Plays Atlas's returned PCM on the wrist speaker (AudioTrack). Lazy for the same reason. */
     val pcmPlayer: PcmPlayer by lazy { AudioTrackPcmPlayer() }
 
     /** Shares [gatewayClient] so the wrist Deny sends over the exact same Data-Layer seam as the app. */
@@ -71,7 +71,7 @@ class WearContainer(context: Context) {
     /** Reads the retained {wsUrl, token} door config the phone writes on the Data Layer. */
     val voiceDoorSource: VoiceDoorSource by lazy { GmsVoiceDoorSource(appContext) }
 
-    // ---- Health v2 seams (passive HR stream -> EVE's proactive warning) ----
+    // ---- Health v2 seams (passive HR stream -> Atlas's proactive warning) ----
 
     /** Did the owner turn heart alerts ON (drives boot/app-start re-registration). */
     val hrAlertsStore: app.eve.wear.health.HrAlertsStore by lazy {

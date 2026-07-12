@@ -18,7 +18,7 @@ sealed interface TileState {
     data object NeverSynced : TileState
 
     /**
-     * A snapshot exists but the phone could not reach the EVE server (`serverReachable = false`).
+     * A snapshot exists but the phone could not reach the Atlas server (`serverReachable = false`).
      * [detail] is the phone's real "which leg is down" reason; [pendingCountFromStale] is a
      * last-known count ONLY when the stale snapshot actually carries one (never a fake fresh 0);
      * [ageMs] is how old the stale snapshot is.
@@ -31,7 +31,7 @@ sealed interface TileState {
 
     /**
      * The phone reached the server (`serverReachable = true`). [pendingCount] is the live count of
-     * pending approvals; [desktopOnline] is the EVE desktop/brain presence; [ageMs] is snapshot age.
+     * pending approvals; [desktopOnline] is the Atlas desktop/brain presence; [ageMs] is snapshot age.
      */
     data class Live(
         val pendingCount: Int,

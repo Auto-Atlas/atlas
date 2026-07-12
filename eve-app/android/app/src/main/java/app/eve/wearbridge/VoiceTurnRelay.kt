@@ -1,5 +1,6 @@
 package app.eve.wearbridge
 
+import app.eve.ASSISTANT_NAME
 import android.util.Log
 import app.eve.data.ApiError
 import app.eve.data.ApiResult
@@ -22,16 +23,16 @@ import java.util.Base64
  * one opened bidirectional channel's [InputStream]/[OutputStream], it:
  *
  *   1. reads the [VoiceTurnRequest] envelope + the recorded WAV bytes (the watch's half),
- *   2. base64-encodes the WAV and POSTs it to `/v1/voice/turn` via [voiceTurn] (EVE's own STT ->
- *      brain -> her voice — no Google in the path),
- *   3. maps the result to a [VoiceTurnReply] envelope, STRIPS the WAV header from her returned audio
+ *   2. base64-encodes the WAV and POSTs it to `/v1/voice/turn` via [voiceTurn] (Atlas's own STT ->
+ *      brain -> its voice — no Google in the path),
+ *   3. maps the result to a [VoiceTurnReply] envelope, STRIPS the WAV header from the returned audio
  *      so the watch never parses RIFF, and writes `envelope + raw PCM` back on the same channel.
  *
  * House rules honored here:
  *  - No silent fallback: every [ApiError] maps to a named [Outcome]/detail (reusing the talk
  *    vocabulary); a malformed inbound envelope whose [VoiceTurnRequest.requestId] is recoverable gets
  *    an honest ERROR reply (mirror of [WearBridge]'s recovery); an unrecoverable one is logged loudly.
- *  - Reply TEXT reaches the wrist even when her voice can't: a 200 with `audio_b64 == null` +
+ *  - Reply TEXT reaches the wrist even when the voice can't: a 200 with `audio_b64 == null` +
  *    `voice_error` still delivers [VoiceTurnReply.reply] with `pcmByteCount = 0` and the named
  *    [VoiceTurnReply.voiceError] note — never a swap to a different voice.
  *  - An empty/undecodable recording is a named failure, never sent onward to the brain.
@@ -83,7 +84,7 @@ class VoiceTurnRelay(
             return
         }
 
-        // ---- HTTP leg to EVE's own speech stack ----
+        // ---- HTTP leg to Atlas's own speech stack ----
         val audioB64 = Base64.getEncoder().encodeToString(wav)
         val result = try {
             voiceTurn(audioB64, request.requestId)
@@ -101,7 +102,7 @@ class VoiceTurnRelay(
     }
 
     /**
-     * Build the OK reply from the server result. Her audio (a 16k mono PCM16 WAV) has its RIFF header
+     * Build the OK reply from the server result. The reply audio (a 16k mono PCM16 WAV) has its RIFF header
      * stripped here so the watch reads only raw PCM; if she has no audio (TTS leg failed) the reply
      * TEXT is still delivered with the [VoiceTurnResult.voiceError] note and pcmByteCount = 0. If the
      * audio is present but undecodable, that is surfaced as a voiceError too (text never blocked).
@@ -125,7 +126,7 @@ class VoiceTurnRelay(
         val pcm = try {
             Wav.pcmFrom(Base64.getDecoder().decode(audioB64)).bytes
         } catch (t: Throwable) {
-            // She spoke, but her audio didn't decode phone-side. Text still wins; name the voice leg.
+            // The reply audio didn't decode phone-side. Text still wins; name the voice leg.
             Log.e(TAG, "Voice turn: could not strip WAV from reply audio: ${t.message}", t)
             return VoiceTurnReplyWithPcm(
                 VoiceTurnReply(
@@ -162,10 +163,10 @@ class VoiceTurnRelay(
     private fun apiErrorToReply(requestId: String, error: ApiError): VoiceTurnReplyWithPcm {
         val reply = when (error) {
             is ApiError.Offline -> failed(requestId, Outcome.SERVER_UNREACHABLE, error.cause)
-            ApiError.NotConfigured -> failed(requestId, Outcome.SERVER_UNREACHABLE, "phone not connected to EVE")
+            ApiError.NotConfigured -> failed(requestId, Outcome.SERVER_UNREACHABLE, "phone not connected to $ASSISTANT_NAME")
             ApiError.Unauthorized -> failed(requestId, Outcome.UNAUTHORIZED, "unauthorized (401) — reconnect the phone")
-            ApiError.NotFound -> failed(requestId, Outcome.ERROR, "EVE has no /v1/voice/turn endpoint (404)")
-            ApiError.AlreadyResolved -> failed(requestId, Outcome.ERROR, "unexpected 409 from EVE")
+            ApiError.NotFound -> failed(requestId, Outcome.ERROR, "$ASSISTANT_NAME has no /v1/voice/turn endpoint (404)")
+            ApiError.AlreadyResolved -> failed(requestId, Outcome.ERROR, "unexpected 409 from $ASSISTANT_NAME")
             is ApiError.Http ->
                 if (error.status == HTTP_NO_SPEECH) {
                     // No speech recognized: blank transcript is the watch's DIDNT_CATCH signal.

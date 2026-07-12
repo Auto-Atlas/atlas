@@ -7,7 +7,7 @@ import android.os.Build
 import android.util.Log
 
 /**
- * Routes EVE's spoken (TTS) audio out the glasses' speaker. Per Meta's DAT docs there is **no
+ * Routes Atlas's spoken (TTS) audio out the glasses' speaker. Per Meta's DAT docs there is **no
  * toolkit audio API** — a DAT session shares the glasses' mic/speaker with the system Bluetooth
  * stack, so playing to the glasses is exactly standard Android Bluetooth routing (A2DP for output,
  * HFP/SCO or BLE for the bidirectional voice call). We therefore select the glasses as the

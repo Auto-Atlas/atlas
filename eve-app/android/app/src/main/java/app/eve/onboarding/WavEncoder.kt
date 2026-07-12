@@ -20,7 +20,7 @@ object WavEncoder {
 
     /**
      * @param pcm little-endian 16-bit PCM samples (mono) exactly as produced by AudioRecord.
-     * @param sampleRate the rate the PCM was captured at (16000 or 24000 for EVE enroll).
+     * @param sampleRate the rate the PCM was captured at (16000 or 24000 for Atlas enroll).
      * @return a complete WAV file (44-byte canonical header + the PCM data) as bytes.
      */
     fun pcm16ToWav(pcm: ByteArray, sampleRate: Int): ByteArray {

@@ -22,7 +22,7 @@ import java.util.UUID
 /**
  * Owns the watch push-to-talk experience. In v2 the PRIMARY path is native: the wrist mic records raw
  * PCM ([WristRecorder]), streams it to the phone over ONE bidirectional channel ([VoiceTurnClient]),
- * and plays EVE's own synthesized voice back ([PcmPlayer]) — no Google in the path. The v1
+ * and plays Atlas's own synthesized voice back ([PcmPlayer]) — no Google in the path. The v1
  * RecognizerIntent → `/v1/ask` text rail stays as the tested fallback ([ask]) and is spoken via the
  * on-watch TTS by the screen (only when [WearTalkPhase.Replied.spokenOnWatch] is false).
  *
@@ -46,13 +46,13 @@ class WearTalkViewModel(
     private val _phase = MutableStateFlow<WearTalkPhase>(WearTalkPhase.Idle)
     val phase: StateFlow<WearTalkPhase> = _phase.asStateFlow()
 
-    /** The session transcript (You + EVE lines), newest last. No persistence in v1/v2. */
+    /** The session transcript (You + Atlas lines), newest last. No persistence in v1/v2. */
     private val _transcript = MutableStateFlow<List<TalkTurn>>(emptyList())
     val transcript: StateFlow<List<TalkTurn>> = _transcript.asStateFlow()
 
     /**
      * The honest voice-output note for the NATIVE path: mirrors [PcmPlayer.state] EXCEPT that a
-     * server-side voice_error (EVE answered but her TTS leg failed) is a sticky text-only note until
+     * server-side voice_error (Atlas answered but her TTS leg failed) is a sticky text-only note until
      * the next turn. Text always carries the reply; this drives a small secondary note only.
      */
     private val _voiceState = MutableStateFlow<VoiceState>(VoiceState.Idle)
@@ -155,7 +155,7 @@ class WearTalkViewModel(
 
         val outcome = withTimeoutOrNull(TURN_TIMEOUT_MS) {
             voiceClient.runTurn(VoiceTurnRequest(requestId), wav) {
-                // The request + audio have left the watch; EVE's brain is now working.
+                // The request + audio have left the watch; Atlas's brain is now working.
                 _phase.value = WearTalkPhase.ThinkingAwaitingReply
             }
         }
@@ -175,8 +175,8 @@ class WearTalkViewModel(
     }
 
     /**
-     * Map one native [VoiceTurnReply] to a phase. On OK the server-side transcript (what EVE heard)
-     * becomes the You turn and her answer the EVE turn; her PCM plays on the wrist. A blank transcript
+     * Map one native [VoiceTurnReply] to a phase. On OK the server-side transcript (what Atlas heard)
+     * becomes the You turn and her answer the Atlas turn; her PCM plays on the wrist. A blank transcript
      * on a non-OK outcome is the server's 422 "no speech" — the "Didn't catch that" copy. A voice_error
      * or a playback failure is a small note only; the reply TEXT always renders.
      */

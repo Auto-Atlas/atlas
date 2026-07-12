@@ -1,5 +1,6 @@
 package app.eve.voice
 
+import app.eve.ASSISTANT_NAME
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -18,7 +19,7 @@ import kotlinx.coroutines.launch
  *  - **Connect timeout ≥15s** — must EXCEED phone_bot's ≤10s single-session teardown so a
  *    legitimate eviction-reconnect (connecting from the app ends an active PWA/desktop session)
  *    doesn't spuriously Error.
- *  - **Think timeout** → Failed("EVE isn't responding").
+ *  - **Think timeout** → Failed("Atlas isn't responding").
  *  - **Reconnect backoff** — the ONLY storm-preventer (server is ConnectionMode.MULTIPLE, it
  *    won't reject a 2nd connect), so it's a tested unit.
  *
@@ -99,7 +100,7 @@ class VoiceController(
         client.setSpeakerphone(_controls.value.speakerphoneOn)
     }
 
-    /** User tapped to interrupt EVE while it speaks. */
+    /** User tapped to interrupt Atlas while it speaks. */
     fun interrupt() {
         if (_state.value == VoiceState.Speaking || _state.value == VoiceState.NoAudio) {
             client.interrupt()
@@ -129,7 +130,7 @@ class VoiceController(
             if (before == VoiceState.Connecting || before == VoiceState.Reconnecting) applyControls()
         }
 
-        // Arm the think timeout while EVE is thinking; clear it once it speaks/leaves.
+        // Arm the think timeout while Atlas is thinking; clear it once it speaks/leaves.
         if (after == VoiceState.Thinking) armThinkTimeout() else thinkTimeoutJob?.cancel()
 
         // A mid-session drop → controller-driven reconnect with backoff (the storm-preventer).
@@ -145,7 +146,7 @@ class VoiceController(
         connectTimeoutJob = scope.launch {
             delay(connectTimeoutMs)
             if (_state.value == VoiceState.Connecting || _state.value == VoiceState.Reconnecting) {
-                dispatch(VoiceEvent.Failed("Can't reach EVE — connection timed out."))
+                dispatch(VoiceEvent.Failed("Can't reach $ASSISTANT_NAME — connection timed out."))
             }
         }
     }
@@ -155,14 +156,14 @@ class VoiceController(
         thinkTimeoutJob = scope.launch {
             delay(thinkTimeoutMs)
             if (_state.value == VoiceState.Thinking) {
-                dispatch(VoiceEvent.Failed("EVE isn't responding."))
+                dispatch(VoiceEvent.Failed("$ASSISTANT_NAME isn't responding."))
             }
         }
     }
 
     private fun scheduleReconnect() {
         if (reconnectAttempts >= maxReconnects) {
-            dispatch(VoiceEvent.Failed("Lost connection to EVE."))
+            dispatch(VoiceEvent.Failed("Lost connection to $ASSISTANT_NAME."))
             return
         }
         val attempt = reconnectAttempts

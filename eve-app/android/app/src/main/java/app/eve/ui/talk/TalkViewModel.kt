@@ -64,7 +64,7 @@ class TalkViewModel(
 
     /**
      * The latest surfaced visual card (surface_visual) — a desktop screenshot, an image, or a note
-     * EVE chose to SHOW. Owned by the container's [app.eve.visual.VisualHub] (fed by the
+     * Atlas chose to SHOW. Owned by the container's [app.eve.visual.VisualHub] (fed by the
      * StreamService), re-exposed here so the Talk screen renders it without owning the fetch.
      */
     val visual: StateFlow<app.eve.visual.VisualCard?> = container.visualHub.state
@@ -159,7 +159,7 @@ class TalkViewModel(
     fun toggleSpeakerphone() = controller?.toggleSpeakerphone()
 
     // Thinking toggle (Epic T) — same shared setting as the Status screen + voice, surfaced here
-    // on the Talk screen so you can flip EVE's reasoning right where you're talking to her.
+    // on the Talk screen so you can flip Atlas's reasoning right where you're talking to her.
     private val _thinkingEnabled = MutableStateFlow(false)
     val thinkingEnabled: StateFlow<Boolean> = _thinkingEnabled.asStateFlow()
 

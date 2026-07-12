@@ -36,7 +36,7 @@ object FrameCompressor {
 
     /**
      * Downscales + rotates [bitmap] and encodes it as JPEG bytes. [rotationDegrees] is CameraX's
-     * `ImageInfo.rotationDegrees` — the frame is baked upright so EVE sees it the way the user does.
+     * `ImageInfo.rotationDegrees` — the frame is baked upright so Atlas sees it the way the user does.
      */
     fun toJpeg(
         bitmap: Bitmap,

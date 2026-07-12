@@ -7,7 +7,7 @@ import android.util.Log
 
 /**
  * Real [StreamingPcmPlayer] over [AudioTrack] in MODE_STREAM — the thin edge only. Opens ONE streaming
- * track ([start]) and appends EVE's PCM frames as they arrive ([write]) so a live utterance plays
+ * track ([start]) and appends Atlas's PCM frames as they arrive ([write]) so a live utterance plays
  * without the gaps the one-shot [app.eve.wear.talk.AudioTrackPcmPlayer] would introduce (it stops +
  * rebuilds the track per call). Writes are blocking on the caller's socket thread — fine, the frames
  * are tiny (~20-40 ms). A construction/write failure is logged; audio failure never hides the reply

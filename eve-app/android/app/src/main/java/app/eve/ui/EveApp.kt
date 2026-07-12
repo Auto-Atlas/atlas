@@ -52,7 +52,7 @@ import app.eve.ui.today.TodayScreen
 import app.eve.ui.today.TodayViewModel
 import app.eve.ui.theme.EveTheme
 
-/** Bottom-nav destinations. Icons follow the EVE design system (shield-check / mic / activity /
+/** Bottom-nav destinations. Icons follow the Atlas design system (shield-check / mic / activity /
  *  brain / heart-pulse), mapped to their closest Material equivalents. */
 enum class EveDestination(
     val route: String,
@@ -100,7 +100,7 @@ fun EveApp(
     ) { padding ->
         NavHost(
             navController = navController,
-            // A morning-ritual launch opens straight onto Talk so EVE can auto-connect and speak;
+            // A morning-ritual launch opens straight onto Talk so Atlas can auto-connect and speak;
             // otherwise Today is home — the persistent morning ritual + checkable action items.
             startDestination = if (autoStartRitual) EveDestination.Talk.route else EveDestination.Today.route,
             modifier = Modifier.padding(padding),

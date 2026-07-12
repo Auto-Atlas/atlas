@@ -3,7 +3,7 @@ package app.eve.wear.talk
 import kotlinx.coroutines.flow.StateFlow
 
 /**
- * Plays EVE's reply audio — raw 16 kHz mono PCM16 from the native voice turn — on the wrist speaker.
+ * Plays Atlas's reply audio — raw 16 kHz mono PCM16 from the native voice turn — on the wrist speaker.
  * Seam over AudioTrack so the talk VM depends on an interface (fakeable, manual DI, no mocking
  * library) rather than the Android engine; the real impl ([AudioTrackPcmPlayer]) stays thin.
  *

@@ -70,7 +70,7 @@ class Settings(private val context: Context) {
      * "Meta glasses" capture/audio toggle. LOCAL to this device (unlike the server-synced
      * remote/thinking/barge-in toggles) because it's about hardware paired to THIS phone. Default
      * false: the glasses path is fully opt-in. When on AND the glasses are connected, glasses-sourced
-     * (and "any"-sourced) captures come from the glasses camera and EVE's speech routes to the
+     * (and "any"-sourced) captures come from the glasses camera and Atlas's speech routes to the
      * glasses speaker; when off, the phone owns every capture exactly as before.
      */
     val glassesEnabled: Flow<Boolean> = context.dataStore.data.map { prefs ->

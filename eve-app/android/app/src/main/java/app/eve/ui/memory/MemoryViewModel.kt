@@ -16,11 +16,11 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 /**
- * Display states for the Memory tab. The list is small now but grows as EVE's `remember` tool
+ * Display states for the Memory tab. The list is small now but grows as Atlas's `remember` tool
  * fires, so the tab is built around grouping + search from the start.
  *
  * - [Loading]  first load in flight, nothing to show yet.
- * - [Empty]    loaded, the vault is genuinely empty (EVE hasn't learned anything).
+ * - [Empty]    loaded, the vault is genuinely empty (Atlas hasn't learned anything).
  * - [Loaded]   has facts; [groups] is the category-bucketed, ordered render model.
  * - [Error]    the load failed.
  */
@@ -62,7 +62,7 @@ data class MemoryUiState(
 )
 
 /**
- * Shows EVE's ACTUAL memory: the owner page (jarvis-memory.md, the boot pack), loaded with no
+ * Shows Atlas's ACTUAL memory: the owner page (jarvis-memory.md, the boot pack), loaded with no
  * speaker. No typing required to view — load() pulls the real vault and renders the structured
  * `items` grouped by category. A search box filters client-side (substring over text + category);
  * an optional add box writes a new fact straight to the owner page (no speaker → owner).

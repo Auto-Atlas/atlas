@@ -1,5 +1,6 @@
 package app.eve.voice
 
+import app.eve.ASSISTANT_NAME
 import android.content.Context
 import android.media.AudioDeviceInfo
 import android.media.AudioManager
@@ -49,7 +50,7 @@ interface VoiceClient {
     /** Barge-in: stop remote playback and reclaim the floor (manual interrupt, spec §3). */
     fun interrupt()
 
-    /** Mute/unmute the outbound mic — EVE stops/starts hearing you (the local track is gated). */
+    /** Mute/unmute the outbound mic — Atlas stops/starts hearing you (the local track is gated). */
     fun setMicMuted(muted: Boolean)
 
     /** Route playback to the loudspeaker (true) or the earpiece (false). */
@@ -82,7 +83,7 @@ class WebRtcVoiceClient(
     private val appContext: Context,
     private val signaling: SmallWebRtcSignaling,
     /**
-     * Optional glasses audio router. When [GlassesAudioRouter.isSupported] and it succeeds, EVE's
+     * Optional glasses audio router. When [GlassesAudioRouter.isSupported] and it succeeds, Atlas's
      * speech rides the glasses' Bluetooth speaker instead of the phone. Defaults to the inert
      * [NoGlassesAudioRouter] so the phone-only path (and its tests) are unchanged.
      */
@@ -219,7 +220,7 @@ class WebRtcVoiceClient(
                 }, SessionDescription(SessionDescription.Type.ANSWER, answer.sdp))
             },
             onFailure = { e ->
-                emit(VoiceEvent.Failed("Can't reach EVE: ${e.message ?: "signaling failed"}"))
+                emit(VoiceEvent.Failed("Can't reach $ASSISTANT_NAME: ${e.message ?: "signaling failed"}"))
             },
         )
     }
@@ -318,7 +319,7 @@ class WebRtcVoiceClient(
             am.mode = AudioManager.MODE_IN_COMMUNICATION
         }
         // Glasses first: if the toggle handed us a supported router and it grabs the glasses' BT
-        // device, EVE speaks out the glasses. Otherwise fall back to the normal hands-free speaker.
+        // device, Atlas speaks out the glasses. Otherwise fall back to the normal hands-free speaker.
         if (!(glassesAudio.isSupported && glassesAudio.routeSpeechToGlasses())) {
             routeAudio(toSpeaker = true) // default hands-free, like a speakerphone call
         }
@@ -396,7 +397,7 @@ class WebRtcVoiceClient(
     }
 
     override fun interrupt() {
-        // Barge-in: stop EVE's current playback and KEEP it stopped for this turn so the user
+        // Barge-in: stop Atlas's current playback and KEEP it stopped for this turn so the user
         // reclaims the floor (without tearing the session down). Audio returns on the next bot
         // turn: PcObserver.onAddTrack/onTrack assigns a fresh remoteAudioTrack and re-enables it.
         // (The previous version re-enabled the track on this same call, making barge-in a no-op.)
@@ -405,7 +406,7 @@ class WebRtcVoiceClient(
     }
 
     override fun setMicMuted(muted: Boolean) {
-        // Gating the local track stops outbound RTP entirely — the truthful "EVE can't hear me".
+        // Gating the local track stops outbound RTP entirely — the truthful "Atlas can't hear me".
         runCatching { micTrack?.setEnabled(!muted) }
     }
 
@@ -434,7 +435,7 @@ class WebRtcVoiceClient(
             // REAL echo cancellation: the goog* AudioSource constraints are largely ignored by modern
             // libwebrtc — AEC/NS actually live on the AudioDeviceModule. Build one explicitly with the
             // platform hardware AEC + NS engaged (Samsung's is strong) and the VOICE_COMMUNICATION
-            // capture path. This is what lets EVE keep the mic OPEN while she speaks without hearing
+            // capture path. This is what lets Atlas keep the mic OPEN while it speaks without hearing
             // herself — the prerequisite for barge-in (drop the half-duplex gate once verified).
             val adm = JavaAudioDeviceModule.builder(appContext)
                 .setUseHardwareAcousticEchoCanceler(true)

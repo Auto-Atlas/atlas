@@ -3,11 +3,11 @@ package app.eve.ui.talk
 import app.eve.data.models.StreamEvent
 
 /**
- * The live "what is EVE doing right now" state for the Talk screen — the Android analogue of the
+ * The live "what is Atlas doing right now" state for the Talk screen — the Android analogue of the
  * desktop `useJarvisBridge` reducer (app/frontend/src/hooks/useJarvisBridge.ts). It folds the
  * republished `tool_call` / `tool_result` / `delegation_*` / `thinking` [StreamEvent]s into the
  * shape the transformative UI renders: the per-brain delegation waterfall, the current tool, and
- * whether EVE is thinking.
+ * whether Atlas is thinking.
  *
  * Deliberately PURE (no Compose, no Android, no clock) so it is fully JVM-unit-testable: the
  * caller passes `nowMs` so tool latency is deterministic in tests. Mirrors the desktop's rules

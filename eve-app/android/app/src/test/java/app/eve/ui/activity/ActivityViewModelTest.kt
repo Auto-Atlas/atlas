@@ -1,5 +1,6 @@
 package app.eve.ui.activity
 
+import app.eve.ASSISTANT_NAME
 import app.eve.data.ActivityRepository
 import app.eve.data.ApiClient
 import app.eve.data.ApiError
@@ -115,7 +116,7 @@ class ActivityViewModelTest {
                 ConversationSummary(
                     id = "voice:phone:1",
                     source = "phone-voice",
-                    title = "Hey EVE",
+                    title = "Hey $ASSISTANT_NAME",
                     startedAt = 1_782_301_594_451L,
                     endedAt = 1_782_304_211_755L,
                     msgCount = 51,
@@ -130,9 +131,9 @@ class ActivityViewModelTest {
             conversation = ConversationDetail(
                 id = "voice:phone:1",
                 source = "phone-voice",
-                title = "Hey EVE",
+                title = "Hey $ASSISTANT_NAME",
                 messages = listOf(
-                    ConversationMessage(seq = 0, role = "assistant", text = "Hi Jonny", meta = JsonObject(emptyMap())),
+                    ConversationMessage(seq = 0, role = "assistant", text = "Hi there", meta = JsonObject(emptyMap())),
                     ConversationMessage(seq = 1, role = "user", text = "Hi", meta = JsonObject(emptyMap())),
                 ),
             ),

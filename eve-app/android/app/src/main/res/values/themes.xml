@@ -2,7 +2,7 @@
 <resources>
     <!-- Splash/host theme. The real surface is Compose (EveTheme); this only paints the
          window background dark (canvas #0B0F14) so there is no white flash at launch. -->
-    <style name="Theme.EVE" parent="android:Theme.Material.NoActionBar">
+    <style name="Theme.Atlas" parent="android:Theme.Material.NoActionBar">
         <item name="android:windowBackground">@color/eve_canvas</item>
         <item name="android:statusBarColor">@color/eve_canvas</item>
         <item name="android:navigationBarColor">@color/eve_canvas</item>

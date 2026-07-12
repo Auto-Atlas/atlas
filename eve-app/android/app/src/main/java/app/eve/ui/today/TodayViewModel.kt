@@ -1,5 +1,6 @@
 package app.eve.ui.today
 
+import app.eve.ASSISTANT_NAME
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.eve.data.ApiError
@@ -92,8 +93,8 @@ class TodayViewModel(
 
     private fun messageFor(error: ApiError): String = when (error) {
         is ApiError.Offline -> "Off the tailnet — can't reach today's plan."
-        is ApiError.NotConfigured -> "Not connected to EVE yet."
-        is ApiError.Unauthorized -> "Session expired — reconnect to EVE."
+        is ApiError.NotConfigured -> "Not connected to $ASSISTANT_NAME yet."
+        is ApiError.Unauthorized -> "Session expired — reconnect to $ASSISTANT_NAME."
         else -> "Couldn't load today."
     }
 }

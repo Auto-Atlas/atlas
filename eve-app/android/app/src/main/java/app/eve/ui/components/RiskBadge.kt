@@ -11,7 +11,7 @@ import app.eve.ui.skills.RiskLevel
 import app.eve.ui.theme.EveTheme
 
 /**
- * Risk-tier pill for a skill. Color encodes EVE's caution level, but color is NEVER the sole
+ * Risk-tier pill for a skill. Color encodes Atlas's caution level, but color is NEVER the sole
  * signal — the chip always carries the word (a11y, red-green safe), like TierChip.
  */
 @Composable

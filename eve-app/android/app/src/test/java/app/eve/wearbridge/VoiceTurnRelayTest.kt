@@ -1,5 +1,6 @@
 package app.eve.wearbridge
 
+import app.eve.ASSISTANT_NAME
 import app.eve.data.ApiError
 import app.eve.data.ApiResult
 import app.eve.data.audio.Wav
@@ -96,7 +97,7 @@ class VoiceTurnRelayTest {
 
         val (reply, pcm) = capture(out)
         assertEquals(Outcome.OK, reply.outcome)
-        assertEquals("Reminder set for 5pm.", reply.reply, "her answer must reach the wrist even when her voice can't")
+        assertEquals("Reminder set for 5pm.", reply.reply, "the reply text must reach the wrist even when the audio can't")
         assertEquals("chatterbox unreachable", reply.voiceError)
         assertEquals(0, reply.pcmByteCount)
         assertTrue(pcm.isEmpty())
@@ -153,7 +154,7 @@ class VoiceTurnRelayTest {
         relay.handleTurn(watchInput("vt-6", sampleWav()), out)
         val reply = capture(out).reply
         assertEquals(Outcome.ERROR, reply.outcome)
-        assertEquals("EVE has no /v1/voice/turn endpoint (404)", reply.detail)
+        assertEquals("$ASSISTANT_NAME has no /v1/voice/turn endpoint (404)", reply.detail)
     }
 
     @Test

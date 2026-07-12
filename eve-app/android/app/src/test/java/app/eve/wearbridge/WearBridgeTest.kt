@@ -1,5 +1,6 @@
 package app.eve.wearbridge
 
+import app.eve.ASSISTANT_NAME
 import app.eve.data.ApiClient
 import app.eve.data.ApiError
 import app.eve.data.ApiResult
@@ -181,7 +182,7 @@ class WearBridgeTest {
         assertEquals(1, writer.status.size)
         val snap = ApprovalsSnapshot.fromBytes(writer.approvals.single())
         assertEquals(false, snap.serverReachable)
-        assertEquals("cannot reach EVE: boom", snap.errorDetail)
+        assertEquals("cannot reach $ASSISTANT_NAME: boom", snap.errorDetail)
         assertTrue(snap.approvals.isEmpty())
         assertEquals(99L, snap.fetchedAtEpochMs)
         // A refresh never touches the repo approve/deny path.
@@ -282,7 +283,7 @@ class WearBridgeTest {
         assertTrue(writer.approvals.isEmpty())
     }
 
-    // ---- talk leg (push-to-talk -> EVE brain) -------------------------------
+    // ---- talk leg (push-to-talk -> Atlas brain) -------------------------------
 
     /** Build a bridge whose talk brain returns [ask], with unused approve/deny fetch lambdas. */
     private fun talkBridge(sender: FakeSender, ask: suspend (String) -> ApiResult<String>): WearBridge {
