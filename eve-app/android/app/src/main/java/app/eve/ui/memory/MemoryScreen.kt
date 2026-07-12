@@ -115,7 +115,7 @@ fun MemoryScreen(viewModel: MemoryViewModel, modifier: Modifier = Modifier) {
                         colors,
                     )
                     is MemoryPhase.Empty -> CenteredNote(
-                        "$ASSISTANT_NAME hasn't learned anything about you yet — she will as you talk.",
+                        "$ASSISTANT_NAME hasn't learned anything about you yet — that changes as you talk.",
                         colors,
                     )
                     is MemoryPhase.Loaded ->

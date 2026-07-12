@@ -194,7 +194,7 @@ fun StatusScreen(
             }
             Spacer(Modifier.padding(top = EveTheme.spacing.s2))
             Text(
-                "Talk over her to cut in. Best with earbuds — on a speakerphone her own voice can interrupt her. Takes effect on your next voice session.",
+                "Talk over $ASSISTANT_NAME to cut in. Best with earbuds — on a speakerphone the assistant's own voice can interrupt it. Takes effect on your next voice session.",
                 style = EveTheme.type.bodySm.copy(color = colors.textSecondary),
             )
         }
@@ -360,7 +360,7 @@ private fun HealthCard(
             !state.healthPermitted -> {
                 Text(
                     "Let $ASSISTANT_NAME read your heart rate, sleep, steps, blood-oxygen, blood pressure and " +
-                        "workouts from your watch — so she knows how your heart's been.",
+                        "workouts from your watch — so $ASSISTANT_NAME knows how your heart's been.",
                     style = EveTheme.type.bodySm.copy(color = colors.textSecondary),
                 )
                 app.eve.ui.components.EveButton(

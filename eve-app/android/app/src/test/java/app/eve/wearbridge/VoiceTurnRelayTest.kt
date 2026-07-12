@@ -97,7 +97,7 @@ class VoiceTurnRelayTest {
 
         val (reply, pcm) = capture(out)
         assertEquals(Outcome.OK, reply.outcome)
-        assertEquals("Reminder set for 5pm.", reply.reply, "her answer must reach the wrist even when her voice can't")
+        assertEquals("Reminder set for 5pm.", reply.reply, "the reply text must reach the wrist even when the audio can't")
         assertEquals("chatterbox unreachable", reply.voiceError)
         assertEquals(0, reply.pcmByteCount)
         assertTrue(pcm.isEmpty())

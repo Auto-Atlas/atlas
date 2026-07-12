@@ -54,7 +54,7 @@ private fun SkillsContent(
     Column(modifier.fillMaxSize().padding(EveTheme.spacing.s4)) {
         Text("Skills", style = EveTheme.type.title.copy(color = colors.textPrimary))
         Text(
-            "Things $ASSISTANT_NAME knows how to do — hand her one.",
+            "Things $ASSISTANT_NAME knows how to do — hand one over.",
             style = EveTheme.type.body.copy(color = colors.textSecondary),
             modifier = Modifier.padding(top = EveTheme.spacing.s1, bottom = EveTheme.spacing.s3),
         )
@@ -92,7 +92,7 @@ private fun SkillsContent(
                     modifier = Modifier.padding(vertical = EveTheme.spacing.s2),
                 )
                 EveButton(
-                    text = "Use now — she's listening",
+                    text = "Use now — $ASSISTANT_NAME is listening",
                     onClick = { onFeed(row.tool, FeedMode.Live); sheetFor = null },
                 )
                 Spacer(Modifier.height(EveTheme.spacing.s2))

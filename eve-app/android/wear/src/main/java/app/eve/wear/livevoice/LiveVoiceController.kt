@@ -115,7 +115,7 @@ class LiveVoiceController(
         // A NEW call always starts with a live mic. Mute persists across MID-call reconnects
         // (the YourTurn re-assert below), but carrying it into the next user-initiated call
         // produced a deaf-looking Atlas on hardware (2026-07-10): mute tapped in call #1 silently
-        // survived into call #2 and "she stopped responding".
+        // survived into call #2 and "it stopped responding".
         _controls.value = _controls.value.copy(micMuted = false)
         client.setMicMuted(false)
         dialUrl = config.wsUrl

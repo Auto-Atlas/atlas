@@ -136,7 +136,7 @@ fun ConnectScreen(settings: Settings, modifier: Modifier = Modifier, onConfigSav
     ) {
         Text("Connect to $ASSISTANT_NAME", style = EveTheme.type.titleXl.copy(color = colors.textPrimary))
         Text(
-            "Ask $ASSISTANT_NAME to \"pair my phone\", then scan the QR she puts on screen.",
+            "Ask $ASSISTANT_NAME to \"pair my phone\", then scan the QR that appears on screen.",
             style = EveTheme.type.body.copy(color = colors.textSecondary),
         )
         EveButton(

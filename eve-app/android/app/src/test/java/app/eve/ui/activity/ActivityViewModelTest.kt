@@ -133,7 +133,7 @@ class ActivityViewModelTest {
                 source = "phone-voice",
                 title = "Hey $ASSISTANT_NAME",
                 messages = listOf(
-                    ConversationMessage(seq = 0, role = "assistant", text = "Hi Jonny", meta = JsonObject(emptyMap())),
+                    ConversationMessage(seq = 0, role = "assistant", text = "Hi there", meta = JsonObject(emptyMap())),
                     ConversationMessage(seq = 1, role = "user", text = "Hi", meta = JsonObject(emptyMap())),
                 ),
             ),

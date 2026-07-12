@@ -96,7 +96,7 @@ class ApiClient(
 
     /**
      * v2 NATIVE watch voice turn: uploads ONE recorded utterance as base64 WAV to
-     * `POST /v1/voice/turn` and returns Atlas's own STT transcript + brain reply + her synthesized voice
+     * `POST /v1/voice/turn` and returns Atlas's own STT transcript + brain reply + the synthesized voice
      * (16 kHz mono PCM16 WAV, base64) — no Google in the path. [audioB64] is a base64-encoded WAV
      * (RIFF, mono, 16-bit PCM at 16k). The server chains STT -> brain -> TTS, so this leg is the
      * longest of all: it gets [VOICE_TURN_TIMEOUT_MS] (65s), which sits below the watch's 75s channel

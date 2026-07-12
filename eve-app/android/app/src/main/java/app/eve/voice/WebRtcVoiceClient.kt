@@ -435,7 +435,7 @@ class WebRtcVoiceClient(
             // REAL echo cancellation: the goog* AudioSource constraints are largely ignored by modern
             // libwebrtc — AEC/NS actually live on the AudioDeviceModule. Build one explicitly with the
             // platform hardware AEC + NS engaged (Samsung's is strong) and the VOICE_COMMUNICATION
-            // capture path. This is what lets Atlas keep the mic OPEN while she speaks without hearing
+            // capture path. This is what lets Atlas keep the mic OPEN while it speaks without hearing
             // herself — the prerequisite for barge-in (drop the half-duplex gate once verified).
             val adm = JavaAudioDeviceModule.builder(appContext)
                 .setUseHardwareAcousticEchoCanceler(true)

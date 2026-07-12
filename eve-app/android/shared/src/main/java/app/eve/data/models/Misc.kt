@@ -87,7 +87,7 @@ data class AskResult(
 /**
  * POST /v1/voice/turn -> the v2 NATIVE watch voice turn. The server transcribes the uploaded WAV with
  * Atlas's own STT, runs [transcript] through the same brain leg as /v1/ask, and synthesizes [reply] in
- * her canonical voice. [transcript] and [reply] are always present on a 200; [audioB64] is a 16 kHz
+ * its canonical voice. [transcript] and [reply] are always present on a 200; [audioB64] is a 16 kHz
  * mono PCM16 WAV (base64) OR null when the TTS leg failed — in which case [voiceError] names the leg
  * and the reply TEXT is still delivered (no silent fallback to a different voice). The named failure
  * legs are HTTP statuses the [app.eve.data.ApiClient] maps to [app.eve.data.ApiError] (400 undecodable
