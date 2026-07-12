@@ -400,6 +400,13 @@ on event staleness). A scripted animation can't do that. Raw feed: `npx wscat -c
 - **Ollama connection refused** — make sure the Ollama service is running (`ollama ps`).
 - **First run slow / downloading** — faster-whisper + TTS weights cache locally once; expected.
 
+## 🤝 Built by
+
+Atlas is built — and lived in daily — by:
+
+- **[William Donovan](https://github.com/BusinessBuilders)** · [Business Builders](https://business-builder.online) — AI agents and websites that run themselves, on owned hardware
+- **[Jon DiPilato](https://github.com/JonDipilato)** · [DiPilato Automations](https://www.dipilatoautomations.com) — done-for-you AI automation for contractors and local service businesses
+
 ## 📜 License & lineage
 
 Apache-2.0 — see [LICENSE](LICENSE) and [NOTICE](NOTICE). The `app/` directory is a vendored
