@@ -466,7 +466,13 @@ async def _run_voice_session(ws: WebSocket) -> None:
 
     user_aggregator = LLMContextAggregatorPair(
         context,
-        user_params=LLMUserAggregatorParams(vad_analyzer=SileroVADAnalyzer()),
+        # audio_idle_timeout=0 disables the VAD idle watchdog: the watch's half-duplex
+        # gate (below) stops mic frames whenever EVE speaks — BY DESIGN — and the
+        # watchdog read that silence as a dead stream and forced speech stop 1s in,
+        # cutting her off mid-sentence on the wrist.
+        user_params=LLMUserAggregatorParams(
+            vad_analyzer=SileroVADAnalyzer(), audio_idle_timeout=0
+        ),
     ).user()
     assistant_aggregator = TrimmingAssistantAggregator(context, protected_head=protected_head)
 

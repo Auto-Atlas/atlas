@@ -262,6 +262,12 @@ async def main():
     )
 
     stt, llm, tts = build_services()
+    # build_services() resolved the brain profile for the LLM it returned; resolve the
+    # SAME profile here so every injected instruction's role agrees with it. main() used
+    # to rely on build_services' locals — that scope split made every announce() raise
+    # NameError and stranded proactive speech in the replay queue.
+    _session_profile = active_profile()
+    _instr_role = instr_role_for(_session_profile)
 
     # Persona + memory pack + the full tool registry, shared with the phone
     # body via jarvis_core. protected_head marks the boot block that must
