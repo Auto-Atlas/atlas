@@ -4,13 +4,14 @@ After=network-online.target
 
 [Service]
 Type=simple
-# %h = your home dir; no usernames baked in. Running NEXT TO another
-# OpenJarvis/EVE install on the same box? Point this instance at its own state
-# dir and port:
+# %h = your home dir; no usernames baked in. The `jarvis` CLI lives in the repo
+# venv that install.sh / `pip install -r requirements.txt` creates. Brain state
+# defaults to ~/.openjarvis; running NEXT TO another OpenJarvis/EVE install on
+# the same box? Give this instance its own state dir and port:
 #   Environment=OPENJARVIS_HOME=%h/.atlas
 #   ... jarvis serve --port 9000 ...
-WorkingDirectory=%h/.openjarvis
-ExecStart=%h/.local/bin/jarvis serve --port 8000 --agent orchestrator
+WorkingDirectory=%h/atlas
+ExecStart=%h/atlas/.venv/bin/jarvis serve --port 8000 --agent orchestrator
 Restart=always
 RestartSec=5
 
