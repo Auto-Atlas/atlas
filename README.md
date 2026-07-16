@@ -117,7 +117,8 @@ cp .env.example .env          # every key is optional — fill in what you want
 ```bash
 ./run.sh                      # local mode, free
 ```
-…or as always-on `systemd --user` services (`atlas-sidecar`, `atlas-approval-api`, …) — see the setup guide.
+…or as always-on `systemd --user` services (`atlas-sidecar`, `atlas-approval-api`, …) — see
+[Run Atlas at startup](#-run-atlas-at-startup-linux-systemd) below.
 
 **4 · Talk to it** — walk the tiers:
 
@@ -145,8 +146,56 @@ Copy this into your first issue (or a note) and check items off as you go:
 - [ ] Speaker enrolled (see "Train Atlas on your voice") — trust tiers live
 - [ ] Approval API on the tailnet (`tailscale serve --bg --https=8443 http://127.0.0.1:8799` -- if :8443 is already served, e.g. by the typed web UI, use another port like `--https=8446`)
 - [ ] Phone paired via the QR ("Atlas, show the pairing QR") — the Android app in `eve-app/android`
+- [ ] Auto-start installed (systemd units enabled + linger) — Atlas survives reboots
 - [ ] Optional: watch app ([atlas-watch](https://github.com/Auto-Atlas/atlas-watch), beta), agent delegation (`ATLAS_A2A_ENABLED=1`), morning brief, glasses bridge
 ```
+
+## 🔁 Run Atlas at startup (Linux, systemd)
+
+`./run.sh` is fine for a first test, but the real assistant should come back on its own after
+every reboot and crash. The repo ships user-level systemd units for the whole stack in
+[`deploy/systemd/`](deploy/systemd/):
+
+| Unit | What it runs | Port |
+|---|---|---|
+| `atlas-server` | the agent brain (`jarvis serve`) | 8000 |
+| `atlas-sidecar` | the always-listening room voice loop (`bot.py`) | 8765 (UI bridge) |
+| `atlas-watch-voice` | the watch call loop (`watch_bot.py`) | 8791 |
+| `atlas-approval-api` | remote control + approvals for the phone app | 8799 |
+| `atlas-a2a-hermes` *(optional)* | agent talk-back adapter | 8790 |
+| `atlas-glasses-stream` *(optional)* | glasses RTMP vision bridge | — |
+
+Install and switch on the core four:
+
+```bash
+mkdir -p ~/.config/systemd/user
+cp deploy/systemd/atlas-{server,sidecar,watch-voice,approval-api}.service ~/.config/systemd/user/
+systemctl --user daemon-reload
+systemctl --user enable --now atlas-server atlas-sidecar atlas-watch-voice atlas-approval-api
+loginctl enable-linger "$USER"   # start at boot, not just at login
+```
+
+Check on it and read logs:
+
+```bash
+systemctl --user status atlas-sidecar
+journalctl --user -u atlas-sidecar -f
+```
+
+Notes that save people an hour:
+
+- **Stop any hand-started copies first** (`./run.sh`, stray `nohup` processes) — `bot.py`
+  holds a lock port (8764), so a second copy exits immediately.
+- **Coming from EVE or another OpenJarvis install on the same box?** Disable its old units
+  first so the two assistants don't fight over the mic and ports
+  (`systemctl --user disable --now <old-unit> …`), and give Atlas its own brain-state dir by
+  adding `Environment=OPENJARVIS_HOME=%h/.atlas` under `[Service]` in `atlas-server.service`.
+- **Local TTS or vision servers** (a Chatterbox/Kokoro TTS unit, a llama.cpp VLM unit): add
+  them to the sidecar's `After=`/`Wants=` so early speech never hits a dead endpoint.
+- The units use `%h` (your home dir) and assume the repo lives at `~/atlas` — cloned it
+  somewhere else? Adjust the paths in the copied files.
+- Desktop screenshots/UI features need your display: uncomment `Environment=DISPLAY=:0` in
+  `atlas-sidecar.service` and match your session's display number.
 
 ## 🎙️ Using Atlas day-to-day
 
