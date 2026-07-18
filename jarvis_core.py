@@ -502,6 +502,16 @@ import embodiment_tool
 if embodiment_tool.enabled():
     ALL_TOOL_SCHEMAS = ALL_TOOL_SCHEMAS + [embodiment_tool.EMBODIMENT_SCHEMA]
 
+# Plugins: third-party tools from plugins/<dir>/ — appended at IMPORT TIME (the
+# delegate precedent above) so build_context()'s snapshot sees them. Loading is
+# per-plugin fail-loud: a broken plugin is skipped and reported by plugin_loader,
+# never crashes boot, never shadows an existing tool (reserved_names). Policy
+# comes from each plugin's own validated skill.md at registration below.
+from plugin_loader import load_plugins
+
+LOADED_PLUGINS = load_plugins(reserved_names={s.name for s in ALL_TOOL_SCHEMAS})
+ALL_TOOL_SCHEMAS = ALL_TOOL_SCHEMAS + [p.schema for p in LOADED_PLUGINS]
+
 
 def _make_delegate_handler(spec, emit=None):
     """A confirm-AGNOSTIC delegate handler: tool_policy.policy() already does the spoken draft
@@ -802,3 +812,18 @@ def register_tools(llm, context, business_pack: str | None, reminders, bridge=No
                               emit=bridge.broadcast if bridge is not None else None),
                           skill_body=_skill_body(_SKILLS, _tname))
         llm.register_function(_tname, dedupe(_tname, _wrapped))
+
+    # Plugins: same gate stack as every core tool (dedupe → policy → handler).
+    # Risk/confirmation come from the plugin's OWN validated manifest (carried on
+    # the PluginTool by the loader — provenance-safe even under name games), and
+    # requires_fields travels with the plugin's code. An ungated plugin cannot
+    # exist by construction: load_plugins rejects any manifest without explicit risk.
+    for _p in LOADED_PLUGINS:
+        _ppol = ToolPolicy(
+            needs_confirmation=_p.requires_confirmation,
+            requires_fields=_p.requires_fields,
+            risk_level=_p.risk,
+        )
+        _pwrapped = policy(_p.name, _ppol, _p.handler,
+                           skill_body=_skill_body(_SKILLS, _p.name))
+        llm.register_function(_p.name, dedupe(_p.name, _pwrapped))

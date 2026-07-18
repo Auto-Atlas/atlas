@@ -148,6 +148,21 @@ Copy this into your first issue (or a note) and check items off as you go:
 - [ ] Optional: watch app ([atlas-watch](https://github.com/Auto-Atlas/atlas-watch), beta), agent delegation (`ATLAS_A2A_ENABLED=1`), morning brief, glasses bridge
 ```
 
+## 🔌 Plugins — add your own tools, no fork required
+
+Drop a directory into [`plugins/`](plugins/) and Atlas gains a tool on every
+body — desktop, phone, and watch — behind the exact same safety gates as the
+built-ins (trust tiers, risk policy, spoken confirmation, remote approval).
+One directory = one tool = one `skill.md` manifest; the loader refuses
+anything without an explicit `risk:` declaration, and a broken plugin is
+skipped loudly without touching the rest of the boot. The shipped
+[`plugins/dice/`](plugins/dice/) is the working reference; the full authoring
+contract lives in [`plugins/README.md`](plugins/README.md).
+
+This is the intended home for service connectors — an invoicing connector, a
+CRM lookup, a home-automation bridge — so integrations can live outside core
+and still feel native in conversation.
+
 ## 🎙️ Using Atlas day-to-day
 
 Just talk. It's always listening on the desktop (`bot.py`) and answers on the phone the
