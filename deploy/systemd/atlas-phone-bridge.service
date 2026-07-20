@@ -1,0 +1,18 @@
+[Unit]
+Description=Atlas phone agent — Twilio ConversationRelay bridge (plugins/phone_agent/service.py)
+After=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=%h/atlas
+# All config and secrets live in the env file (Twilio creds, ports, model,
+# public base URL) plus businesses.toml next to it — see
+# plugins/phone_agent/README.md. The service validates both at boot and
+# refuses to start on a broken config.
+EnvironmentFile=%h/.config/atlas-phone/env
+ExecStart=%h/atlas/.venv/bin/python %h/atlas/plugins/phone_agent/service.py
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=default.target
