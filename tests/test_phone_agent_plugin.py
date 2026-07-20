@@ -139,7 +139,7 @@ def test_service_config_validation_is_fail_closed(tmp_path):
         TWILIO_ACCOUNT_SID="ACtest", TWILIO_AUTH_TOKEN="t", BRIDGE_PORT="1",
         PUBLIC_BASE="https://example.test/phone", WS_TOKEN="w",
         OLLAMA_URL="http://127.0.0.1:1/v1", MODEL="m",
-        ATLAS_REPO=str(tmp_path), BUSINESS_CONFIG=str(bad),
+        BUSINESS_CONFIG=str(bad),
     )
     service = PLUGINS_DIR / "phone_agent" / "service.py"
     check = subprocess.run(
@@ -153,3 +153,107 @@ def test_service_config_validation_is_fail_closed(tmp_path):
     )
     assert check.returncode == 1
     assert "not defined" in check.stderr
+
+
+# ---- service module unit tests (persona sandbox + end-call scrubbing) ------
+
+def _import_service(tmp_path, monkeypatch, extra_env=None):
+    """Import service.py in-process with a stub env and a valid config."""
+    import importlib.util
+
+    cfg = tmp_path / "businesses.toml"
+    cfg.write_text(
+        '[numbers]\n"+15550001111" = "acme"\n\n'
+        "[profiles.acme]\nbusiness_name = \"Acme Co\"\nservices = \"widget repair\"\n"
+        "owner_name = \"Jo\"\ngreeting = \"hi\"\n"
+        "facts = \"Email: office@acme.test\\nHours: 9-5\"\n",
+        encoding="utf-8",
+    )
+    for k in ("NTFY_URL", "NTFY_TOPIC", "MESSAGES_FILE"):
+        monkeypatch.delenv(k, raising=False)
+    stub = dict(
+        TWILIO_ACCOUNT_SID="ACtest", TWILIO_AUTH_TOKEN="t", BRIDGE_PORT="1",
+        PUBLIC_BASE="https://example.test/phone", WS_TOKEN="w",
+        OLLAMA_URL="http://127.0.0.1:1/v1", MODEL="m", BUSINESS_CONFIG=str(cfg),
+        **(extra_env or {}),
+    )
+    for k, v in stub.items():
+        monkeypatch.setenv(k, v)
+    spec = importlib.util.spec_from_file_location(
+        "phone_agent_service_under_test",
+        PLUGINS_DIR / "phone_agent" / "service.py",
+    )
+    assert spec is not None and spec.loader is not None
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def test_persona_is_self_contained(tmp_path, monkeypatch):
+    """The phone persona must be built ONLY from the profile — no resident
+    Atlas import (a live call leaked the owner's nickname through it)."""
+    svc = _import_service(tmp_path, monkeypatch)
+    prompt = svc.SYSTEM_PROMPTS["acme"]
+    assert "Acme Co" in prompt
+    assert "widget repair" in prompt
+    assert "Jo" in prompt
+    assert "office@acme.test" in prompt          # facts made it in
+    assert svc.END_CALL_MARKER in prompt          # hangup instruction present
+    assert "NO tools" in prompt
+    # nothing outside the profile: no persona import machinery exists at all
+    assert not hasattr(svc, "load_atlas_persona")
+
+
+def test_scrubber_marker_split_across_tokens(tmp_path, monkeypatch):
+    svc = _import_service(tmp_path, monkeypatch)
+    scrubber = svc.EndCallScrubber()
+    spoken = ""
+    for token in ["Goodbye, have a great day! ", "[EN", "D CA", "LL]"]:
+        spoken += scrubber.feed(token)
+    spoken += scrubber.flush()
+    assert svc.END_CALL_MARKER not in spoken
+    assert "[" not in spoken
+    assert spoken.strip() == "Goodbye, have a great day!"
+    assert scrubber.ended is True
+
+
+def test_scrubber_plain_text_passes_through(tmp_path, monkeypatch):
+    svc = _import_service(tmp_path, monkeypatch)
+    scrubber = svc.EndCallScrubber()
+    spoken = ""
+    for token in ["We build ", "websites [really ", "nice ones] daily."]:
+        spoken += scrubber.feed(token)
+    spoken += scrubber.flush()
+    assert spoken == "We build websites [really nice ones] daily."
+    assert scrubber.ended is False
+
+
+def test_scrubber_text_after_marker_still_spoken(tmp_path, monkeypatch):
+    svc = _import_service(tmp_path, monkeypatch)
+    scrubber = svc.EndCallScrubber()
+    spoken = scrubber.feed("Bye now! [END CALL] Take care.") + scrubber.flush()
+    assert spoken == "Bye now!  Take care."
+    assert scrubber.ended is True
+
+
+def test_message_entry_format(tmp_path, monkeypatch):
+    svc = _import_service(tmp_path, monkeypatch)
+    entry = svc.format_message_entry(
+        when="2026-07-20 19:45 EDT", business_name="Acme Co",
+        caller_id="+15550001234", note="Sam\n+15550001234\nneeds a widget fixed",
+        call_sid="CAtest123", turns=3,
+    )
+    assert "+15550001234" in entry
+    assert "Acme Co line" in entry
+    assert "needs a widget fixed" in entry
+    assert "CAtest123" in entry
+    assert entry.startswith("\n## ")
+
+
+def test_ntfy_half_config_refused(tmp_path, monkeypatch):
+    """NTFY_URL without NTFY_TOPIC (or vice versa) must refuse to boot —
+    a half-configured push channel is a silent-drop waiting to happen."""
+    import pytest
+
+    with pytest.raises(SystemExit):
+        _import_service(tmp_path, monkeypatch, extra_env={"NTFY_URL": "http://127.0.0.1:1"})

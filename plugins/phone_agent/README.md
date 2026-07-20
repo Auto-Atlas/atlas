@@ -28,9 +28,13 @@ phone-facing model gets:
   expect an answer in about a second; a thinking model reasons silently and
   callers hang up. If you point this at a thinking-capable model you must
   disable thinking explicitly.
-- The Atlas persona plus a phone addendum that pins the rules: unverified
-  caller, no private details, no promises of actions, one-to-three sentence
-  answers.
+- **A self-contained receptionist persona** built ONLY from the business
+  profile — the resident Atlas persona is never imported (it carries the
+  owner's private context, and on a live call it leaked the owner's nickname
+  and role-played having tools). The prompt forbids inventing contact
+  details, prices, or availability, and forbids claiming actions — the only
+  facts it may state come from the profile's optional `facts` field, and its
+  one promise is that a confirmed message reaches the owner.
 
 Security on the wire: Twilio webhooks are HMAC signature-checked, the
 websocket carries a secret token, and relay sessions from foreign Twilio
@@ -72,6 +76,23 @@ the journal at ERROR.
    atlas-phone-bridge`
 7. Verify: `curl -s http://127.0.0.1:<BRIDGE_PORT>/health` shows
    `"model_backend": "ok"` and your profiles — then call the number.
+
+## Messages, caller ID, and hanging up
+
+- After every call with caller turns, the bridge summarizes the transcript
+  (one non-streamed pass on the same local model) into a structured note —
+  name, callback number, email, what they need — appended to the message pad
+  (`MESSAGES_FILE`, default `~/atlas-phone-messages.md`). Extraction failure
+  writes a loud fallback entry pointing at the journal transcript; a message
+  never vanishes silently. Optional `NTFY_URL` + `NTFY_TOPIC` (set together
+  or not at all) also push each note as a phone notification.
+- The caller's real number comes from the phone network, not speech-to-text:
+  it's injected into the call context so the agent *confirms* the callback
+  number instead of transcribing digits.
+- To hang up, the model ends its goodbye with the literal `[END CALL]`; the
+  bridge scrubs the marker from speech, lets the goodbye play, then sends
+  Twilio's end-session message. A caller speaking during that window cancels
+  the hangup and the conversation continues.
 
 ## Operating
 
