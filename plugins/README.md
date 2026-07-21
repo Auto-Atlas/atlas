@@ -89,6 +89,62 @@ The contract:
 - Talking to a service on this machine with a secret token? Refuse non-loopback
   URLs like `invoice_tool.py` does — never send a local bearer off-box.
 
+## Two plugin shapes
+
+**Tool-only** — the common case: `plugin.py` + `skill.md`, nothing else.
+Atlas gains one gated tool. [`dice/`](dice/) is the reference.
+
+**Tool + service** — for a capability that needs its own long-running
+process (a phone line, a webhook listener, a bridge to an external system).
+[`phone_agent/`](phone_agent/) is the reference. The extra rules:
+
+- The service ships as `service.py` in the plugin directory and runs as its
+  **own systemd unit** (template in `deploy/systemd/atlas-<name>.service`) —
+  never inside the voice loop. A crashing service must not take Atlas down,
+  and restarting Atlas must not drop calls/requests mid-flight.
+- Config and secrets live **outside the repo** (`~/.config/atlas-<name>/`,
+  chmod 600), loaded via `EnvironmentFile`. Ship a fully commented
+  `*.example.*` copy in the plugin directory with obviously-fake values.
+- The service is **fail-closed at boot**: missing or half-valid config means
+  `exit 1` with the reason in the journal — never a guessed default, never a
+  service that answers customers with a broken setup.
+- The plugin's tool is the **owner's window into the service** — status and
+  reads by default. It probes over loopback only, and its errors are human
+  sentences that name the fix (`systemctl --user status atlas-<name>`).
+  A tool that *commands* the service is `risk: high` + confirmation.
+- **The sandbox rule (the big one):** anything the service exposes to the
+  outside world — callers, webhook senders, strangers — gets NO Atlas tools
+  and NO resident persona. Build its prompt and knowledge self-contained
+  from the service's own config. The resident persona carries the owner's
+  private context, and the tool registry is for the verified owner only.
+  (The phone agent's first live call leaked the owner's nickname and
+  role-played having tools before this rule existed. Don't relearn it.)
+- Fail LOUD end to end: an outward-facing failure is spoken/returned to the
+  user AND lands in the journal at ERROR; a captured message or request is
+  never dropped silently — on processing failure, write a fallback record
+  pointing at the raw data.
+- Tests cover both halves: import `service.py` in-process with a stubbed
+  env to unit-test its pure logic, prove the fail-closed boot contract in a
+  subprocess, and drive the tool handler against a real local server —
+  `tests/test_phone_agent_plugin.py` shows all three patterns.
+
+## Author checklist
+
+1. Copy `dice/` (tool-only) or `phone_agent/` (tool + service).
+2. `skill.md`: explicit `risk:`; `requires_confirmation:` stated if high;
+   one short `catalog:` line; body says when to use it and how to speak
+   results.
+3. `plugin.py`: one `plugin_tool()`, `async` handler, `result_callback`
+   exactly once, `{"ok": False, "error": "human sentence"}` on failure,
+   config read lazily, heavy imports inside the handler, loopback-only for
+   local secrets.
+4. Service (if any): rules above, plus a README in the plugin directory
+   covering setup, operating, and the safety design.
+5. Tests in `tests/`, then `.venv/bin/python -m pytest tests/ -q`.
+6. Restart the voice loop and check
+   `journalctl --user -u atlas-sidecar -b | grep -i plugin` — your plugin
+   loaded, or was rejected with the reason.
+
 ## Try it
 
 With the shipped example in place, restart the voice loop and say
