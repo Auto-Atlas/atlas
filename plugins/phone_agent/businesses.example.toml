@@ -1,0 +1,21 @@
+# EXAMPLE business config for the Atlas phone agent — copy to
+# ~/.config/atlas-phone/businesses.toml and replace every value with your own.
+# The service refuses to start until the real file exists and validates.
+
+[numbers]
+# Map every live Twilio number (E.164) to a profile. Calls to unmapped
+# numbers get a spoken configuration error and an ERROR journal line.
+"+15085551234" = "acme_plumbing"
+
+[profiles.acme_plumbing]
+business_name = "Acme Plumbing"
+services = "emergency plumbing, drain cleaning, and water heater work"
+owner_name = "Jo"
+greeting = "Hi, you've reached Acme Plumbing. How can I help you today?"
+# assistant_name = "Atlas"        # optional; what the agent calls itself
+# facts = '''                     # optional; the ONLY specifics the agent may
+# Email: office@acmeplumbing.com  # state as fact (hours, contact, service
+# Hours: Mon-Fri 8am-5pm          # area, pricing posture). Omit it and the
+# '''                             # agent takes a message instead.
+# model = "qwen2.5:7b-instruct"   # optional per-profile override; must be a
+#                                 # NON-thinking model (phone latency)
